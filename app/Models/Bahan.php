@@ -42,4 +42,12 @@ class Bahan extends Model
     {
         return $this->hasMany(StokAwalBulan::class, 'id_bahan', 'id_bahan');
     }
+
+    /**
+     * Relasi ke pencatatan sisa bahan akhir bulan
+     */
+    public function sisaBahanAkhirBulan(): HasMany
+    {
+        return $this->hasMany(SisaBahanAkhirBulan::class, 'id_bahan', 'id_bahan');
+    }
 }

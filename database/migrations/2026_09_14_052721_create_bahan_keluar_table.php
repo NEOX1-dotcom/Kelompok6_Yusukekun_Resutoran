@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bahan_keluar', function (Blueprint $table) {
-             $table->id('id_keluar');
+            $table->id('id_keluar');
             $table->date('tanggal');
-            $table->foreignId('id_bahan')->constrained('bahan', 'id_bahan')->cascadeOnUpdate();
+            $table->foreignId('id_bahan')->constrained('bahan', 'id_bahan')->cascadeOnUpdate()->cascadeOnDelete();
             $table->decimal('jumlah', 15, 2);
             $table->string('digunakan_untuk', 100)->nullable();
             $table->string('keterangan', 255)->nullable();
             $table->timestamps();
-
         });
     }
 

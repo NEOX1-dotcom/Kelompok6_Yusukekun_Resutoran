@@ -15,6 +15,7 @@ class Penjualan extends Model
 
     protected $fillable = [
         'tanggal',
+        'id_omset_harian',
         'id_produk',
         'jumlah_terjual',
         'harga_satuan',
@@ -39,5 +40,13 @@ class Penjualan extends Model
     public function produk(): BelongsTo
     {
         return $this->belongsTo(Produk::class, 'id_produk', 'id_produk');
+    }
+
+    /**
+     * Relasi ke Rekap Omset Harian
+     */
+    public function omsetHarian(): BelongsTo
+    {
+        return $this->belongsTo(OmsetHarian::class, 'id_omset_harian', 'id_omset_harian');
     }
 }
