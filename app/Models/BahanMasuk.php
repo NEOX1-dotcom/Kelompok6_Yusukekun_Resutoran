@@ -17,6 +17,8 @@ class BahanMasuk extends Model
         'tanggal',
         'id_bahan',
         'jumlah',
+        'harga_satuan',
+        'total_harga',
         'keterangan',
     ];
 
@@ -25,6 +27,8 @@ class BahanMasuk extends Model
         return [
             'tanggal' => 'date',
             'jumlah' => 'decimal:2',
+            'harga_satuan' => 'decimal:2',
+            'total_harga' => 'decimal:2',
         ];
     }
 
@@ -35,5 +39,4 @@ class BahanMasuk extends Model
     {
         return $this->belongsTo(Bahan::class, 'id_bahan', 'id_bahan');
     }
-
 }

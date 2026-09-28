@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stok_awal_bulan', function (Blueprint $table) {
-             $table->id('id_stok_awal');
-            $table->char('bulan', 7);
-            $table->foreignId('id_bahan');
+            $table->id('id_stok_awal');
+            $table->char('bulan', 7); // Format: YYYY-MM
+            $table->foreignId('id_bahan')->constrained('bahan', 'id_bahan')->cascadeOnUpdate()->cascadeOnDelete();
             $table->decimal('stok_awal', 15, 2)->default(0);
             $table->timestamps();
+
+            $table->unique(['bulan', 'id_bahan']);
         });
     }
 

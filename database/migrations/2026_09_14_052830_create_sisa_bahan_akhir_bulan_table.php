@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bahan_masuk', function (Blueprint $table) {
-            $table->id('id_masuk');
-            $table->date('tanggal');
+        Schema::create('sisa_bahan_akhir_bulan', function (Blueprint $table) {
+            $table->id('id_sisa_akhir');
+            $table->char('bulan', 7); // Format: YYYY-MM
             $table->foreignId('id_bahan')->constrained('bahan', 'id_bahan')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->decimal('jumlah', 15, 2);
-            $table->decimal('harga_satuan', 15, 2)->default(0);
-            $table->decimal('total_harga', 15, 2)->default(0);
+            $table->decimal('stok_awal', 15, 2)->default(0);
+            $table->decimal('total_masuk', 15, 2)->default(0);
+            $table->decimal('total_keluar', 15, 2)->default(0);
+            $table->decimal('sisa_akhir', 15, 2)->default(0);
             $table->string('keterangan', 255)->nullable();
             $table->timestamps();
+
+            $table->unique(['bulan', 'id_bahan']);
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bahan_masuk');
+        Schema::dropIfExists('sisa_bahan_akhir_bulan');
     }
 };
