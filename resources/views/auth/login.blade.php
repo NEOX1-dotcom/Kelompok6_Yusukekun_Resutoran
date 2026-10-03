@@ -70,6 +70,16 @@
             text-align: left;
         }
 
+        .alert-error {
+            background: #fdecea;
+            color: #b3261e;
+            border: 1px solid #f5c2be;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
         .form-group {
             margin-bottom: 16px;
         }
@@ -120,11 +130,18 @@
             <h1>WELCOME BACK</h1>
             <p class="subtitle">Use your email and password</p>
 
-            <form action="#" onsubmit="return false;">
+            <form method="POST" action="{{ route('login.submit') }}">
+                @csrf
+
+                @if ($errors->any())
+                    <div class="alert-error">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
 
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter username">
+                    <input type="text" id="username" name="username" placeholder="Enter username" value="{{ old('username') }}">
                 </div>
 
                 <div class="form-group">
@@ -135,7 +152,6 @@
                 <button type="submit">Sign in</button>
             </form>
         </div>
-
     </div>
 
 </body>
