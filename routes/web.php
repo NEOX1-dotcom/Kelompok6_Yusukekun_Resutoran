@@ -12,6 +12,9 @@ Route::get('aurellia', function () {
 Route::get('Naufal', function () {
     return view('welcome');
 });
+Route::get('login', function () {
+    return view('auth.login');
+});
 
 
 Route::resource('bahan-masuk', BahanMasukController::class);
