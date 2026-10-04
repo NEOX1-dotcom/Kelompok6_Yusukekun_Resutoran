@@ -237,7 +237,7 @@
         <!-- Panel Kanan -->
         <div class="login-right">
             <h1>WELCOME BACK</h1>
-            <p class="subtitle">Masuk dengan nama/username dan password akun Anda</p>
+            <p class="subtitle">use your email and password</p>
 
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
