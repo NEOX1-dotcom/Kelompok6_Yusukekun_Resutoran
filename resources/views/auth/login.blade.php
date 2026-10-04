@@ -50,19 +50,6 @@
             margin-bottom: 20px;
         }
 
-        .login-left h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .login-left p {
-            font-size: 15px;
-            opacity: 0.9;
-            max-width: 360px;
-            line-height: 1.5;
-        }
-
         .login-right {
             flex: 1;
             padding: 50px 80px;
@@ -91,11 +78,6 @@
             width: 100%;
             max-width: 400px;
             text-align: left;
-            background: #fff;
-            padding: 32px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-            border: 1px solid #ebebeb;
         }
 
         /* Notifikasi Alert Banners */
@@ -152,9 +134,9 @@
             align-items: center;
         }
 
-        .input-wrapper i.prefix-icon {
+        .input-wrapper i.input-suffix {
             position: absolute;
-            left: 12px;
+            right: 12px;
             color: #999;
             font-size: 14px;
             pointer-events: none;
@@ -163,7 +145,7 @@
         .form-group input {
             display: block;
             width: 100%;
-            padding: 12px 14px 12px 36px;
+            padding: 12px 36px 12px 12px;
             border: 1px solid #d1d5db;
             border-radius: 6px;
             font-size: 14px;
@@ -216,7 +198,7 @@
             color: #fff;
             padding: 13px;
             border: none;
-            border-radius: 25px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -230,9 +212,6 @@
         button.btn-submit:active {
             transform: scale(0.99);
         }
-
-
-
         @media (max-width: 900px) {
             .login-container {
                 flex-direction: column;
@@ -253,8 +232,6 @@
         <!-- Panel Kiri -->
         <div class="login-left">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Yusukekun Resutoran">
-            <h2>Yusukekun Resutoran</h2>
-            <p>Sistem Pengelolaan Bahan Baku dan Inventaris Terintegrasi</p>
         </div>
 
         <!-- Panel Kanan -->
@@ -283,18 +260,18 @@
 
                 <!-- Input Nama / Username -->
                 <div class="form-group">
-                    <label for="username">Nama atau Username</label>
+                    <label for="username">Username</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-user prefix-icon"></i>
                         <input
                             type="text"
                             id="username"
                             name="username"
-                            placeholder="Masukkan nama atau username"
+                            placeholder="Enter username"
                             value="{{ old('username') }}"
                             required
                             autofocus
                         >
+                        <i class="fa-regular fa-envelope input-suffix" aria-hidden="true"></i>
                     </div>
                 </div>
 
@@ -302,12 +279,11 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="input-wrapper">
-                        <i class="fa-solid fa-lock prefix-icon"></i>
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Masukkan password akun"
+                            placeholder="Enter password"
                             required
                         >
                         <button type="button" class="btn-toggle-pw" onclick="togglePasswordVisibility()" title="Lihat password">
@@ -318,7 +294,7 @@
 
 
                 <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Sign In
+                    <i></i> Sign In
                 </button>
             </form>
         </div>
