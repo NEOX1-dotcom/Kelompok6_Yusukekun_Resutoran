@@ -337,19 +337,38 @@
             <span>Yusukekun<br>Resutoran</span>
         </div>
         <nav>
-            <a href="#" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="#"><i class="fa-solid fa-box"></i> Stok Bahan</a>
+            <a href="{{ route('dashboard') }}" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="{{ route('bahan-masuk.index') }}"><i class="fa-solid fa-box"></i> Bahan Masuk</a>
             <a href="#"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
             <a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Transaksi</a>
             <a href="#"><i class="fa-solid fa-calendar-day"></i> Omset Harian</a>
             <a href="#"><i class="fa-solid fa-calendar-days"></i> Omset Bulanan</a>
         </nav>
+        <div style="margin-top: auto; padding: 14px; border-top: 1px solid #eee;">
+            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                @csrf
+                <button type="submit" style="width: 100%; text-align: left; background: none; border: none; padding: 10px 14px; color: #b3261e; font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 8px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
+                </button>
+            </form>
+        </div>
     </div>
 
     <div class="main">
         <div class="topbar">
-            <div class="user">{{ $namaUser ?? 'Manajer, Dila' }}</div>
-            <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            <div>
+                <span style="color:#888; font-size:13px;">Selamat datang,</span>
+                <span class="user" style="margin-left: 4px;">{{ Auth::user()->nama_admin ?? $namaUser ?? 'Administrator' }}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}"><i class="fa-solid fa-user"></i></div>
+                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" style="background: #fdecea; color: #b3261e; border: 1px solid #f5c2be; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                    </button>
+                </form>
+            </div>
         </div>
 
         <div class="content">
@@ -460,5 +479,19 @@
         </div>
     </div>
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: @json(session('success')),
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 </body>
 </html>

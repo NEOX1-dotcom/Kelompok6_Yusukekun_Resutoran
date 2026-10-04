@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Login</title>
+    <title>Login - Yusukekun Resutoran</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -17,7 +19,7 @@
 
         body {
             background: #fff;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             min-height: 100vh;
         }
@@ -32,9 +34,12 @@
             background: #e0201a;
             flex: 1;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 50px;
+            color: #fff;
+            text-align: center;
         }
 
         .login-left img {
@@ -42,79 +47,202 @@
             max-width: 420px;
             height: auto;
             object-fit: contain;
+            margin-bottom: 20px;
+        }
+
+        .login-left h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-left p {
+            font-size: 15px;
+            opacity: 0.9;
+            max-width: 360px;
+            line-height: 1.5;
         }
 
         .login-right {
             flex: 1;
-            padding: 60px 100px;
+            padding: 50px 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            background: #fafafa;
         }
 
         .login-right h1 {
             font-size: 32px;
             margin-bottom: 6px;
+            color: #1a1a1a;
+            font-weight: 700;
         }
 
         .subtitle {
             color: #777;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
+            font-size: 14px;
         }
 
         form {
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
             text-align: left;
+            background: #fff;
+            padding: 32px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            border: 1px solid #ebebeb;
+        }
+
+        /* Notifikasi Alert Banners */
+        .alert {
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .alert i {
+            font-size: 16px;
+            margin-top: 2px;
+            flex-shrink: 0;
         }
 
         .alert-error {
             background: #fdecea;
             color: #b3261e;
             border: 1px solid #f5c2be;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #eafaf1;
+            color: #1e7e34;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-info {
+            background: #e8f4fd;
+            color: #0c5460;
+            border: 1px solid #b8daff;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
             font-weight: 600;
             margin-bottom: 6px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i.prefix-icon {
+            position: absolute;
+            left: 12px;
+            color: #999;
+            font-size: 14px;
+            pointer-events: none;
         }
 
         .form-group input {
             display: block;
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 14px 12px 36px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
             font-size: 14px;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        button {
+        .form-group input:focus {
+            outline: none;
+            border-color: #e0201a;
+            box-shadow: 0 0 0 3px rgba(224, 32, 26, 0.15);
+        }
+
+        .form-group input.is-invalid {
+            border-color: #dc2626;
+            background-color: #fff8f8;
+        }
+
+        .btn-toggle-pw {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-toggle-pw:hover {
+            color: #333;
+        }
+
+        .field-error {
+            display: block;
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        button.btn-submit {
+            margin-top: 8px;
             display: block;
             width: 100%;
             background: #e0201a;
             color: #fff;
-            padding: 14px;
+            padding: 13px;
             border: none;
             border-radius: 25px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 28px;
+            transition: background 0.2s, transform 0.1s;
         }
 
-        button:hover {
+        button.btn-submit:hover {
             background: #b8180f;
+        }
+
+        button.btn-submit:active {
+            transform: scale(0.99);
+        }
+
+
+
+        @media (max-width: 900px) {
+            .login-container {
+                flex-direction: column;
+            }
+            .login-left {
+                display: none;
+            }
+            .login-right {
+                padding: 40px 20px;
+            }
         }
     </style>
 </head>
@@ -122,37 +250,171 @@
 
     <div class="login-container">
 
+        <!-- Panel Kiri -->
         <div class="login-left">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Yusukekun Resutoran">
+            <h2>Yusukekun Resutoran</h2>
+            <p>Sistem Pengelolaan Bahan Baku dan Inventaris Terintegrasi</p>
         </div>
 
+        <!-- Panel Kanan -->
         <div class="login-right">
             <h1>WELCOME BACK</h1>
-            <p class="subtitle">Use your email and password</p>
+            <p class="subtitle">Masuk dengan nama/username dan password akun Anda</p>
 
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
 
-                @if ($errors->any())
-                    <div class="alert-error">
-                        {{ $errors->first() }}
+                <!-- Notifikasi Error (Password atau Nama Salah / Akun Belum Ada) -->
+                @if (session('error'))
+                    <div class="alert alert-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div>{{ session('error') }}</div>
+                    </div>
+                @elseif ($errors->any())
+                    <div class="alert alert-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div>{{ $errors->first() }}</div>
                     </div>
                 @endif
 
+                <!-- Notifikasi Berhasil (Register/Logout) -->
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <div>{{ session('success') }}</div>
+                    </div>
+                @endif
+
+                <!-- Notifikasi Info (Akses Halaman Membutuhkan Akun) -->
+                @if (session('info'))
+                    <div class="alert alert-info">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <div>{{ session('info') }}</div>
+                    </div>
+                @endif
+
+                <!-- Input Nama / Username -->
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Enter username" value="{{ old('username') }}">
+                    <label for="username">Nama atau Username</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user prefix-icon"></i>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Masukkan nama atau username"
+                            value="{{ old('username') }}"
+                            class="{{ $errors->has('username') ? 'is-invalid' : '' }}"
+                            required
+                            autofocus
+                        >
+                    </div>
+                    @if ($errors->has('username'))
+                        <span class="field-error">
+                            <i class="fa-solid fa-triangle-exclamation"></i> {{ $errors->first('username') }}
+                        </span>
+                    @endif
                 </div>
 
+                <!-- Input Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter password">
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock prefix-icon"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan password akun"
+                            class="{{ $errors->has('password') ? 'is-invalid' : '' }}"
+                            required
+                        >
+                        <button type="button" class="btn-toggle-pw" onclick="togglePasswordVisibility()" title="Lihat password">
+                            <i id="pw-icon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    @if ($errors->has('password'))
+                        <span class="field-error">
+                            <i class="fa-solid fa-triangle-exclamation"></i> {{ $errors->first('password') }}
+                        </span>
+                    @endif
                 </div>
 
-                <button type="submit">Sign in</button>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-arrow-right-to-bracket mr-1"></i> Sign In
+                </button>
             </form>
         </div>
     </div>
+
+    <!-- Toggle Password Visibility Script -->
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const pwIcon = document.getElementById('pw-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                pwIcon.classList.remove('fa-eye');
+                pwIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                pwIcon.classList.remove('fa-eye-slash');
+                pwIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+    <!-- SweetAlert2 Notification Popup -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: @json(session('error_type') === 'nama_salah' ? 'Nama / Username Salah!' : (session('error_type') === 'password_salah' ? 'Password Salah!' : 'Gagal Masuk!')),
+                text: @json(session('error')),
+                confirmButtonColor: '#e0201a',
+                confirmButtonText: 'Tutup'
+            });
+        </script>
+    @elseif ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal Masuk!',
+                text: @json($errors->first()),
+                confirmButtonColor: '#e0201a',
+                confirmButtonText: 'Tutup'
+            });
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: @json(session('success')),
+                confirmButtonColor: '#e0201a',
+                timer: 3000,
+                timerProgressBar: true
+            });
+        </script>
+    @endif
+
+    @if (session('info'))
+        <script>
+            Swal.fire({
+                icon: 'info',
+                title: 'Perhatian',
+                text: @json(session('info')),
+                confirmButtonColor: '#e0201a',
+                confirmButtonText: 'Mengerti'
+            });
+        </script>
+    @endif
 
 </body>
 </html>

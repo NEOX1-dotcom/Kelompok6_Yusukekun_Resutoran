@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->redirectGuestsTo(function ($request) {
+            session()->flash('info', 'Anda harus memiliki akun dan login terlebih dahulu untuk mengakses halaman tersebut.');
+            return route('login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

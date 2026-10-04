@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BahanMasukController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,18 +13,20 @@ Route::get('aurellia', function () {
 Route::get('Naufal', function () {
     return view('welcome');
 });
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
 
-Route::post('/login', function () {
-    // sementara: langsung arahkan ke dashboard
-    return redirect('/dashboard');
-})->name('login.submit');
+// Autentikasi Pengguna (Guest Only)
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Rute yang membutuhkan autentikasi / akun yang sudah login
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::resource('bahan-masuk', BahanMasukController::class);
+    Route::resource('bahan-masuk', BahanMasukController::class);
+});
