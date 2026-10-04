@@ -265,19 +265,6 @@
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
 
-                <!-- Notifikasi Error (Password atau Nama Salah / Akun Belum Ada) -->
-                @if (session('error'))
-                    <div class="alert alert-error">
-                        <i class="fa-solid fa-circle-exclamation"></i>
-                        <div>{{ session('error') }}</div>
-                    </div>
-                @elseif ($errors->any())
-                    <div class="alert alert-error">
-                        <i class="fa-solid fa-circle-exclamation"></i>
-                        <div>{{ $errors->first() }}</div>
-                    </div>
-                @endif
-
                 <!-- Notifikasi Berhasil (Register/Logout) -->
                 @if (session('success'))
                     <div class="alert alert-success">
@@ -305,16 +292,10 @@
                             name="username"
                             placeholder="Masukkan nama atau username"
                             value="{{ old('username') }}"
-                            class="{{ $errors->has('username') ? 'is-invalid' : '' }}"
                             required
                             autofocus
                         >
                     </div>
-                    @if ($errors->has('username'))
-                        <span class="field-error">
-                            <i class="fa-solid fa-triangle-exclamation"></i> {{ $errors->first('username') }}
-                        </span>
-                    @endif
                 </div>
 
                 <!-- Input Password -->
@@ -327,18 +308,12 @@
                             id="password"
                             name="password"
                             placeholder="Masukkan password akun"
-                            class="{{ $errors->has('password') ? 'is-invalid' : '' }}"
                             required
                         >
                         <button type="button" class="btn-toggle-pw" onclick="togglePasswordVisibility()" title="Lihat password">
                             <i id="pw-icon" class="fa-solid fa-eye"></i>
                         </button>
                     </div>
-                    @if ($errors->has('password'))
-                        <span class="field-error">
-                            <i class="fa-solid fa-triangle-exclamation"></i> {{ $errors->first('password') }}
-                        </span>
-                    @endif
                 </div>
 
 
@@ -369,27 +344,6 @@
 
     <!-- SweetAlert2 Notification Popup -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: @json(session('error_type') === 'nama_salah' ? 'Nama / Username Salah!' : (session('error_type') === 'password_salah' ? 'Password Salah!' : 'Gagal Masuk!')),
-                text: @json(session('error')),
-                confirmButtonColor: '#e0201a',
-                confirmButtonText: 'Tutup'
-            });
-        </script>
-    @elseif ($errors->any())
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal Masuk!',
-                text: @json($errors->first()),
-                confirmButtonColor: '#e0201a',
-                confirmButtonText: 'Tutup'
-            });
-        </script>
-    @endif
 
     @if (session('success'))
         <script>
