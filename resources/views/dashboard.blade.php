@@ -364,9 +364,7 @@
                 <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}"><i class="fa-solid fa-user"></i></div>
                 <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                     @csrf
-                    <button type="submit" style="background: #fdecea; color: #b3261e; border: 1px solid #f5c2be; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-right-from-bracket"></i> Keluar
-                    </button>
+
                 </form>
             </div>
         </div>
