@@ -31,7 +31,7 @@
         }
 
         .login-left {
-            background: #e0201a;
+            background: #E50112;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -241,6 +241,20 @@
 
             <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
+
+                
+                <!-- Notifikasi Error (Password atau Nama Salah / Akun Belum Ada) -->
+                @if (session('error'))
+                    <div class="alert alert-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div>{{ session('error') }}</div>
+                    </div>
+                @elseif ($errors->any())
+                    <div class="alert alert-error">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div>{{ $errors->first() }}</div>
+                    </div>
+                @endif
 
                 <!-- Notifikasi Berhasil (Register/Logout) -->
                 @if (session('success'))
