@@ -53,7 +53,8 @@
             padding: 10px 14px;
         }
 
-        .sidebar nav a {
+        .sidebar nav a,
+        .sidebar nav button {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -66,7 +67,17 @@
             transition: background 0.2s ease;
         }
 
-        .sidebar nav a i {
+        .sidebar nav button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            font-family: inherit;
+            text-align: left;
+            cursor: not-allowed;
+        }
+
+        .sidebar nav a i,
+        .sidebar nav button i {
             width: 18px;
             text-align: center;
             font-size: 15px;
@@ -338,7 +349,7 @@
         </div>
         <nav>
             <a href="{{ route('dashboard') }}" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="{{ route('bahan-masuk.index') }}"><i class="fa-solid fa-box"></i> Bahan Masuk</a>
+            <button type="button" disabled aria-disabled="true"><i class="fa-solid fa-box"></i> Bahan Masuk</button>
             <a href="#"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
             <a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat Transaksi</a>
             <a href="#"><i class="fa-solid fa-calendar-day"></i> Omset Harian</a>
@@ -432,12 +443,12 @@
                     @forelse ($transaksiTerbaru ?? [] as $trx)
                         <div class="transaction-item">
                             <div class="trx-info">
-                                <strong>Transaksi #{{ $trx->kode ?? '-' }}</strong>
-                                <span>{{ $trx->cabang ?? '-' }}</span>
+                                <strong>Transaksi #{{ $trx->id_penjualan ?? '-' }}</strong>
+                                <span>{{ $trx->keterangan ?? $trx->produk?->nama_produk ?? '-' }}</span>
                             </div>
                             <div class="trx-amount">
                                 <strong>Rp{{ number_format($trx->total ?? 0, 0, ',', '.') }}</strong>
-                                <span>{{ $trx->tanggal ?? '-' }}</span>
+                                <span>{{ $trx->tanggal?->format('d/m/Y') ?? '-' }}</span>
                             </div>
                         </div>
                     @empty

@@ -13,7 +13,6 @@ use App\Models\SisaBahanAkhirBulan;
 use App\Models\StokAwalBulan;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
 
 class TransaksiSeeder extends Seeder
 {
@@ -22,16 +21,6 @@ class TransaksiSeeder extends Seeder
      */
     public function run(): void
     {
-        Schema::disableForeignKeyConstraints();
-        BahanMasuk::truncate();
-        BahanKeluar::truncate();
-        StokAwalBulan::truncate();
-        SisaBahanAkhirBulan::truncate();
-        Penjualan::truncate();
-        OmsetHarian::truncate();
-        OmsetBulanan::truncate();
-        Schema::enableForeignKeyConstraints();
-
         $bulanSekarang = Carbon::now()->format('Y-m'); // e.g. 2026-09
         $bahanList = Bahan::all();
         $produkList = Produk::all();
@@ -58,9 +47,10 @@ class TransaksiSeeder extends Seeder
                 default => 25,
             };
 
-            StokAwalBulan::create([
+            StokAwalBulan::firstOrCreate([
                 'bulan' => $bulanSekarang,
                 'id_bahan' => $bahan->id_bahan,
+            ], [
                 'stok_awal' => $stokAwal,
             ]);
         }
@@ -110,7 +100,11 @@ class TransaksiSeeder extends Seeder
         ];
 
         foreach ($sampleBahanMasuk as $bm) {
-            BahanMasuk::create($bm);
+            BahanMasuk::firstOrCreate([
+                'tanggal' => $bm['tanggal'],
+                'id_bahan' => $bm['id_bahan'],
+                'keterangan' => $bm['keterangan'],
+            ], $bm);
         }
 
         // 3. Bahan Keluar (Pemakaian Dapur Operasional)
@@ -150,14 +144,47 @@ class TransaksiSeeder extends Seeder
                 'digunakan_untuk' => 'Bar Minuman',
                 'keterangan' => 'Pemakaian es harian',
             ],
+            [
+                'tanggal' => Carbon::now()->subDays(1)->format('Y-m-d'),
+                'id_bahan' => $bahanList->where('nama_bahan', 'Timun')->first()?->id_bahan ?? 9,
+                'jumlah' => 15,
+                'digunakan_untuk' => 'Dapur Sushi Bar',
+                'keterangan' => 'Pemakaian timun untuk menu sushi',
+            ],
         ];
 
         foreach ($sampleBahanKeluar as $bk) {
-            BahanKeluar::create($bk);
+            BahanKeluar::firstOrCreate([
+                'tanggal' => $bk['tanggal'],
+                'id_bahan' => $bk['id_bahan'],
+                'keterangan' => $bk['keterangan'],
+            ], $bk);
         }
 
-        // 4. Hitung & Simpan Sisa Bahan Akhir Bulan
-        SisaBahanAkhirBulan::syncForMonth($bulanSekarang);
+        // 4. Simpan contoh stok akhir bulan tanpa mengubah catatan stok yang sudah ada
+        foreach ($bahanList as $bahan) {
+            $stokAwal = (float) StokAwalBulan::where('bulan', $bulanSekarang)
+                ->where('id_bahan', $bahan->id_bahan)
+                ->value('stok_awal');
+            $totalMasuk = (float) BahanMasuk::where('id_bahan', $bahan->id_bahan)
+                ->whereYear('tanggal', Carbon::now()->year)
+                ->whereMonth('tanggal', Carbon::now()->month)
+                ->sum('jumlah');
+            $totalKeluar = (float) BahanKeluar::where('id_bahan', $bahan->id_bahan)
+                ->whereYear('tanggal', Carbon::now()->year)
+                ->whereMonth('tanggal', Carbon::now()->month)
+                ->sum('jumlah');
+
+            SisaBahanAkhirBulan::firstOrCreate([
+                'bulan' => $bulanSekarang,
+                'id_bahan' => $bahan->id_bahan,
+            ], [
+                'stok_awal' => $stokAwal,
+                'total_masuk' => $totalMasuk,
+                'total_keluar' => $totalKeluar,
+                'sisa_akhir' => $stokAwal + $totalMasuk - $totalKeluar,
+            ]);
+        }
 
         // 5. Penjualan Restoran
         $p1 = $produkList->where('nama_produk', 'Chuka Sushi Roll')->first() ?? $produkList[0];
@@ -234,17 +261,43 @@ class TransaksiSeeder extends Seeder
             ],
         ];
 
+        for ($monthsAgo = 1; $monthsAgo <= 5; $monthsAgo++) {
+            $tanggalHistoris = Carbon::now()->subMonthsNoOverflow($monthsAgo)->startOfMonth()->addDays(6);
+            $produkHistoris = [$p1, $p2];
+
+            foreach ($produkHistoris as $index => $produk) {
+                $jumlah = 3 + $index;
+                $samplePenjualan[] = [
+                    'tanggal' => $tanggalHistoris->copy()->addDays($index)->format('Y-m-d'),
+                    'id_produk' => $produk->id_produk,
+                    'jumlah_terjual' => $jumlah,
+                    'harga_satuan' => $produk->harga,
+                    'total' => $jumlah * $produk->harga,
+                    'metode_pembayaran' => $index === 0 ? 'Tunai' : 'QRIS',
+                    'keterangan' => "Data dummy dashboard {$tanggalHistoris->format('Y-m')} #" . ($index + 1),
+                ];
+            }
+        }
+
+        $tanggalSeed = [];
         foreach ($samplePenjualan as $penjualanData) {
-            Penjualan::create($penjualanData);
+            Penjualan::firstOrCreate([
+                'tanggal' => $penjualanData['tanggal'],
+                'id_produk' => $penjualanData['id_produk'],
+                'keterangan' => $penjualanData['keterangan'],
+            ], $penjualanData);
+            $tanggalSeed[] = $penjualanData['tanggal'];
         }
 
-        // 6. Sinkronisasi Omset Harian & Bulanan untuk semua tanggal transaksi
-        $dates = Penjualan::select('tanggal')->distinct()->pluck('tanggal');
-        foreach ($dates as $tgl) {
-            $formattedDate = Carbon::parse($tgl)->format('Y-m-d');
-            OmsetHarian::syncForDate($formattedDate);
+        // 6. Sinkronisasi omset harian & bulanan untuk tanggal contoh
+        $bulanSeed = [];
+        foreach (array_unique($tanggalSeed) as $tanggal) {
+            $omsetHarian = OmsetHarian::syncForDate($tanggal);
+            $bulanSeed[] = Carbon::parse($tanggal)->format('Y-m');
         }
 
-        OmsetBulanan::syncForMonth($bulanSekarang);
+        foreach (array_unique($bulanSeed) as $bulan) {
+            OmsetBulanan::syncForMonth($bulan);
+        }
     }
 }

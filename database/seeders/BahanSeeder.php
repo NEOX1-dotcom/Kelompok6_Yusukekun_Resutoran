@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Bahan;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
 
 class BahanSeeder extends Seeder
 {
@@ -13,10 +12,6 @@ class BahanSeeder extends Seeder
      */
     public function run(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Bahan::truncate();
-        Schema::enableForeignKeyConstraints();
-
         $bahanList = [
             [
                 'nama_bahan' => 'Chuka sushi',
@@ -86,7 +81,7 @@ class BahanSeeder extends Seeder
         ];
 
         foreach ($bahanList as $item) {
-            Bahan::create($item);
+            Bahan::firstOrCreate(['nama_bahan' => $item['nama_bahan']], $item);
         }
     }
 }
