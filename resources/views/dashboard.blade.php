@@ -429,22 +429,27 @@
                 <div class="panel">
                     <div class="panel-header">
                         <h2>Transaksi Terbaru</h2>
-                        <a href="#" class="see-all">Lihat semua</a>
+                        <a href="{{ route('riwayat.index') }}" class="see-all">Lihat semua</a>
                     </div>
 
                     @forelse ($transaksiTerbaru ?? [] as $trx)
+                        @php
+                            // Cocok untuk dua versi data: kode/cabang atau id_penjualan/produk
+                            $kodeTrx = $trx->kode ?? $trx->id_penjualan ?? '-';
+                            $infoTrx = $trx->cabang ?? $trx->keterangan ?? $trx->produk?->nama_produk ?? '-';
+                            $tglTrx  = !empty($trx->tanggal)
+                                ? rescue(fn () => \Carbon\Carbon::parse($trx->tanggal)->locale('id')->translatedFormat('d F Y H.i'), '-')
+                                : '-';
+                        @endphp
+
                         <div class="transaction-item">
                             <div class="trx-info">
-                                <div>Transaksi #{{ $trx->kode ?? '-' }}</div>
-                                <div>{{ $trx->cabang ?? '-' }}</div>
+                                <div>Transaksi #{{ $kodeTrx }}</div>
+                                <div>{{ $infoTrx }}</div>
                             </div>
                             <div class="trx-amount">
                                 <strong>Rp.{{ number_format($trx->total ?? 0, 0, ',', '.') }}</strong>
-                                <span>
-                                    {{ !empty($trx->tanggal)
-                                        ? rescue(fn () => \Carbon\Carbon::parse($trx->tanggal)->locale('id')->translatedFormat('d F Y H.i'), $trx->tanggal)
-                                        : '-' }}
-                                </span>
+                                <span>{{ $tglTrx }}</span>
                             </div>
                         </div>
                     @empty

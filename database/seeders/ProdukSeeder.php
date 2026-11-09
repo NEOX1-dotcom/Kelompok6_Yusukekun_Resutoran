@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Produk;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
 
 class ProdukSeeder extends Seeder
 {
@@ -13,10 +12,6 @@ class ProdukSeeder extends Seeder
      */
     public function run(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Produk::truncate();
-        Schema::enableForeignKeyConstraints();
-
         $produkList = [
             [
                 'nama_produk' => 'Chuka Sushi Roll',
@@ -57,7 +52,7 @@ class ProdukSeeder extends Seeder
         ];
 
         foreach ($produkList as $item) {
-            Produk::create($item);
+            Produk::firstOrCreate(['nama_produk' => $item['nama_produk']], $item);
         }
     }
 }

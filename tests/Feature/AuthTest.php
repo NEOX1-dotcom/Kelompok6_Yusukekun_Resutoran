@@ -95,7 +95,7 @@ class AuthTest extends TestCase
         $admin = Admin::where('username', 'admin')->first();
         if (!$admin) {
             $admin = Admin::create([
-                'nama_admin' => 'Administrator Yusukekun',
+                'nama_admin' => 'admin',
                 'username' => 'admin',
                 'email' => 'admin@yusukekun.com',
                 'password' => Hash::make('password123'),
@@ -103,7 +103,7 @@ class AuthTest extends TestCase
         }
 
         $response = $this->post('/login', [
-            'username' => 'Administrator Yusukekun',
+            'username' => 'admin',
             'password' => 'password123',
         ]);
 
@@ -133,5 +133,7 @@ class AuthTest extends TestCase
         $response->assertRedirect('/login');
         $response->assertSessionMissing('success');
         $this->assertGuest();
+
+        $this->get('/dashboard')->assertRedirect('/login');
     }
 }
