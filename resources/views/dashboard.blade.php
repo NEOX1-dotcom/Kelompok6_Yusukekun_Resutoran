@@ -89,21 +89,21 @@
 
         /* Logout */
         .logout-box {
-            margin-top: auto;
-            padding: 14px;
-            border-top: 1px solid #eee;
+            margin: auto 12px 0;
+            padding: 16px 0 24px;
+            border-top: 1px solid #999;
         }
 
         .logout-btn {
             width: 100%;
             text-align: left;
-            background: none;
+            background: #f8d3d3;
             border: none;
             padding: 10px 14px;
-            color: #b3261e;
+            color: #d40000;
             font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             cursor: pointer;
             border-radius: 8px;
             display: flex;
@@ -112,7 +112,7 @@
         }
 
         .logout-btn:hover {
-            background: #fdecea;
+            background: #f3bcbc;
         }
 
         /* ===== MAIN & TOPBAR ===== */
@@ -334,6 +334,13 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ddd; }
+            .sidebar nav { display: flex; flex-wrap: wrap; }
+            .logout-box { margin: 0 12px; }
+        }
     </style>
 </head>
 <body>
@@ -343,6 +350,7 @@
             <img src="{{ asset('images/logo.png') }}" alt="Logo">
             <span>Yusukekun<br>Resutoran</span>
         </div>
+
         <nav>
             <a href="{{ route('dashboard') }}" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <a href="{{ route('bahan-masuk.index') }}"><i class="fa-solid fa-box"></i> Stok Bahan</a>
@@ -356,7 +364,7 @@
             <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                 @csrf
                 <button type="submit" class="logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
                 </button>
             </form>
         </div>
