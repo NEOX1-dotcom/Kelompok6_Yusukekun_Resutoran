@@ -1,174 +1,567 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Bahan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-@section('title', 'Daftar Bahan Masuk')
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            display: flex;
+            min-height: 100vh;
+            color: #111;
+        }
 
-@section('content')
-<div class="space-y-6">
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 220px;
+            background: #fff;
+            border-right: 2px solid #ddd;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
 
-    <!-- Page Header & Action -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-2">
-                <span class="p-2 rounded-lg bg-orange-100 text-orange-600">
-                    <i class="fa-solid fa-boxes-packing text-xl"></i>
-                </span>
-                Transaksi Bahan Masuk
-            </h1>
-            <p class="text-sm text-gray-500 mt-1">
-                Catatan riwayat penerimaan bahan baku ke gudang.
-            </p>
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 22px 18px;
+        }
+
+        .sidebar .brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .sidebar .brand span {
+            color: #d40000;
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.3;
+        }
+
+        .sidebar nav {
+            padding: 8px 12px;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #111;
+            text-decoration: none;
+            font-size: 13px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .sidebar nav a i {
+            width: 18px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sidebar nav a.active {
+            background: #ff9a9a;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .sidebar nav a:not(.active):hover {
+            background: #ffe3e3;
+        }
+
+        .logout-box {
+            margin: auto 12px 0;
+            padding: 16px 0 24px;
+            border-top: 1px solid #999;
+        }
+
+        .logout-btn {
+            width: 100%;
+            text-align: left;
+            background: #f8d3d3;
+            border: none;
+            padding: 10px 14px;
+            color: #d40000;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #f3bcbc;
+        }
+
+        /* ===== MAIN & TOPBAR ===== */
+        .main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+
+        .topbar {
+            background: #fafafa;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .topbar .title {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .topbar .avatar {
+            font-size: 26px;
+            line-height: 1;
+            color: #000;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .content h1 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 16px;
+        }
+
+        /* ===== TAB ===== */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            min-width: 135px;
+            padding: 8px 26px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            background: transparent;
+            color: #999;
+            font-size: 12px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .tab:hover {
+            background: #f1f1f1;
+        }
+
+        .tab.active {
+            background: #ff9a9a;
+            border-color: #ff9a9a;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* ===== PANEL ===== */
+        .panel {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 18px 30px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+        }
+
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .btn-tambah {
+            background: #ff9a9a;
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 9px 20px;
+            border-radius: 6px;
+            display: inline-block;
+            transition: background 0.2s ease;
+        }
+
+        .btn-tambah:hover {
+            background: #f98585;
+        }
+
+        .periode {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pagination a,
+        .pagination button {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 7px;
+            border: 1px solid #bbb;
+            border-radius: 7px;
+            background: #fff;
+            color: #888;
+            font-family: inherit;
+            font-size: 11px;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .pagination a:hover,
+        .pagination button:hover,
+        .pagination a.active,
+        .pagination button.active {
+            background: #ff9a9a;
+            border-color: #ff9a9a;
+            color: #fff;
+        }
+
+        .pagination a.active:hover,
+        .pagination button.active:hover {
+            background: #f98585;
+            border-color: #f98585;
+        }
+
+        /* ===== TABEL ===== */
+        .table-wrap {
+            border: 1px solid #888;
+            border-radius: 7px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        th, td {
+            border: 1px solid #aaa;
+            padding: 9px 12px;
+            text-align: center;
+        }
+
+        thead th {
+            font-weight: 600;
+            padding: 11px 12px;
+        }
+
+        tr > :first-child { border-left: none; }
+        tr > :last-child  { border-right: none; }
+        thead tr:first-child th { border-top: none; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        tbody tr.data-row:hover {
+            background: #fff6f6;
+        }
+
+        .aksi {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .aksi form {
+            margin: 0;
+        }
+
+        .btn {
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 11px;
+            padding: 5px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-edit { background: #9aa5b8; }
+        .btn-edit:hover { background: #8893a8; }
+        .btn-hapus { background: #ff9a9a; }
+        .btn-hapus:hover { background: #f98585; }
+
+        .empty-text {
+            color: #999;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ddd; }
+            .sidebar nav { display: flex; flex-wrap: wrap; }
+            .logout-box { margin: 0 12px; }
+            .panel-top { flex-direction: column; align-items: flex-start; }
+            .tabs { gap: 10px; }
+            .tab { min-width: 0; flex: 1; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    @php
+        // Link aman: kalau route belum dibuat, otomatis jadi "#" (tidak error)
+        $link = fn ($nama, $param = null) => \Illuminate\Support\Facades\Route::has($nama)
+            ? route($nama, $param)
+            : '#';
+
+        // Data dari controller: mencoba beberapa kemungkinan nama variabel
+        $items = $bahanMasuk ?? $bahan_masuk ?? $bahan ?? $data ?? $items ?? collect();
+        $isPaginator = $items instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator;
+    @endphp
+
+    <div class="sidebar">
+        <div class="brand">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            <span>Yusukekun<br>Resutoran</span>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="{{ route('bahan-masuk.create') }}" class="inline-flex items-center justify-center px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow-sm transition gap-2">
-                <i class="fa-solid fa-plus"></i>
-                <span>Tambah Bahan Masuk</span>
-            </a>
-        </div>
-    </div>
 
-    <!-- Summary Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center justify-between">
-            <div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Transaksi</p>
-                <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ number_format($totalTransaksi ?? $bahanMasuk->total() ?? 0) }}</h3>
-                <span class="text-xs text-gray-500">Pencatatan masuk</span>
-            </div>
-            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-                <i class="fa-solid fa-receipt"></i>
-            </div>
-        </div>
+        <nav>
+            <a href="{{ $link('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="{{ $link('bahan-masuk.index') }}" class="active"><i class="fa-solid fa-box"></i> Stok Bahan</a>
+            <a href="{{ $link('kasir.index') }}"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
+            <a href="{{ $link('riwayat.index') }}"><i class="fa-regular fa-clock"></i> Riwayat Transaksi</a>
+            <a href="{{ $link('omset-harian.index') }}"><i class="fa-regular fa-calendar-check"></i> Omset Harian</a>
+            <a href="{{ $link('omset-bulanan.index') }}"><i class="fa-regular fa-calendar-days"></i> Omset Bulanan</a>
+</nav>
 
-        <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center justify-between">
-            <div>
-                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Total Kuantitas</p>
-                <h3 class="text-2xl font-bold text-gray-800 mt-1">{{ number_format($totalJumlah ?? 0, 2, ',', '.') }}</h3>
-                <span class="text-xs text-gray-500">Unit bahan diterima</span>
-            </div>
-            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
-                <i class="fa-solid fa-scale-balanced"></i>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Filter & Search Toolbar -->
-    <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
-        <form method="GET" action="{{ route('bahan-masuk.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <div class="md:col-span-2 relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari keterangan atau bahan..." class="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
-            </div>
-
-            <div>
-                <input type="date" name="tanggal" value="{{ request('tanggal') }}" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-gray-600">
-            </div>
-
-            <div class="flex items-center gap-2">
-                <button type="submit" class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-xl transition gap-1.5">
-                    <i class="fa-solid fa-filter text-xs"></i> Filter
+        <div class="logout-box">
+            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
                 </button>
-                @if(request()->hasAny(['search', 'tanggal']))
-                    <a href="{{ route('bahan-masuk.index') }}" class="inline-flex items-center justify-center px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-medium rounded-xl transition" title="Reset Filter">
-                        <i class="fa-solid fa-rotate-left"></i>
-                    </a>
-                @endif
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
-    <!-- Data Table Card -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-600">
-                <thead class="text-xs uppercase bg-gray-50 text-gray-700 border-b border-gray-200">
-                    <tr>
-                        <th scope="col" class="px-5 py-3.5 text-center w-12">No</th>
-                        <th scope="col" class="px-5 py-3.5">Tanggal</th>
-                        <th scope="col" class="px-5 py-3.5">Bahan Baku</th>
-                        <th scope="col" class="px-5 py-3.5 text-right">Jumlah</th>
-                        <th scope="col" class="px-5 py-3.5">Keterangan</th>
-                        <th scope="col" class="px-5 py-3.5 text-center w-28">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    @forelse ($bahanMasuk as $item)
-                        <tr class="hover:bg-orange-50/40 transition">
-                            <td class="px-5 py-4 text-center font-medium text-gray-500">
-                                {{ $loop->iteration + ($bahanMasuk instanceof \Illuminate\Pagination\LengthAwarePaginator ? $bahanMasuk->firstItem() - 1 : 0) }}
-                            </td>
-                            <td class="px-5 py-4 whitespace-nowrap">
-                                <div class="font-medium text-gray-900">
-                                    {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d M Y') }}
-                                </div>
-                                <span class="text-xs text-gray-400">
-                                    {{ \Carbon\Carbon::parse($item->tanggal)->format('l') }}
-                                </span>
-                            </td>
-                            <td class="px-5 py-4 whitespace-nowrap">
-                                <div class="font-semibold text-gray-900">
-                                    {{ $item->bahan->nama_bahan ?? 'Bahan #' . $item->id_bahan }}
-                                </div>
-                                @if(isset($item->bahan->satuan))
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
-                                        Satuan: {{ $item->bahan->satuan }}
-                                    </span>
-                                @endif
-                            </td>
-                            <td class="px-5 py-4 text-right whitespace-nowrap font-medium text-gray-900">
-                                {{ number_format($item->jumlah, 2, ',', '.') }}
-                                <span class="text-xs text-gray-500">{{ $item->bahan->satuan ?? '' }}</span>
-                            </td>
-                            <td class="px-5 py-4 text-gray-600 max-w-xs truncate" title="{{ $item->keterangan }}">
-                                {{ $item->keterangan ?: '-' }}
-                            </td>
-                            <td class="px-5 py-4 text-center whitespace-nowrap">
-                                <div class="flex items-center justify-center gap-1.5">
-                                    <!-- Detail -->
-                                    <a href="{{ route('bahan-masuk.show', $item->id_masuk) }}" class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition" title="Lihat Detail">
-                                        <i class="fa-regular fa-eye text-xs"></i>
-                                    </a>
-                                    <!-- Edit -->
-                                    <a href="{{ route('bahan-masuk.edit', $item->id_masuk) }}" class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 flex items-center justify-center transition" title="Edit Transaksi">
-                                        <i class="fa-solid fa-pen-to-square text-xs"></i>
-                                    </a>
-                                    <!-- Hapus -->
-                                    <form action="{{ route('bahan-masuk.destroy', $item->id_masuk) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data transaksi bahan masuk ini?')" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center transition" title="Hapus Data">
-                                            <i class="fa-regular fa-trash-can text-xs"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-400">
-                                <div class="flex flex-col items-center justify-center space-y-3">
-                                    <div class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-2xl">
-                                        <i class="fa-regular fa-folder-open"></i>
-                                    </div>
-                                    <p class="font-medium text-gray-500">Belum ada transaksi bahan masuk</p>
-                                    <a href="{{ route('bahan-masuk.create') }}" class="inline-flex items-center gap-2 text-sm text-orange-600 hover:text-orange-700 font-semibold">
-                                        <i class="fa-solid fa-plus"></i> Catat transaksi pertama sekarang
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+    <div class="main">
+        <div class="topbar">
+            <div class="title">
+                {{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? $namaUser ?? 'Administrator' }}
+            </div>
+
+            <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
         </div>
 
-        @if($bahanMasuk instanceof \Illuminate\Pagination\LengthAwarePaginator && $bahanMasuk->hasPages())
-            <div class="px-6 py-4 border-t border-gray-200">
-                {{ $bahanMasuk->withQueryString()->links() }}
+        <div class="content">
+            <h1>Stok Bahan</h1>
+
+            <div class="tabs">
+                <a href="{{ $link('bahan-masuk.index') }}" class="tab active">Bahan Masuk</a>
+                <a href="{{ $link('bahan-keluar.index') }}" class="tab">Bahan Keluar</a>
+                <a href="{{ $link('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
             </div>
-        @endif
+
+            <div class="panel">
+                <div class="panel-top">
+                    <a href="{{ $link('bahan-masuk.create') }}" class="btn-tambah">+ Tambah data</a>
+
+                    {{-- Pagination: 1 2 3 ... (tombol "..." = halaman berikutnya) --}}
+                    <div class="pagination" id="pagination">
+                        @if ($isPaginator)
+                            @php
+                                $current = $items->currentPage();
+                                $last    = max(1, $items->lastPage());
+                                $start   = (int) (floor(($current - 1) / 3) * 3) + 1;
+                                $next    = $current < $last ? $current + 1 : $current;
+                            @endphp
+
+                            @if ($start > 1)
+                                <a href="{{ $items->url($start - 1) }}" title="Halaman sebelumnya">...</a>
+                            @endif
+
+                            @for ($p = $start; $p <= $start + 2; $p++)
+                                <a href="{{ $items->url($p) }}" class="{{ $p == $current ? 'active' : '' }}">{{ $p }}</a>
+                            @endfor
+
+                            <a href="{{ $items->url($next) }}" title="Halaman berikutnya">...</a>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="periode">
+                    {{ $periode ?? \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}
+                </div>
+
+                <div class="table-wrap">
+                    <table id="tabelBahan">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">No</th>
+                                <th>Nama Bahan</th>
+                                <th style="width: 70px;">Jumlah</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($items as $item)
+                                @php
+                                    $tgl = $item->tanggal ?? $item->tanggal_masuk ?? $item->created_at ?? null;
+                                @endphp
+                                <tr class="data-row">
+                                    <td class="no">
+                                        {{ $isPaginator ? $items->firstItem() + $loop->index : $loop->iteration }}
+                                    </td>
+                                    <td>{{ $item->nama_bahan ?? $item->nama ?? '-' }}</td>
+                                    <td>{{ $item->jumlah ?? $item->stok ?? '-' }}</td>
+                                    <td>
+                                        {{ !empty($tgl)
+                                            ? rescue(fn () => \Carbon\Carbon::parse($tgl)->format('d/m/Y'), $tgl)
+                                            : '-' }}
+                                    </td>
+                                    <td>
+                                        <div class="aksi">
+                                            <a href="{{ $link('bahan-masuk.edit', $item->id ?? null) }}" class="btn btn-edit">Edit</a>
+
+                                            <form action="{{ $link('bahan-masuk.destroy', $item->id ?? null) }}" method="POST" class="form-hapus">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-hapus" onclick="konfirmasiHapus(this)">Hapus</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="empty-text">
+                                        {{ $isPaginator && $items->currentPage() > 1 ? 'Tidak ada data di halaman ini.' : 'Belum ada data bahan masuk.' }}
+                                    </td>
+                                </tr>
+                            @endforelse
+
+                            {{-- Muncul kalau halaman yang dibuka tidak punya data (mode pagination di browser) --}}
+                            <tr id="barisKosongHalaman" style="display: none;">
+                                <td colspan="5" class="empty-text">Tidak ada data di halaman ini.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-@endsection
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: @json(session('success')),
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
+    <script>
+        // Konfirmasi sebelum menghapus
+        function konfirmasiHapus(btn) {
+            Swal.fire({
+                title: 'Hapus data ini?',
+                text: 'Data yang dihapus tidak bisa dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff6b6b',
+                cancelButtonColor: '#9aa5b8',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            });
+        }
+
+        // Pagination di browser, hanya dipakai kalau data BUKAN paginator dari controller
+        const serverPaginated = @json($isPaginator);
+
+        if (!serverPaginated) {
+            const perPage = 7;
+            const rows = [...document.querySelectorAll('#tabelBahan tbody tr.data-row')];
+            const box = document.getElementById('pagination');
+            const barisKosong = document.getElementById('barisKosongHalaman');
+            const last = Math.max(1, Math.ceil(rows.length / perPage));
+            let current = 1;
+
+            function tombol(label, page, aktif, title) {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = label;
+                if (aktif) b.className = 'active';
+                if (title) b.title = title;
+                b.onclick = () => { current = page; render(); };
+                box.appendChild(b);
+            }
+
+            function render() {
+                let tampil = 0;
+
+                rows.forEach((tr, i) => {
+                    const visible = i >= (current - 1) * perPage && i < current * perPage;
+                    tr.style.display = visible ? '' : 'none';
+                    tr.querySelector('.no').textContent = i + 1;
+                    if (visible) tampil++;
+                });
+
+                // Pesan kalau halaman yang dibuka tidak ada datanya
+                barisKosong.style.display = (rows.length > 0 && tampil === 0) ? '' : 'none';
+
+                box.innerHTML = '';
+
+                const start = Math.floor((current - 1) / 3) * 3 + 1;
+
+                if (start > 1) tombol('...', start - 1, false, 'Halaman sebelumnya');
+                for (let p = start; p <= start + 2; p++) tombol(p, p, p === current);
+                tombol('...', current < last ? current + 1 : current, false, 'Halaman berikutnya');
+            }
+
+            render();
+        }
+    </script>
+</body>
+</html>
