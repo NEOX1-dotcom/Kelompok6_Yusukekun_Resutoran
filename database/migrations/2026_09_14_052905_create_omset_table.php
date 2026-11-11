@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('omset_harian', function (Blueprint $table) {
-            $table->id('id_omset_harian');
-            $table->foreignId('id_omset_bulanan')->nullable()->constrained('omset_bulanan', 'id_omset_bulanan')->cascadeOnUpdate()->nullOnDelete();
+        Schema::create('omset', function (Blueprint $table) {
+            $table->id('id_omset');
             $table->date('tanggal')->unique();
             $table->integer('total_transaksi')->default(0);
             $table->decimal('total_item_terjual', 15, 2)->default(0);
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('omset_harian');
+        Schema::dropIfExists('omset');
     }
 };

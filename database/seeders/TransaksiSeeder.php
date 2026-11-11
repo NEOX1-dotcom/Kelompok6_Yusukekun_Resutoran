@@ -5,8 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bahan;
 use App\Models\BahanKeluar;
 use App\Models\BahanMasuk;
-use App\Models\OmsetBulanan;
-use App\Models\OmsetHarian;
+use App\Models\Omset;
 use App\Models\Penjualan;
 use App\Models\Produk;
 use App\Models\SisaBahanAkhirBulan;
@@ -289,15 +288,9 @@ class TransaksiSeeder extends Seeder
             $tanggalSeed[] = $penjualanData['tanggal'];
         }
 
-        // 6. Sinkronisasi omset harian & bulanan untuk tanggal contoh
-        $bulanSeed = [];
+        // 6. Sinkronisasi omset untuk tanggal contoh
         foreach (array_unique($tanggalSeed) as $tanggal) {
-            $omsetHarian = OmsetHarian::syncForDate($tanggal);
-            $bulanSeed[] = Carbon::parse($tanggal)->format('Y-m');
-        }
-
-        foreach (array_unique($bulanSeed) as $bulan) {
-            OmsetBulanan::syncForMonth($bulan);
+            Omset::syncForDate($tanggal);
         }
     }
 }
