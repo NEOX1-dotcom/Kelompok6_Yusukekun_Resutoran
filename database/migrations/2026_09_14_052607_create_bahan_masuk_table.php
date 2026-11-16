@@ -16,8 +16,6 @@ return new class extends Migration
             $table->date('tanggal');
             $table->foreignId('id_bahan')->constrained('bahan', 'id_bahan')->cascadeOnUpdate()->cascadeOnDelete();
             $table->decimal('jumlah', 15, 2);
-            $table->decimal('harga_satuan', 15, 2)->default(0);
-            $table->decimal('total_harga', 15, 2)->default(0);
             $table->string('keterangan', 255)->nullable();
             $table->timestamps();
         });
