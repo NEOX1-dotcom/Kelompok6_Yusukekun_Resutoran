@@ -65,12 +65,13 @@ class BahanMasukController extends Controller
     {
         $validated = $request->validate([
             'tanggal' => 'required|date',
-            'id_bahan' => 'required|integer',
+            'id_bahan' => 'required|integer|exists:bahan,id_bahan',
             'jumlah' => 'required|numeric|min:0.01',
             'keterangan' => 'nullable|string|max:255',
         ], [
             'tanggal.required' => 'Tanggal transaksi wajib diisi.',
             'id_bahan.required' => 'Pilihan bahan baku wajib dipilih.',
+            'id_bahan.exists' => 'Bahan baku yang dipilih tidak ditemukan.',
             'jumlah.required' => 'Jumlah kuantitas masuk wajib diisi.',
             'jumlah.min' => 'Jumlah minimal 0.01.',
         ]);
@@ -114,20 +115,31 @@ class BahanMasukController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         $bahanMasuk = BahanMasuk::findOrFail($id);
+        $oldMonth = $bahanMasuk->tanggal->format('Y-m');
+        $oldBahanId = (int) $bahanMasuk->id_bahan;
 
         $validated = $request->validate([
             'tanggal' => 'required|date',
-            'id_bahan' => 'required|integer',
+            'id_bahan' => 'required|integer|exists:bahan,id_bahan',
             'jumlah' => 'required|numeric|min:0.01',
             'keterangan' => 'nullable|string|max:255',
         ], [
             'tanggal.required' => 'Tanggal transaksi wajib diisi.',
             'id_bahan.required' => 'Pilihan bahan baku wajib dipilih.',
+            'id_bahan.exists' => 'Bahan baku yang dipilih tidak ditemukan.',
             'jumlah.required' => 'Jumlah kuantitas masuk wajib diisi.',
             'jumlah.min' => 'Jumlah minimal 0.01.',
         ]);
 
-        $bahanMasuk->update($validated);
+        DB::transaction(function () use ($bahanMasuk, $validated, $oldMonth, $oldBahanId) {
+            $bahanMasuk->update($validated);
+
+            SisaBahanAkhirBulan::syncForMonthAndBahan($oldMonth, $oldBahanId);
+            SisaBahanAkhirBulan::syncForMonthAndBahan(
+                date('Y-m', strtotime($validated['tanggal'])),
+                (int) $validated['id_bahan']
+            );
+        });
 
         return redirect()->route('bahan-masuk.index')->with('success', 'Transaksi bahan masuk berhasil diperbarui.');
     }
@@ -138,7 +150,13 @@ class BahanMasukController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $bahanMasuk = BahanMasuk::findOrFail($id);
-        $bahanMasuk->delete();
+        $bulan = $bahanMasuk->tanggal->format('Y-m');
+        $idBahan = (int) $bahanMasuk->id_bahan;
+
+        DB::transaction(function () use ($bahanMasuk, $bulan, $idBahan) {
+            $bahanMasuk->delete();
+            SisaBahanAkhirBulan::syncForMonthAndBahan($bulan, $idBahan);
+        });
 
         return redirect()->route('bahan-masuk.index')->with('success', 'Transaksi bahan masuk berhasil dihapus.');
     }
