@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Omset extends Model
@@ -16,6 +17,7 @@ class Omset extends Model
 
     protected $fillable = [
         'tanggal',
+        'id_cabang',
         'total_transaksi',
         'total_item_terjual',
         'total_omset',
@@ -40,9 +42,20 @@ class Omset extends Model
         return $this->hasMany(Penjualan::class, 'id_omset', 'id_omset');
     }
 
+    public function cabang(): BelongsTo
+    {
+        return $this->belongsTo(Cabang::class, 'id_cabang', 'id_cabang');
+    }
+
     public static function syncForDate(string $tanggal): self
     {
         $tanggal = Carbon::parse($tanggal)->format('Y-m-d');
+        $idCabang = Cabang::query()->value('id_cabang');
+
+        if (!$idCabang) {
+            throw new \RuntimeException('Minimal satu cabang harus tersedia sebelum menghitung omset.');
+        }
+
         $penjualanQuery = Penjualan::whereDate('tanggal', $tanggal);
 
         $metodeTunai = (float) (clone $penjualanQuery)
@@ -56,6 +69,7 @@ class Omset extends Model
         $omset = static::updateOrCreate(
             ['tanggal' => $tanggal],
             [
+                'id_cabang' => $idCabang,
                 'total_transaksi' => (int) (clone $penjualanQuery)->count(),
                 'total_item_terjual' => (float) (clone $penjualanQuery)->sum('jumlah_terjual'),
                 'total_omset' => (float) (clone $penjualanQuery)->sum('total'),
