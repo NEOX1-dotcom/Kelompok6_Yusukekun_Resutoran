@@ -21,7 +21,6 @@ class BahanController extends Controller
         $validated = $request->validate([
             'nama_bahan' => ['required', 'string', 'max:100', 'unique:bahan,nama_bahan'],
             'kategori' => ['nullable', 'string', 'max:50'],
-            'satuan' => ['required', 'string', 'max:20'],
         ]);
 
         Bahan::create($validated);
@@ -35,7 +34,6 @@ class BahanController extends Controller
         $validated = $request->validate([
             'nama_bahan' => ['required', 'string', 'max:100', 'unique:bahan,nama_bahan,' . $id . ',id_bahan'],
             'kategori' => ['nullable', 'string', 'max:50'],
-            'satuan' => ['required', 'string', 'max:20'],
         ]);
 
         $bahan->update($validated);

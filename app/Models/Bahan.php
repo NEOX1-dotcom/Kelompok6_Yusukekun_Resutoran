@@ -16,7 +16,6 @@ class Bahan extends Model
     protected $fillable = [
         'nama_bahan',
         'kategori',
-        'satuan',
     ];
 
     /**

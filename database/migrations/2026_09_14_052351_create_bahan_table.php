@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('id_bahan');
             $table->string('nama_bahan', 100)->unique();
             $table->string('kategori', 50)->nullable();
-            $table->string('satuan', 20);
             $table->timestamps();
         });
     }

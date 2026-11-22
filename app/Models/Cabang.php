@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cabang extends Model
 {
@@ -20,4 +21,9 @@ class Cabang extends Model
         'alamat',
         'no_telp',
     ];
+
+    public function omset(): HasMany
+    {
+        return $this->hasMany(Omset::class, 'id_cabang', 'id_cabang');
+    }
 }
