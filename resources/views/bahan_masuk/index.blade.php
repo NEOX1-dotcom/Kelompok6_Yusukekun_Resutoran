@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stok Bahan</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Stok Bahan - Bahan Masuk</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,37 +16,35 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #fff;
             display: flex;
             min-height: 100vh;
             color: #111;
         }
 
-        /* ===== SIDEBAR ===== */
         .sidebar {
             width: 220px;
             background: #fff;
             border-right: 2px solid #ddd;
-            flex-shrink: 0;
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
-        .sidebar .brand {
+        .brand {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 22px 18px;
         }
 
-        .sidebar .brand img {
+        .brand img {
             width: 42px;
             height: 42px;
             border-radius: 50%;
             object-fit: cover;
         }
 
-        .sidebar .brand span {
+        .brand span {
             color: #d40000;
             font-weight: 600;
             font-size: 15px;
@@ -61,30 +58,33 @@
         .sidebar nav a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
+            gap: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
             color: #111;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
+            font-weight: 500;
             border-radius: 8px;
-            margin-bottom: 6px;
-            transition: background 0.2s ease;
         }
 
         .sidebar nav a i {
             width: 18px;
             text-align: center;
+            font-size: 18px;
+        }
+
+        .sidebar nav a i.fa-gauge {
             font-size: 15px;
+        }
+
+        .sidebar nav a:hover {
+            background: #ffe3e3;
         }
 
         .sidebar nav a.active {
             background: #ff9a9a;
             color: #fff;
-            font-weight: 500;
-        }
-
-        .sidebar nav a:not(.active):hover {
-            background: #ffe3e3;
         }
 
         .logout-box {
@@ -95,52 +95,50 @@
 
         .logout-btn {
             width: 100%;
-            text-align: left;
-            background: #f8d3d3;
-            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 10px 14px;
+            background: #f8d3d3;
             color: #d40000;
+            border: none;
+            border-radius: 8px;
             font-family: inherit;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        }
+
+        .logout-btn i {
+            font-size: 18px;
         }
 
         .logout-btn:hover {
             background: #f3bcbc;
         }
 
-        /* ===== MAIN & TOPBAR ===== */
         .main {
             flex: 1;
             min-width: 0;
-            display: flex;
-            flex-direction: column;
             background: #f8f9fa;
         }
 
         .topbar {
-            background: #fafafa;
-            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 18px 24px;
+            background: #fafafa;
             border-bottom: 2px solid #ddd;
         }
 
         .topbar .title {
-            font-weight: 500;
-            font-size: 15px;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         .topbar .avatar {
             font-size: 26px;
-            line-height: 1;
-            color: #000;
         }
 
         .content {
@@ -148,27 +146,24 @@
         }
 
         .content h1 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 400;
             margin-bottom: 16px;
         }
 
-        /* ===== TAB ===== */
         .tabs {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 24px;
         }
 
         .tab {
-            min-width: 135px;
-            padding: 8px 26px;
-            border: 1px solid #aaa;
+            min-width: 125px;
+            padding: 8px 18px;
+            border: 1px solid #ccc;
             border-radius: 6px;
-            background: transparent;
             color: #999;
-            font-size: 12px;
+            font-size: 11px;
             text-align: center;
             text-decoration: none;
         }
@@ -184,115 +179,87 @@
             font-weight: 500;
         }
 
-        /* ===== PANEL ===== */
         .panel {
             background: #fff;
             border-radius: 10px;
-            padding: 20px 18px 30px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+            padding: 20px 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .panel-top {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            gap: 12px;
-            margin-bottom: 10px;
+            align-items: center;
+            margin-bottom: 18px;
         }
 
         .btn-tambah {
             background: #ff9a9a;
             color: #fff;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 500;
-            padding: 9px 20px;
+            border: none;
             border-radius: 6px;
-            display: inline-block;
-            transition: background 0.2s ease;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
         }
 
         .btn-tambah:hover {
             background: #f98585;
         }
 
-        .periode {
-            font-size: 16px;
-            margin-bottom: 12px;
-        }
-
-        /* ===== PAGINATION ===== */
-        .pagination {
-            display: flex;
-            gap: 8px;
-        }
-
-        .pagination a,
-        .pagination button {
-            min-width: 30px;
-            height: 30px;
-            padding: 0 7px;
-            border: 1px solid #bbb;
-            border-radius: 7px;
-            background: #fff;
-            color: #888;
-            font-family: inherit;
-            font-size: 11px;
-            text-decoration: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-        }
-
-        .pagination a:hover,
-        .pagination button:hover,
-        .pagination a.active,
-        .pagination button.active {
-            background: #ff9a9a;
-            border-color: #ff9a9a;
+        .pilih-bulan {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #ff9a9a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23fff'/%3E%3C/svg%3E") no-repeat right 10px center;
             color: #fff;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            padding: 8px 26px 8px 12px;
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .pagination a.active:hover,
-        .pagination button.active:hover {
-            background: #f98585;
-            border-color: #f98585;
+        .pilih-bulan option {
+            background: #fff;
+            color: #111;
         }
 
-        /* ===== TABEL ===== */
+        .periode {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
         .table-wrap {
             border: 1px solid #888;
-            border-radius: 7px;
+            border-radius: 6px;
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         th, td {
             border: 1px solid #aaa;
-            padding: 9px 12px;
+            padding: 6px 10px;
             text-align: center;
         }
 
         thead th {
             font-weight: 600;
-            padding: 11px 12px;
+            padding: 10px;
         }
 
         tr > :first-child { border-left: none; }
-        tr > :last-child  { border-right: none; }
+        tr > :last-child { border-right: none; }
         thead tr:first-child th { border-top: none; }
         tbody tr:last-child td { border-bottom: none; }
-
-        tbody tr.data-row:hover {
-            background: #fff6f6;
-        }
 
         .aksi {
             display: flex;
@@ -300,54 +267,181 @@
             gap: 8px;
         }
 
-        .aksi form {
-            margin: 0;
-        }
-
-        .btn {
+        .btn-ikon {
+            width: 22px;
+            height: 22px;
             border: none;
+            border-radius: 6px;
             color: #fff;
-            font-family: inherit;
             font-size: 11px;
-            padding: 5px 18px;
-            border-radius: 5px;
             cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-edit { background: #9aa5b8; }
-        .btn-edit:hover { background: #8893a8; }
-        .btn-hapus { background: #ff9a9a; }
-        .btn-hapus:hover { background: #f98585; }
+        .btn-edit {
+            background: #1565c0;
+        }
 
-        .empty-text {
+        .btn-edit:hover {
+            background: #0d4f9c;
+        }
+
+        .btn-hapus {
+            background: #d50000;
+        }
+
+        .btn-hapus:hover {
+            background: #b00000;
+        }
+
+        .kosong {
             color: #999;
             padding: 20px;
         }
 
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ddd; }
-            .sidebar nav { display: flex; flex-wrap: wrap; }
-            .logout-box { margin: 0 12px; }
-            .panel-top { flex-direction: column; align-items: flex-start; }
-            .tabs { gap: 10px; }
-            .tab { min-width: 0; flex: 1; padding: 8px 12px; }
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .pagination a {
+            min-width: 28px;
+            height: 28px;
+            padding: 0 6px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            background: #fff;
+            color: #888;
+            font-size: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination a:hover,
+        .pagination a.active {
+            background: #ff9a9a;
+            border-color: #ff9a9a;
+            color: #fff;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal.tampil {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 380px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 28px 22px 30px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-row label {
+            font-size: 16px;
+        }
+
+        .form-row input {
+            width: 170px;
+            height: 30px;
+            padding: 0 8px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            color: #111;
+            outline: none;
+        }
+
+        .form-row input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .form-row input[type="number"]::-webkit-outer-spin-button,
+        .form-row input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .form-row input::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+        }
+
+        .form-row input:focus {
+            border-color: #ff9a9a;
+            box-shadow: 0 0 0 2px #ffe3e3;
+        }
+
+        .error-text {
+            color: #d40000;
+            font-size: 11px;
+            margin: -14px 0 14px;
+            text-align: right;
+        }
+
+        .modal-aksi {
+            display: flex;
+            gap: 18px;
+            margin-top: 30px;
+        }
+
+        .modal-aksi button {
+            flex: 1;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-simpan {
+            background: #ff9a9a;
+        }
+
+        .btn-simpan:hover {
+            background: #f98585;
+        }
+
+        .btn-kembali {
+            background: #9aa5b8;
+        }
+
+        .btn-kembali:hover {
+            background: #8893a8;
         }
     </style>
 </head>
 <body>
 
     @php
-        // Link aman: kalau route belum dibuat, otomatis jadi "#" (tidak error)
-        $link = fn ($nama, $param = null) => \Illuminate\Support\Facades\Route::has($nama)
-            ? route($nama, $param)
-            : '#';
-
-        // Data dari controller: mencoba beberapa kemungkinan nama variabel
-        $items = $bahanMasuk ?? $bahan_masuk ?? $bahan ?? $data ?? $items ?? collect();
-        $isPaginator = $items instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator;
+        $bulanDipilih = request('bulan', now()->format('Y-m'));
+        $daftarBahan = $daftarBahan ?? \App\Models\Bahan::orderBy('nama_bahan')->get();
     @endphp
 
     <div class="sidebar">
@@ -357,211 +451,231 @@
         </div>
 
         <nav>
-            <a href="{{ $link('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="{{ $link('bahan-masuk.index') }}" class="active"><i class="fa-solid fa-box"></i> Stok Bahan</a>
-            <a href="{{ $link('kasir.index') }}"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
-            <a href="{{ $link('riwayat.index') }}"><i class="fa-regular fa-clock"></i> Riwayat Transaksi</a>
-            <a href="{{ $link('omset-harian.index') }}"><i class="fa-regular fa-calendar-check"></i> Omset Harian</a>
-            <a href="{{ $link('omset-bulanan.index') }}"><i class="fa-regular fa-calendar-days"></i> Omset Bulanan</a>
-</nav>
+            <a href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="{{ route('kasir.index') }}"><i class="ti ti-shopping-cart"></i> Kasir</a>
+            <a href="{{ route('bahan-masuk.index') }}" class="active"><i class="ti ti-box"></i> Stok Bahan</a>
+            <a href="{{ route('riwayat.index') }}"><i class="ti ti-clock"></i> Riwayat Transaksi</a>
+            <a href="{{ route('omset-harian.index') }}"><i class="ti ti-clipboard-list"></i> Omset Harian</a>
+            <a href="{{ route('omset-bulanan.index') }}"><i class="ti ti-calendar-month"></i> Omset Bulanan</a>
+        </nav>
 
         <div class="logout-box">
-            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                    <i class="ti ti-logout"></i> Log Out
                 </button>
             </form>
         </div>
     </div>
 
     <div class="main">
-        <div class="topbar">
-            <div class="title">
-                {{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? $namaUser ?? 'Administrator' }}
-            </div>
 
-            <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}">
-                <i class="fa-solid fa-circle-user"></i>
-            </div>
+        <div class="topbar">
+            <div class="title">{{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? '' }}</div>
+            <div class="avatar"><i class="fa-solid fa-circle-user"></i></div>
         </div>
 
         <div class="content">
             <h1>Stok Bahan</h1>
 
             <div class="tabs">
-                <a href="{{ $link('bahan-masuk.index') }}" class="tab active">Bahan Masuk</a>
-                <a href="{{ $link('bahan-keluar.index') }}" class="tab">Bahan Keluar</a>
-                <a href="{{ $link('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
+                <a href="{{ route('bahan-masuk.index') }}" class="tab active">Bahan Masuk</a>
+                <a href="{{ route('bahan-keluar.index') }}" class="tab">Bahan Keluar</a>
+                <a href="{{ route('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
             </div>
 
             <div class="panel">
+
                 <div class="panel-top">
-                    <a href="{{ $link('bahan-masuk.create') }}" class="btn-tambah">+ Tambah data</a>
+                    <button type="button" class="btn-tambah" onclick="bukaTambah()">+ Tambah data</button>
 
-                    {{-- Pagination: 1 2 3 ... (tombol "..." = halaman berikutnya) --}}
-                    <div class="pagination" id="pagination">
-                        @if ($isPaginator)
-                            @php
-                                $current = $items->currentPage();
-                                $last    = max(1, $items->lastPage());
-                                $start   = (int) (floor(($current - 1) / 3) * 3) + 1;
-                                $next    = $current < $last ? $current + 1 : $current;
-                            @endphp
-
-                            @if ($start > 1)
-                                <a href="{{ $items->url($start - 1) }}" title="Halaman sebelumnya">...</a>
-                            @endif
-
-                            @for ($p = $start; $p <= $start + 2; $p++)
-                                <a href="{{ $items->url($p) }}" class="{{ $p == $current ? 'active' : '' }}">{{ $p }}</a>
+                    <form method="GET" action="{{ route('bahan-masuk.index') }}">
+                        <select name="bulan" class="pilih-bulan" onchange="this.form.submit()">
+                            @for ($i = 0; $i < 12; $i++)
+                                @php $bulan = now()->startOfMonth()->subMonths($i); @endphp
+                                <option value="{{ $bulan->format('Y-m') }}" {{ $bulan->format('Y-m') == $bulanDipilih ? 'selected' : '' }}>
+                                    {{ $bulan->locale('id')->translatedFormat('F Y') }}
+                                </option>
                             @endfor
-
-                            <a href="{{ $items->url($next) }}" title="Halaman berikutnya">...</a>
-                        @endif
-                    </div>
+                        </select>
+                    </form>
                 </div>
 
                 <div class="periode">
-                    {{ $periode ?? \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}
+                    {{ \Carbon\Carbon::parse($bulanDipilih . '-01')->locale('id')->translatedFormat('F Y') }}
                 </div>
 
                 <div class="table-wrap">
-                    <table id="tabelBahan">
+                    <table>
                         <thead>
                             <tr>
-                                <th style="width: 70px;">No</th>
+                                <th style="width: 60px;">No</th>
                                 <th>Nama Bahan</th>
-                                <th style="width: 70px;">Jumlah</th>
+                                <th style="width: 90px;">Jumlah</th>
                                 <th>Tanggal</th>
-                                <th>Aksi</th>
+                                <th style="width: 110px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($items as $item)
-                                @php
-                                    $tgl = $item->tanggal ?? $item->tanggal_masuk ?? $item->created_at ?? null;
-                                @endphp
-                                <tr class="data-row">
-                                    <td class="no">
-                                        {{ $isPaginator ? $items->firstItem() + $loop->index : $loop->iteration }}
-                                    </td>
-                                    <td>{{ $item->nama_bahan ?? $item->nama ?? '-' }}</td>
-                                    <td>{{ $item->jumlah ?? $item->stok ?? '-' }}</td>
-                                    <td>
-                                        {{ !empty($tgl)
-                                            ? rescue(fn () => \Carbon\Carbon::parse($tgl)->format('d/m/Y'), $tgl)
-                                            : '-' }}
-                                    </td>
+                            @forelse ($bahanMasuk as $item)
+                                <tr>
+                                    <td>{{ $bahanMasuk->firstItem() + $loop->index }}</td>
+                                    <td>{{ $item->bahan->nama_bahan ?? '-' }}</td>
+                                    <td>{{ $item->jumlah + 0 }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="aksi">
-                                            <a href="{{ $link('bahan-masuk.edit', $item->id ?? null) }}" class="btn btn-edit">Edit</a>
+                                            <button type="button" class="btn-ikon btn-edit" title="Edit"
+                                                    data-url="{{ route('bahan-masuk.update', $item->getKey()) }}"
+                                                    data-nama="{{ $item->bahan->nama_bahan ?? '' }}"
+                                                    data-jumlah="{{ $item->jumlah + 0 }}"
+                                                    data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}"
+                                                    onclick="bukaEdit(this)">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
 
-                                            <form action="{{ $link('bahan-masuk.destroy', $item->id ?? null) }}" method="POST" class="form-hapus">
+                                            <form action="{{ route('bahan-masuk.destroy', $item->getKey()) }}" method="POST"
+                                                  onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-hapus" onclick="konfirmasiHapus(this)">Hapus</button>
+                                                <button type="submit" class="btn-ikon btn-hapus" title="Hapus">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
                                             </form>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="empty-text">
-                                        {{ $isPaginator && $items->currentPage() > 1 ? 'Tidak ada data di halaman ini.' : 'Belum ada data bahan masuk.' }}
-                                    </td>
+                                    <td colspan="5" class="kosong">Belum ada data bahan masuk.</td>
                                 </tr>
                             @endforelse
-
-                            {{-- Muncul kalau halaman yang dibuka tidak punya data (mode pagination di browser) --}}
-                            <tr id="barisKosongHalaman" style="display: none;">
-                                <td colspan="5" class="empty-text">Tidak ada data di halaman ini.</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
+
+                @if ($bahanMasuk->lastPage() > 1)
+                    <div class="pagination">
+                        @foreach ($bahanMasuk->getUrlRange(1, $bahanMasuk->lastPage()) as $halaman => $url)
+                            <a href="{{ $url }}" class="{{ $halaman == $bahanMasuk->currentPage() ? 'active' : '' }}">{{ $halaman }}</a>
+                        @endforeach
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
 
+    <div class="modal {{ $errors->any() ? 'tampil' : '' }}" id="modalBahan">
+        <div class="modal-box">
+            <form id="formBahan" action="{{ old('form_url', route('bahan-masuk.store')) }}" method="POST">
+                @csrf
+                <input type="hidden" name="_method" id="formMethod" value="{{ old('_method', 'POST') }}">
+                <input type="hidden" name="form_url" id="formUrl" value="{{ old('form_url', route('bahan-masuk.store')) }}">
+                <input type="hidden" name="id_bahan" id="id_bahan" value="{{ old('id_bahan') }}">
+
+                <div class="form-row">
+                    <label for="nama_bahan">Nama Bahan</label>
+                    <input type="text" id="nama_bahan" name="nama_bahan" list="listBahan" autocomplete="off" value="{{ old('nama_bahan') }}" required>
+                </div>
+                @error('id_bahan') <div class="error-text">{{ $message }}</div> @enderror
+
+                <datalist id="listBahan">
+                    @foreach ($daftarBahan as $bahan)
+                        <option value="{{ $bahan->nama_bahan }}">
+                    @endforeach
+                </datalist>
+
+                <div class="form-row">
+                    <label for="jumlah">Jumlah</label>
+                    <input type="number" id="jumlah" name="jumlah" min="0.01" step="0.01" value="{{ old('jumlah') }}" required>
+                </div>
+                @error('jumlah') <div class="error-text">{{ $message }}</div> @enderror
+
+                <div class="form-row">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" value="{{ old('tanggal') }}" required>
+                </div>
+                @error('tanggal') <div class="error-text">{{ $message }}</div> @enderror
+
+                <div class="modal-aksi">
+                    <button type="submit" class="btn-simpan">Simpan</button>
+                    <button type="button" class="btn-kembali" onclick="tutupModal()">Kembali</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @if (session('success'))
         <script>
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil',
                 text: @json(session('success')),
-                timer: 3000,
-                timerProgressBar: true,
+                timer: 2000,
                 showConfirmButton: false
             });
         </script>
     @endif
 
     <script>
-        // Konfirmasi sebelum menghapus
-        function konfirmasiHapus(btn) {
-            Swal.fire({
-                title: 'Hapus data ini?',
-                text: 'Data yang dihapus tidak bisa dikembalikan.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ff6b6b',
-                cancelButtonColor: '#9aa5b8',
-                confirmButtonText: 'Ya, hapus',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    btn.closest('form').submit();
-                }
-            });
+        const modal = document.getElementById('modalBahan');
+        const form = document.getElementById('formBahan');
+        const urlTambah = "{{ route('bahan-masuk.store') }}";
+
+        const daftarBahan = @json($daftarBahan->map(fn ($b) => ['id' => $b->getKey(), 'nama' => $b->nama_bahan])->values());
+
+        function bukaTambah() {
+            form.action = urlTambah;
+            document.getElementById('formUrl').value = urlTambah;
+            document.getElementById('formMethod').value = 'POST';
+            document.getElementById('nama_bahan').value = '';
+            document.getElementById('id_bahan').value = '';
+            document.getElementById('jumlah').value = '';
+            document.getElementById('tanggal').value = '';
+            modal.classList.add('tampil');
         }
 
-        // Pagination di browser, hanya dipakai kalau data BUKAN paginator dari controller
-        const serverPaginated = @json($isPaginator);
+        function bukaEdit(tombol) {
+            form.action = tombol.dataset.url;
+            document.getElementById('formUrl').value = tombol.dataset.url;
+            document.getElementById('formMethod').value = 'PUT';
+            document.getElementById('nama_bahan').value = tombol.dataset.nama;
+            document.getElementById('jumlah').value = tombol.dataset.jumlah;
+            document.getElementById('tanggal').value = tombol.dataset.tanggal;
+            modal.classList.add('tampil');
+        }
 
-        if (!serverPaginated) {
-            const perPage = 7;
-            const rows = [...document.querySelectorAll('#tabelBahan tbody tr.data-row')];
-            const box = document.getElementById('pagination');
-            const barisKosong = document.getElementById('barisKosongHalaman');
-            const last = Math.max(1, Math.ceil(rows.length / perPage));
-            let current = 1;
+        function tutupModal() {
+            modal.classList.remove('tampil');
+        }
 
-            function tombol(label, page, aktif, title) {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.textContent = label;
-                if (aktif) b.className = 'active';
-                if (title) b.title = title;
-                b.onclick = () => { current = page; render(); };
-                box.appendChild(b);
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                tutupModal();
             }
+        });
 
-            function render() {
-                let tampil = 0;
+        form.addEventListener('submit', function (e) {
+            const namaDiketik = document.getElementById('nama_bahan').value.trim().toLowerCase();
+            const bahanCocok = daftarBahan.find(b => b.nama.toLowerCase() === namaDiketik);
 
-                rows.forEach((tr, i) => {
-                    const visible = i >= (current - 1) * perPage && i < current * perPage;
-                    tr.style.display = visible ? '' : 'none';
-                    tr.querySelector('.no').textContent = i + 1;
-                    if (visible) tampil++;
+            if (!bahanCocok) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Nama bahan tidak ditemukan',
+                    text: 'Ketik nama bahan yang sudah terdaftar.',
+                    confirmButtonColor: '#ff9a9a'
                 });
-
-                // Pesan kalau halaman yang dibuka tidak ada datanya
-                barisKosong.style.display = (rows.length > 0 && tampil === 0) ? '' : 'none';
-
-                box.innerHTML = '';
-
-                const start = Math.floor((current - 1) / 3) * 3 + 1;
-
-                if (start > 1) tombol('...', start - 1, false, 'Halaman sebelumnya');
-                for (let p = start; p <= start + 2; p++) tombol(p, p, p === current);
-                tombol('...', current < last ? current + 1 : current, false, 'Halaman berikutnya');
+                return;
             }
 
-            render();
-        }
+            document.getElementById('id_bahan').value = bahanCocok.id;
+        });
     </script>
 </body>
 </html>
