@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Bahan;
 use App\Models\BahanMasuk;
+use App\Models\SisaBahanAkhirBulan;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
@@ -73,7 +75,14 @@ class BahanMasukController extends Controller
             'jumlah.min' => 'Jumlah minimal 0.01.',
         ]);
 
-        BahanMasuk::create($validated);
+        DB::transaction(function () use ($validated) {
+            BahanMasuk::create($validated);
+
+            SisaBahanAkhirBulan::syncForMonthAndBahan(
+                date('Y-m', strtotime($validated['tanggal'])),
+                (int) $validated['id_bahan']
+            );
+        });
 
         return redirect()->route('bahan-masuk.index')->with('success', 'Transaksi bahan masuk berhasil dicatat.');
     }
