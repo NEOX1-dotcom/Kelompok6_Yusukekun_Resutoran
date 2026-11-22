@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BahanMasukController;
+use App\Http\Controllers\DataBahanController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('data-bahan', DataBahanController::class)->only([
+        'index',
+        'store',
+        'update',
+        'destroy',
+    ]);
     Route::resource('bahan-masuk', BahanMasukController::class);
 });
 

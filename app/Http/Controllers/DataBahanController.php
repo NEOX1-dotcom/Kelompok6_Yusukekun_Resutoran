@@ -7,13 +7,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class BahanController extends Controller
+class DataBahanController extends Controller
 {
     public function index(): View
     {
-        $bahan = Bahan::orderBy('nama_bahan')->paginate(10);
+        $dataBahan = Bahan::orderBy('nama_bahan')->paginate(10);
+        $semuaNamaBahan = Bahan::orderBy('nama_bahan')->pluck('nama_bahan');
 
-        return view('bahan.index', compact('bahan'));
+        return view('data_bahan.index', compact('dataBahan', 'semuaNamaBahan'));
     }
 
     public function store(Request $request): RedirectResponse
