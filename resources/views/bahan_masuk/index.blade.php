@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -146,7 +147,7 @@
         }
 
         .content h1 {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 400;
             margin-bottom: 16px;
         }
@@ -158,12 +159,12 @@
         }
 
         .tab {
-            min-width: 125px;
-            padding: 8px 18px;
+            min-width: 135px;
+            padding: 8px 20px;
             border: 1px solid #ccc;
             border-radius: 6px;
             color: #999;
-            font-size: 11px;
+            font-size: 12px;
             text-align: center;
             text-decoration: none;
         }
@@ -182,7 +183,7 @@
         .panel {
             background: #fff;
             border-radius: 10px;
-            padding: 20px 16px;
+            padding: 20px 18px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
@@ -198,9 +199,9 @@
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 8px 16px;
+            padding: 9px 18px;
             font-family: inherit;
-            font-size: 11px;
+            font-size: 12px;
             cursor: pointer;
         }
 
@@ -211,14 +212,14 @@
         .pilih-bulan {
             appearance: none;
             -webkit-appearance: none;
-            background: #ff9a9a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23fff'/%3E%3C/svg%3E") no-repeat right 10px center;
+            background: #ff9a9a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23fff'/%3E%3C/svg%3E") no-repeat right 12px center;
             color: #fff;
             border: none;
             outline: none;
             border-radius: 6px;
-            padding: 8px 26px 8px 12px;
+            padding: 9px 30px 9px 14px;
             font-family: inherit;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -229,37 +230,41 @@
         }
 
         .periode {
-            font-size: 15px;
-            margin-bottom: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
 
         .table-wrap {
             border: 1px solid #888;
-            border-radius: 6px;
+            border-radius: 7px;
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         th, td {
             border: 1px solid #aaa;
-            padding: 6px 10px;
+            padding: 8px 12px;
             text-align: center;
         }
 
         thead th {
             font-weight: 600;
-            padding: 10px;
+            padding: 11px 12px;
         }
 
         tr > :first-child { border-left: none; }
         tr > :last-child { border-right: none; }
         thead tr:first-child th { border-top: none; }
         tbody tr:last-child td { border-bottom: none; }
+
+        tbody tr:hover {
+            background: #fff6f6;
+        }
 
         .aksi {
             display: flex;
@@ -268,16 +273,19 @@
         }
 
         .btn-ikon {
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
             border: none;
             border-radius: 6px;
             color: #fff;
-            font-size: 11px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .btn-ikon .material-icons {
+            font-size: 16px;
         }
 
         .btn-edit {
@@ -305,18 +313,18 @@
             display: flex;
             justify-content: flex-end;
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 16px;
         }
 
         .pagination a {
-            min-width: 28px;
-            height: 28px;
-            padding: 0 6px;
+            min-width: 30px;
+            height: 30px;
+            padding: 0 7px;
             border: 1px solid #bbb;
-            border-radius: 6px;
+            border-radius: 7px;
             background: #fff;
             color: #888;
-            font-size: 10px;
+            font-size: 11px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -331,25 +339,35 @@
         }
 
         .modal {
-            display: none;
+            display: flex;
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.4);
             align-items: center;
             justify-content: center;
             z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .modal.tampil {
-            display: flex;
+            opacity: 1;
+            visibility: visible;
         }
 
         .modal-box {
-            width: 380px;
+            width: 400px;
             background: #fff;
             border-radius: 10px;
-            padding: 28px 22px 30px;
+            padding: 28px 22px 26px;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9) translateY(10px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal.tampil .modal-box {
+            transform: scale(1) translateY(0);
         }
 
         .form-row {
@@ -360,20 +378,29 @@
         }
 
         .form-row label {
-            font-size: 16px;
+            font-size: 15px;
         }
 
-        .form-row input {
-            width: 170px;
-            height: 30px;
-            padding: 0 8px;
+        .form-row input,
+        .form-row select {
+            width: 200px;
+            height: 32px;
+            padding: 0 10px;
             border: 1px solid #333;
-            border-radius: 4px;
+            border-radius: 6px;
             background: #fff;
             font-family: inherit;
             font-size: 12px;
             color: #111;
             outline: none;
+        }
+
+        .form-row select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23333'/%3E%3C/svg%3E") no-repeat right 10px center;
+            padding-right: 26px;
+            cursor: pointer;
         }
 
         .form-row input[type="number"] {
@@ -390,7 +417,8 @@
             cursor: pointer;
         }
 
-        .form-row input:focus {
+        .form-row input:focus,
+        .form-row select:focus {
             border-color: #ff9a9a;
             box-shadow: 0 0 0 2px #ffe3e3;
         }
@@ -405,7 +433,7 @@
         .modal-aksi {
             display: flex;
             gap: 18px;
-            margin-top: 30px;
+            margin-top: 26px;
         }
 
         .modal-aksi button {
@@ -442,6 +470,13 @@
     @php
         $bulanDipilih = request('bulan', now()->format('Y-m'));
         $daftarBahan = $daftarBahan ?? \App\Models\Bahan::orderBy('nama_bahan')->get();
+
+        $bahanMasuk = \App\Models\BahanMasuk::with('bahan')
+            ->whereYear('tanggal', substr($bulanDipilih, 0, 4))
+            ->whereMonth('tanggal', substr($bulanDipilih, 5, 2))
+            ->latest('tanggal')
+            ->paginate(10)
+            ->withQueryString();
     @endphp
 
     <div class="sidebar">
@@ -453,7 +488,7 @@
         <nav>
             <a href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
             <a href="{{ route('kasir.index') }}"><i class="ti ti-shopping-cart"></i> Kasir</a>
-            <a href="{{ route('bahan-masuk.index') }}" class="active"><i class="ti ti-box"></i> Stok Bahan</a>
+            <a href="{{ route('data-bahan.index') }}" class="active"><i class="ti ti-box"></i> Stok Bahan</a>
             <a href="{{ route('riwayat.index') }}"><i class="ti ti-clock"></i> Riwayat Transaksi</a>
             <a href="{{ route('omset-harian.index') }}"><i class="ti ti-clipboard-list"></i> Omset Harian</a>
             <a href="{{ route('omset-bulanan.index') }}"><i class="ti ti-calendar-month"></i> Omset Bulanan</a>
@@ -480,6 +515,7 @@
             <h1>Stok Bahan</h1>
 
             <div class="tabs">
+                <a href="{{ route('data-bahan.index') }}" class="tab">Data Bahan</a>
                 <a href="{{ route('bahan-masuk.index') }}" class="tab active">Bahan Masuk</a>
                 <a href="{{ route('bahan-keluar.index') }}" class="tab">Bahan Keluar</a>
                 <a href="{{ route('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
@@ -510,11 +546,11 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 60px;">No</th>
+                                <th style="width: 70px;">No</th>
                                 <th>Nama Bahan</th>
-                                <th style="width: 90px;">Jumlah</th>
+                                <th style="width: 110px;">Jumlah</th>
                                 <th>Tanggal</th>
-                                <th style="width: 110px;">Aksi</th>
+                                <th style="width: 140px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -528,11 +564,11 @@
                                         <div class="aksi">
                                             <button type="button" class="btn-ikon btn-edit" title="Edit"
                                                     data-url="{{ route('bahan-masuk.update', $item->getKey()) }}"
-                                                    data-nama="{{ $item->bahan->nama_bahan ?? '' }}"
+                                                    data-bahan="{{ $item->id_bahan }}"
                                                     data-jumlah="{{ $item->jumlah + 0 }}"
                                                     data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('Y-m-d') }}"
                                                     onclick="bukaEdit(this)">
-                                                <i class="fa-solid fa-pen"></i>
+                                                <span class="material-icons">edit</span>
                                             </button>
 
                                             <form action="{{ route('bahan-masuk.destroy', $item->getKey()) }}" method="POST"
@@ -540,7 +576,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-ikon btn-hapus" title="Hapus">
-                                                    <i class="fa-solid fa-trash"></i>
+                                                    <span class="material-icons">delete</span>
                                                 </button>
                                             </form>
                                         </div>
@@ -573,19 +609,17 @@
                 @csrf
                 <input type="hidden" name="_method" id="formMethod" value="{{ old('_method', 'POST') }}">
                 <input type="hidden" name="form_url" id="formUrl" value="{{ old('form_url', route('bahan-masuk.store')) }}">
-                <input type="hidden" name="id_bahan" id="id_bahan" value="{{ old('id_bahan') }}">
 
                 <div class="form-row">
-                    <label for="nama_bahan">Nama Bahan</label>
-                    <input type="text" id="nama_bahan" name="nama_bahan" list="listBahan" autocomplete="off" value="{{ old('nama_bahan') }}" required>
+                    <label for="id_bahan">Nama Bahan</label>
+                    <select id="id_bahan" name="id_bahan" required>
+                        <option value=""></option>
+                        @foreach ($daftarBahan as $bahan)
+                            <option value="{{ $bahan->getKey() }}" {{ old('id_bahan') == $bahan->getKey() ? 'selected' : '' }}>{{ $bahan->nama_bahan }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 @error('id_bahan') <div class="error-text">{{ $message }}</div> @enderror
-
-                <datalist id="listBahan">
-                    @foreach ($daftarBahan as $bahan)
-                        <option value="{{ $bahan->nama_bahan }}">
-                    @endforeach
-                </datalist>
 
                 <div class="form-row">
                     <label for="jumlah">Jumlah</label>
@@ -626,13 +660,10 @@
         const form = document.getElementById('formBahan');
         const urlTambah = "{{ route('bahan-masuk.store') }}";
 
-        const daftarBahan = @json($daftarBahan->map(fn ($b) => ['id' => $b->getKey(), 'nama' => $b->nama_bahan])->values());
-
         function bukaTambah() {
             form.action = urlTambah;
             document.getElementById('formUrl').value = urlTambah;
             document.getElementById('formMethod').value = 'POST';
-            document.getElementById('nama_bahan').value = '';
             document.getElementById('id_bahan').value = '';
             document.getElementById('jumlah').value = '';
             document.getElementById('tanggal').value = '';
@@ -643,7 +674,7 @@
             form.action = tombol.dataset.url;
             document.getElementById('formUrl').value = tombol.dataset.url;
             document.getElementById('formMethod').value = 'PUT';
-            document.getElementById('nama_bahan').value = tombol.dataset.nama;
+            document.getElementById('id_bahan').value = tombol.dataset.bahan;
             document.getElementById('jumlah').value = tombol.dataset.jumlah;
             document.getElementById('tanggal').value = tombol.dataset.tanggal;
             modal.classList.add('tampil');
@@ -657,24 +688,6 @@
             if (e.target === modal) {
                 tutupModal();
             }
-        });
-
-        form.addEventListener('submit', function (e) {
-            const namaDiketik = document.getElementById('nama_bahan').value.trim().toLowerCase();
-            const bahanCocok = daftarBahan.find(b => b.nama.toLowerCase() === namaDiketik);
-
-            if (!bahanCocok) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Nama bahan tidak ditemukan',
-                    text: 'Ketik nama bahan yang sudah terdaftar.',
-                    confirmButtonColor: '#ff9a9a'
-                });
-                return;
-            }
-
-            document.getElementById('id_bahan').value = bahanCocok.id;
         });
     </script>
 </body>
