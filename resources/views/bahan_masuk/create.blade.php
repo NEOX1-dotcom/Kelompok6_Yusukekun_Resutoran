@@ -1,120 +1,323 @@
-@extends('layouts.app')
-
-@section('title', 'Tambah Transaksi Bahan Masuk')
-
-@section('content')
-<div class="max-w-3xl mx-auto space-y-6">
-
-    <!-- Header & Breadcrumb -->
-    <div class="flex items-center justify-between">
-        <div>
-            <div class="flex items-center gap-2 text-sm text-gray-500 mb-1">
-                <a href="{{ route('bahan-masuk.index') }}" class="hover:text-orange-600 transition">Bahan Masuk</a>
-                <span>/</span>
-                <span class="text-gray-800 font-medium">Tambah Transaksi</span>
-            </div>
-            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Form Input Bahan Masuk</h1>
-        </div>
-        <a href="{{ route('bahan-masuk.index') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 shadow-sm transition">
-            <i class="fa-solid fa-arrow-left text-xs"></i> Kembali
-        </a>
-    </div>
-
-    <!-- Form Card -->
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
-        <form action="{{ route('bahan-masuk.store') }}" method="POST" class="space-y-6" id="formBahanMasuk">
-            @csrf
-
-            <!-- Tanggal Transaksi -->
-            <div>
-                <label for="tanggal" class="block text-sm font-semibold text-gray-800 mb-1.5">
-                    Tanggal Transaksi <span class="text-red-500">*</span>
-                </label>
-                <div class="relative">
-                    <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required class="w-full px-4 py-2.5 text-sm border @error('tanggal') border-red-500 @else border-gray-300 @enderror rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
-                </div>
-                @error('tanggal')
-                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Bahan Baku -->
-            <div>
-                <label for="id_bahan" class="block text-sm font-semibold text-gray-800 mb-1.5">
-                    Bahan Baku <span class="text-red-500">*</span>
-                </label>
-                <select name="id_bahan" id="id_bahan" required class="w-full px-4 py-2.5 text-sm border @error('id_bahan') border-red-500 @else border-gray-300 @enderror rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none bg-white">
-                    <option value="">-- Pilih Bahan Baku --</option>
-                    @foreach($bahan as $b)
-                        <option value="{{ $b->id_bahan }}" data-satuan="{{ $b->satuan }}" {{ old('id_bahan') == $b->id_bahan ? 'selected' : '' }}>
-                            {{ $b->nama_bahan }} ({{ $b->satuan }})
-                        </option>
-                    @endforeach
-                </select>
-                @error('id_bahan')
-                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Jumlah Kuantitas -->
-            <div>
-                <label for="jumlah" class="block text-sm font-semibold text-gray-800 mb-1.5">
-                    Jumlah Masuk <span class="text-red-500">*</span>
-                    <span id="labelSatuan" class="text-xs text-orange-600 font-normal"></span>
-                </label>
-                <div class="relative">
-                    <input type="number" step="0.1" min="0.1" name="jumlah" id="jumlah" value="{{ old('jumlah') }}" placeholder="Contoh: 10 atau 2.5" required class="w-full px-4 py-2.5 text-sm border @error('jumlah') border-red-500 @else border-gray-300 @enderror rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
-                </div>
-                @error('jumlah')
-                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Keterangan / Catatan -->
-            <div>
-                <label for="keterangan" class="block text-sm font-semibold text-gray-800 mb-1.5">
-                    Keterangan / Catatan <span class="text-xs text-gray-400 font-normal">(Opsional)</span>
-                </label>
-                <textarea name="keterangan" id="keterangan" rows="3" placeholder="Contoh: No Nota #INV-8891, kualitas bahan bagus, dll." class="w-full px-4 py-2.5 text-sm border @error('keterangan') border-red-500 @else border-gray-300 @enderror rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">{{ old('keterangan') }}</textarea>
-                @error('keterangan')
-                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Form Actions -->
-            <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                <a href="{{ route('bahan-masuk.index') }}" class="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition">
-                    Batal
-                </a>
-                <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-orange-200 transition">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan Transaksi
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-@endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectBahan = document.getElementById('id_bahan');
-        const labelSatuan = document.getElementById('labelSatuan');
-
-        function updateSatuan() {
-            const selectedOption = selectBahan.options[selectBahan.selectedIndex];
-            const satuan = selectedOption ? selectedOption.getAttribute('data-satuan') : '';
-            if (satuan) {
-                labelSatuan.textContent = `(Satuan: ${satuan})`;
-            } else {
-                labelSatuan.textContent = '';
-            }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data Bahan Masuk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        selectBahan.addEventListener('change', updateSatuan);
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            display: flex;
+            min-height: 100vh;
+            color: #111;
+        }
 
-        // Inisialisasi awal jika ada old input
-        updateSatuan();
-    });
-</script>
-@endpush
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 220px;
+            background: #fff;
+            border-right: 2px solid #ddd;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 22px 18px;
+        }
+
+        .sidebar .brand img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .sidebar .brand span {
+            color: #d40000;
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.3;
+        }
+
+        .sidebar nav {
+            padding: 8px 12px;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #111;
+            text-decoration: none;
+            font-size: 13px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .sidebar nav a i {
+            width: 18px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sidebar nav a.active {
+            background: #ff9a9a;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .sidebar nav a:not(.active):hover {
+            background: #ffe3e3;
+        }
+
+        .logout-box {
+            margin: auto 12px 0;
+            padding: 16px 0 24px;
+            border-top: 1px solid #999;
+        }
+
+        .logout-btn {
+            width: 100%;
+            text-align: left;
+            background: #f8d3d3;
+            border: none;
+            padding: 10px 14px;
+            color: #d40000;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #f3bcbc;
+        }
+
+        /* ===== MAIN & TOPBAR ===== */
+        .main {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+
+        .topbar {
+            background: #fafafa;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .topbar .title {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .topbar .avatar {
+            font-size: 26px;
+            line-height: 1;
+            color: #000;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .content h1 {
+            font-size: 15px;
+            font-weight: 400;
+            margin-bottom: 18px;
+        }
+
+        /* ===== KARTU FORM ===== */
+        .form-card {
+            display: inline-block;
+            background: #fff;
+            border-radius: 10px;
+            padding: 22px 24px 26px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 110px 220px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .form-row label {
+            font-size: 14px;
+        }
+
+        .form-row input {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #777;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .form-row input:focus {
+            border-color: #ff9a9a;
+            box-shadow: 0 0 0 2px #ffe3e3;
+        }
+
+        .form-row input.is-invalid {
+            border-color: #d40000;
+        }
+
+        .error-text {
+            grid-column: 2;
+            color: #d40000;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            min-width: 110px;
+            border: none;
+            color: #fff;
+            font-family: inherit;
+            font-size: 11px;
+            padding: 9px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-simpan { background: #ff9a9a; }
+        .btn-simpan:hover { background: #f98585; }
+        .btn-kembali { background: #9aa5b8; }
+        .btn-kembali:hover { background: #8893a8; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ddd; }
+            .sidebar nav { display: flex; flex-wrap: wrap; }
+            .logout-box { margin: 0 12px; }
+            .form-card { display: block; }
+            .form-row { grid-template-columns: 1fr; gap: 6px; }
+            .error-text { grid-column: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    @php
+        // Link aman: kalau route belum dibuat, otomatis jadi "#" (tidak error)
+        $link = fn ($nama, $param = null) => \Illuminate\Support\Facades\Route::has($nama)
+            ? route($nama, $param)
+            : '#';
+    @endphp
+
+    <div class="sidebar">
+        <div class="brand">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo">
+            <span>Yusukekun<br>Resutoran</span>
+        </div>
+
+        <nav>
+            <a href="{{ $link('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a href="{{ $link('bahan-masuk.index') }}" class="active"><i class="fa-solid fa-box"></i> Stok Bahan</a>
+            <a href="{{ $link('kasir.index') }}"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
+            <a href="{{ $link('riwayat.index') }}"><i class="fa-regular fa-clock"></i> Riwayat Transaksi</a>
+            <a href="{{ $link('omset-harian.index') }}"><i class="fa-regular fa-calendar-check"></i> Omset Harian</a>
+            <a href="{{ $link('omset-bulanan.index') }}"><i class="fa-regular fa-calendar-days"></i> Omset Bulanan</a>
+        </nav>
+
+        <div class="logout-box">
+            <form action="{{ $link('logout') }}" method="POST" style="margin: 0;">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="topbar">
+            <div class="title">
+                {{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? $namaUser ?? 'Administrator' }}
+            </div>
+
+            <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+        </div>
+
+        <div class="content">
+            <h1>Tambah Data Bahan Masuk</h1>
+
+            <div class="form-card">
+                <form action="{{ $link('bahan-masuk.store') }}" method="POST">
+                    @csrf
+
+                    <div class="form-row">
+                        <label for="nama_bahan">Nama Bahan</label>
+                        <input type="text" id="nama_bahan" name="nama_bahan"
+                               value="{{ old('nama_bahan') }}"
+                               class="@error('nama_bahan') is-invalid @enderror" required>
+                        @error('nama_bahan') <div class="error-text">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="form-row">
+                        <label for="jumlah">Jumlah</label>
+                        <input type="number" id="jumlah" name="jumlah" min="1"
+                               value="{{ old('jumlah') }}"
+                               class="@error('jumlah') is-invalid @enderror" required>
+                        @error('jumlah') <div class="error-text">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="form-row">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" id="tanggal" name="tanggal"
+                               value="{{ old('tanggal', now()->format('Y-m-d')) }}"
+                               class="@error('tanggal') is-invalid @enderror" required>
+                        @error('tanggal') <div class="error-text">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-simpan">Simpan</button>
+                        <a href="{{ $link('bahan-masuk.index') }}" class="btn btn-kembali">Kembali</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
