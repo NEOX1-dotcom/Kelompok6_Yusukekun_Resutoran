@@ -6,9 +6,8 @@
     <title>Stok Bahan - Data Bahan</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <style>
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -69,14 +68,10 @@
             border-radius: 8px;
         }
 
-        .sidebar nav a i {
-            width: 18px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .sidebar nav a i.fa-gauge {
-            font-size: 15px;
+        .sidebar nav a svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         .sidebar nav a:hover {
@@ -124,26 +119,8 @@
             background: #f8f9fa;
         }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 24px;
-            background: #fafafa;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .topbar .title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .topbar .avatar {
-            font-size: 26px;
-        }
-
         .content {
-            padding: 24px;
+            padding: 28px 24px 24px;
         }
 
         .content h1 {
@@ -152,10 +129,21 @@
             margin-bottom: 16px;
         }
 
+        .tabs-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .tabs-row form {
+            margin: 0;
+        }
+
         .tabs {
             display: flex;
             gap: 16px;
-            margin-bottom: 24px;
         }
 
         .tab {
@@ -180,6 +168,26 @@
             font-weight: 500;
         }
 
+        .pilih-bulan {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #ff9a9a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23fff'/%3E%3C/svg%3E") no-repeat right 12px center;
+            color: #fff;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            padding: 9px 30px 9px 14px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .pilih-bulan option {
+            background: #fff;
+            color: #111;
+        }
+
         .panel {
             background: #fff;
             border-radius: 10px;
@@ -189,6 +197,10 @@
 
         .panel-top {
             margin-bottom: 18px;
+        }
+
+        .periode {
+            font-size: 16px;
         }
 
         .btn-tambah {
@@ -242,6 +254,10 @@
             display: flex;
             justify-content: center;
             gap: 8px;
+        }
+
+        .aksi form {
+            margin: 0;
         }
 
         .btn-ikon {
@@ -353,17 +369,13 @@
             font-size: 15px;
         }
 
-        .input-wrap {
-            position: relative;
+        .form-row input,
+        .form-row select {
             width: 200px;
-        }
-
-        .input-wrap input {
-            width: 100%;
             height: 32px;
             padding: 0 10px;
             border: 1px solid #333;
-            border-radius: 8px;
+            border-radius: 6px;
             background: #fff;
             font-family: inherit;
             font-size: 12px;
@@ -371,63 +383,32 @@
             outline: none;
         }
 
-        .input-wrap input:focus {
+        .form-row select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23333'/%3E%3C/svg%3E") no-repeat right 10px center;
+            padding-right: 26px;
+            cursor: pointer;
+        }
+
+        .form-row input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .form-row input[type="number"]::-webkit-outer-spin-button,
+        .form-row input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .form-row input::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus {
             border-color: #ff9a9a;
             box-shadow: 0 0 0 2px #ffe3e3;
-        }
-
-        .input-wrap input.sudah-ada {
-            border-color: #d40000;
-            box-shadow: 0 0 0 2px #fde2e2;
-        }
-
-        .list-saran {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            max-height: 150px;
-            overflow-y: auto;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            list-style: none;
-            z-index: 10;
-        }
-
-        .list-saran.tampil {
-            display: block;
-        }
-
-        .judul-saran {
-            padding: 6px 10px 4px;
-            font-size: 10px;
-            color: #999;
-        }
-
-        .list-saran li {
-            padding: 7px 10px;
-            font-size: 12px;
-            border-top: 1px solid #f1f1f1;
-        }
-
-        .list-saran li.sama {
-            color: #d40000;
-            font-weight: 500;
-        }
-
-        .info-bahan {
-            display: none;
-            color: #d40000;
-            font-size: 11px;
-            margin: -14px 0 14px;
-            text-align: right;
-        }
-
-        .info-bahan.tampil {
-            display: block;
         }
 
         .error-text {
@@ -440,7 +421,7 @@
         .modal-aksi {
             display: flex;
             gap: 18px;
-            margin-top: 10px;
+            margin-top: 26px;
         }
 
         .modal-aksi button {
@@ -463,12 +444,6 @@
             background: #f98585;
         }
 
-        .btn-simpan:disabled {
-            background: #f3c6c6;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
         .btn-kembali {
             background: #9aa5b8;
         }
@@ -476,12 +451,59 @@
         .btn-kembali:hover {
             background: #8893a8;
         }
+
+        .form-row.input-nama {
+            position: relative;
+        }
+
+        .form-row input.salah {
+            border-color: #d40000;
+            box-shadow: 0 0 0 2px #ffe0e0;
+        }
+
+        .list-saran {
+            position: absolute;
+            top: 36px;
+            right: 0;
+            width: 200px;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+            display: none;
+        }
+
+        .list-saran div {
+            padding: 7px 10px;
+            font-size: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .list-saran div:last-child {
+            border-bottom: none;
+        }
+
+        .pesan-sama {
+            color: #d40000;
+            font-size: 11px;
+            text-align: right;
+            margin: -14px 0 14px;
+            display: none;
+        }
+
+        .btn-simpan:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
 
     @php
-        $dataBahan = $dataBahan ?? \App\Models\Bahan::orderBy('nama_bahan')->paginate(10);
+        $dataBahan = $dataBahan ?? \App\Models\Bahan::orderBy('nama_bahan')->paginate(10)->withQueryString();
         $semuaNamaBahan = $semuaNamaBahan ?? \App\Models\Bahan::orderBy('nama_bahan')->pluck('nama_bahan');
     @endphp
 
@@ -492,12 +514,13 @@
         </div>
 
         <nav>
-            <a href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="{{ route('kasir.index') }}"><i class="ti ti-shopping-cart"></i> Kasir</a>
-            <a href="{{ route('data-bahan.index') }}" class="active"><i class="ti ti-box"></i> Stok Bahan</a>
-            <a href="{{ route('riwayat.index') }}"><i class="ti ti-clock"></i> Riwayat Transaksi</a>
-            <a href="{{ route('omset-harian.index') }}"><i class="ti ti-clipboard-list"></i> Omset Harian</a>
-            <a href="{{ route('omset-bulanan.index') }}"><i class="ti ti-calendar-month"></i> Omset Bulanan</a>
+            <a href="{{ route('dashboard') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 19.5a9 9 0 1 1 12.8 0z"/><path d="M12 14l3.5-3.5"/><path d="M7.5 12h.5M12 7.5V8M16.5 12H16M8.8 8.8l.4.4"/></svg> Dashboard</a>
+            <a href="{{ route('kasir.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h2.5l2.3 11.5h11.4L20.5 6H5.2"/><path d="M8 19.5h1.5M15.5 19.5H17"/></svg> Kasir</a>
+            <a href="{{ route('data-bahan.index') }}" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg> Stok Bahan</a>
+            <a href="{{ route('riwayat.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l3.5 3.5"/></svg> Riwayat Transaksi</a>
+            <a href="{{ route('omset-harian.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="19" rx="2"/><path d="M10 3h4v2h-4z"/><path d="M8 11l1.2 1.2L11 10.4M13.5 11.5H16M8 16.5h2M13.5 16.5H16"/></svg> Omset Harian</a>
+            <a href="{{ route('omset-bulanan.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 7.5h18M7.5 3v4M12 3v4M16.5 3v4"/><path d="M7 13.5h.01M10.3 13.5h.01M13.7 13.5h.01M17 13.5h.01M7 17h.01M10.3 17h.01M13.7 17h.01M17 17h.01" stroke-width="2.5"/></svg> Omset Bulanan</a>
+            <a href="{{ Route::has('karyawan.index') ? route('karyawan.index') : '#' }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.5"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/><path d="M8.5 20.5V17a3.5 3.5 0 0 1 7 0v3.5z"/><path d="M5.5 19.5H2.5v-2a2.5 2.5 0 0 1 3.7-2.2M18.5 19.5h3v-2a2.5 2.5 0 0 0-3.7-2.2"/></svg> Kehadiran Karyawan</a>
         </nav>
 
         <div class="logout-box">
@@ -511,20 +534,16 @@
     </div>
 
     <div class="main">
-
-        <div class="topbar">
-            <div class="title">{{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? '' }}</div>
-            <div class="avatar"><i class="fa-solid fa-circle-user"></i></div>
-        </div>
-
         <div class="content">
             <h1>Stok Bahan</h1>
 
-            <div class="tabs">
-                <a href="{{ route('data-bahan.index') }}" class="tab active">Data Bahan</a>
-                <a href="{{ route('bahan-masuk.index') }}" class="tab">Bahan Masuk</a>
-                <a href="{{ route('bahan-keluar.index') }}" class="tab">Bahan Keluar</a>
-                <a href="{{ route('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
+            <div class="tabs-row">
+                <div class="tabs">
+                    <a href="{{ route('data-bahan.index') }}" class="tab active">Data Bahan</a>
+                    <a href="{{ route('bahan-masuk.index') }}" class="tab">Bahan Masuk</a>
+                    <a href="{{ route('bahan-keluar.index') }}" class="tab">Bahan Keluar</a>
+                    <a href="{{ route('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
+                </div>
             </div>
 
             <div class="panel">
@@ -537,27 +556,27 @@
                     <table>
                         <thead>
                             <tr>
-                                <th style="width: 80px;">No</th>
+                                <th style="width: 70px;">No</th>
                                 <th>Nama Bahan</th>
                                 <th style="width: 190px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($dataBahan as $bahan)
+                            @forelse ($dataBahan as $item)
                                 <tr>
                                     <td>{{ $dataBahan->firstItem() + $loop->index }}</td>
-                                    <td>{{ $bahan->nama_bahan }}</td>
+                                    <td>{{ $item->nama_bahan }}</td>
                                     <td>
                                         <div class="aksi">
                                             <button type="button" class="btn-ikon btn-edit" title="Edit"
-                                                    data-url="{{ route('data-bahan.update', $bahan->getKey()) }}"
-                                                    data-nama="{{ $bahan->nama_bahan }}"
+                                                    data-url="{{ route('data-bahan.update', $item->getKey()) }}"
+                                                    data-nama="{{ $item->nama_bahan }}"
                                                     onclick="bukaEdit(this)">
                                                 <span class="material-icons">edit</span>
                                             </button>
 
-                                            <form action="{{ route('data-bahan.destroy', $bahan->getKey()) }}" method="POST"
-                                                  onsubmit="return confirm('Hapus bahan ini? Data bahan masuk, bahan keluar, dan sisa bahan yang memakai bahan ini juga akan ikut terhapus.')">
+                                            <form action="{{ route('data-bahan.destroy', $item->getKey()) }}" method="POST"
+                                                  onsubmit="return confirm('Yakin ingin menghapus bahan ini? Data bahan masuk dan bahan keluar dengan bahan ini juga ikut terhapus.')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-ikon btn-hapus" title="Hapus">
@@ -595,18 +614,16 @@
                 <input type="hidden" name="_method" id="formMethod" value="{{ old('_method', 'POST') }}">
                 <input type="hidden" name="form_url" id="formUrl" value="{{ old('form_url', route('data-bahan.store')) }}">
 
-                <div class="form-row">
+                <div class="form-row input-nama">
                     <label for="nama_bahan">Nama Bahan</label>
-                    <div class="input-wrap">
-                        <input type="text" id="nama_bahan" name="nama_bahan" autocomplete="off" value="{{ old('nama_bahan') }}" required>
-                        <ul class="list-saran" id="listSaran"></ul>
-                    </div>
+                    <input type="text" id="nama_bahan" name="nama_bahan" value="{{ old('nama_bahan') }}" autocomplete="off" required>
+                    <div class="list-saran" id="listSaran"></div>
                 </div>
-                <div class="info-bahan" id="infoBahan"></div>
+                <div class="pesan-sama" id="pesanSama"></div>
                 @error('nama_bahan') <div class="error-text">{{ $message }}</div> @enderror
 
                 <div class="modal-aksi">
-                    <button type="submit" class="btn-simpan" id="tombolSimpan">Simpan</button>
+                    <button type="submit" class="btn-simpan" id="btnSimpan">Simpan</button>
                     <button type="button" class="btn-kembali" onclick="tutupModal()">Kembali</button>
                 </div>
             </form>
@@ -630,78 +647,48 @@
     <script>
         const modal = document.getElementById('modalBahan');
         const form = document.getElementById('formBahan');
-        const urlTambah = "{{ route('data-bahan.store') }}";
-
-        const namaBahanTerdaftar = @json($semuaNamaBahan->values());
-
         const inputNama = document.getElementById('nama_bahan');
         const listSaran = document.getElementById('listSaran');
-        const infoBahan = document.getElementById('infoBahan');
-        const tombolSimpan = document.getElementById('tombolSimpan');
-
+        const pesanSama = document.getElementById('pesanSama');
+        const btnSimpan = document.getElementById('btnSimpan');
+        const urlTambah = "{{ route('data-bahan.store') }}";
+        const semuaNama = @json($semuaNamaBahan);
         let namaAwal = '';
 
         function rapikan(teks) {
-            return teks.trim().toLowerCase().replace(/\s+/g, ' ');
+            return teks.trim().toLowerCase();
         }
 
-        function cekNamaBahan() {
-            const ketikan = rapikan(inputNama.value);
+        function cekNama() {
+            const ketik = rapikan(inputNama.value);
+
+            const mirip = semuaNama.filter(function (nama) {
+                return ketik !== '' && rapikan(nama).includes(ketik) && rapikan(nama) !== rapikan(namaAwal);
+            });
+
             listSaran.innerHTML = '';
+            mirip.forEach(function (nama) {
+                const baris = document.createElement('div');
+                baris.textContent = nama;
+                listSaran.appendChild(baris);
+            });
+            listSaran.style.display = mirip.length > 0 ? 'block' : 'none';
 
-            if (ketikan === '') {
-                listSaran.classList.remove('tampil');
-                infoBahan.classList.remove('tampil');
-                inputNama.classList.remove('sudah-ada');
-                tombolSimpan.disabled = false;
-                return;
-            }
+            const sudahAda = semuaNama.some(function (nama) {
+                return rapikan(nama) === ketik && rapikan(nama) !== rapikan(namaAwal);
+            });
 
-            const kataKetikan = ketikan.split(' ').filter(kata => kata.length >= 2);
-            const namaMirip = namaBahanTerdaftar.filter(nama =>
-                rapikan(nama) !== rapikan(namaAwal) &&
-                kataKetikan.some(kata => rapikan(nama).includes(kata))
-            );
-
-            if (namaMirip.length > 0) {
-                const judul = document.createElement('div');
-                judul.className = 'judul-saran';
-                judul.textContent = 'Bahan yang sudah ada:';
-                listSaran.appendChild(judul);
-
-                namaMirip.forEach(nama => {
-                    const item = document.createElement('li');
-                    item.textContent = nama;
-                    if (rapikan(nama) === ketikan) {
-                        item.classList.add('sama');
-                    }
-                    listSaran.appendChild(item);
-                });
-
-                listSaran.classList.add('tampil');
+            if (sudahAda) {
+                pesanSama.textContent = 'Bahan "' + inputNama.value.trim() + '" sudah ada.';
+                pesanSama.style.display = 'block';
+                inputNama.classList.add('salah');
+                btnSimpan.disabled = true;
             } else {
-                listSaran.classList.remove('tampil');
-            }
-
-            const sudahAda = namaBahanTerdaftar.some(nama => rapikan(nama) === ketikan);
-
-            if (sudahAda && ketikan !== rapikan(namaAwal)) {
-                infoBahan.textContent = 'Bahan "' + inputNama.value.trim() + '" sudah ada.';
-                infoBahan.classList.add('tampil');
-                inputNama.classList.add('sudah-ada');
-                tombolSimpan.disabled = true;
-            } else {
-                infoBahan.classList.remove('tampil');
-                inputNama.classList.remove('sudah-ada');
-                tombolSimpan.disabled = false;
+                pesanSama.style.display = 'none';
+                inputNama.classList.remove('salah');
+                btnSimpan.disabled = false;
             }
         }
-
-        inputNama.addEventListener('input', cekNamaBahan);
-        inputNama.addEventListener('focus', cekNamaBahan);
-        inputNama.addEventListener('blur', function () {
-            setTimeout(() => listSaran.classList.remove('tampil'), 150);
-        });
 
         function bukaTambah() {
             namaAwal = '';
@@ -709,9 +696,9 @@
             document.getElementById('formUrl').value = urlTambah;
             document.getElementById('formMethod').value = 'POST';
             inputNama.value = '';
-            cekNamaBahan();
+            cekNama();
             modal.classList.add('tampil');
-            setTimeout(() => inputNama.focus(), 250);
+            inputNama.focus();
         }
 
         function bukaEdit(tombol) {
@@ -720,14 +707,23 @@
             document.getElementById('formUrl').value = tombol.dataset.url;
             document.getElementById('formMethod').value = 'PUT';
             inputNama.value = tombol.dataset.nama;
-            cekNamaBahan();
-            listSaran.classList.remove('tampil');
+            cekNama();
             modal.classList.add('tampil');
+            inputNama.focus();
         }
 
         function tutupModal() {
             modal.classList.remove('tampil');
+            listSaran.style.display = 'none';
         }
+
+        inputNama.addEventListener('input', cekNama);
+
+        inputNama.addEventListener('blur', function () {
+            setTimeout(function () {
+                listSaran.style.display = 'none';
+            }, 150);
+        });
 
         modal.addEventListener('click', function (e) {
             if (e.target === modal) {
