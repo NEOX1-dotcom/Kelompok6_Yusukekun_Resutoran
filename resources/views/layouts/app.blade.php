@@ -63,6 +63,9 @@
                     <a href="{{ route('bahan-masuk.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('bahan-masuk.*') ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' }}">
                         <i class="fa-solid fa-arrow-down-long mr-1.5 text-orange-500"></i> Bahan Masuk
                     </a>
+                    <a href="{{ route('karyawan.index') }}" class="px-3 py-2 rounded-lg text-sm font-medium transition {{ request()->routeIs('karyawan.*') ? 'bg-orange-50 text-orange-600 font-semibold' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' }}">
+                        <i class="fa-solid fa-users mr-1.5 text-orange-500"></i> Karyawan
+                    </a>
                 </div>
 
                 <!-- User / Action -->

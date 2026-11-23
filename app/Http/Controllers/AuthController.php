@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\ExpireSessionAtClosingTime;
 use App\Models\Admin;
+use App\Models\Cabang;
+use App\Models\Karyawan;
 use App\Support\SessionClosingTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
@@ -34,6 +37,8 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
+            'karyawan' => 'sometimes|array',
+            'karyawan.*' => 'nullable|string|max:100',
         ], [
             'username.required' => 'Nama atau username wajib diisi!',
             'password.required' => 'Password wajib diisi!',
@@ -68,6 +73,43 @@ class AuthController extends Controller
                 ])
                 ->with('error_type', 'password_salah')
                 ->with('error', 'Password yang Anda masukkan salah!');
+        }
+
+        if (!$admin->id_cabang) {
+            $cabangPertama = Cabang::query()->orderBy('id_cabang')->first();
+
+            if ($cabangPertama) {
+                $admin->id_cabang = $cabangPertama->id_cabang;
+                $admin->save();
+            }
+        }
+
+        $namaKaryawan = collect($request->input('karyawan', []))
+            ->map(fn ($nama) => trim((string) $nama))
+            ->filter()
+            ->values();
+
+        if ($namaKaryawan->isNotEmpty() && !$admin->id_cabang) {
+            return back()
+                ->withInput($request->except('password'))
+                ->withErrors([
+                    'karyawan' => 'Data cabang belum tersedia. Tambahkan cabang terlebih dahulu untuk mencatat karyawan yang bertugas.',
+                ]);
+        }
+
+        if ($namaKaryawan->isNotEmpty()) {
+            $waktuMasuk = now();
+
+            DB::transaction(function () use ($namaKaryawan, $admin, $waktuMasuk): void {
+                foreach ($namaKaryawan as $nama) {
+                    Karyawan::create([
+                        'id_cabang' => $admin->id_cabang,
+                        'nama_karyawan' => $nama,
+                        'tanggal' => $waktuMasuk->toDateString(),
+                        'jam_masuk' => $waktuMasuk->format('H:i:s'),
+                    ]);
+                }
+            });
         }
 
         // 5. Autentikasi berhasil: login dan buat sesi baru

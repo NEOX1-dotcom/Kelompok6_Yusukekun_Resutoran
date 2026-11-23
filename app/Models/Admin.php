@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -19,6 +20,7 @@ class Admin extends Authenticatable
         'email',
         'password',
         'no_telp',
+        'id_cabang',
     ];
 
     protected $hidden = [
@@ -31,5 +33,10 @@ class Admin extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function cabang(): BelongsTo
+    {
+        return $this->belongsTo(Cabang::class, 'id_cabang', 'id_cabang');
     }
 }

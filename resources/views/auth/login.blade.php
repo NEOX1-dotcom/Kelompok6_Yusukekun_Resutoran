@@ -212,6 +212,84 @@
         button.btn-submit:active {
             transform: scale(0.99);
         }
+
+        #staff-dialog {
+            width: min(92vw, 480px);
+            max-height: 85vh;
+            margin: auto;
+            padding: 24px;
+            border: 0;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        #staff-dialog::backdrop {
+            background: rgba(17, 24, 39, 0.55);
+        }
+
+        #staff-dialog h2 {
+            margin-bottom: 6px;
+            color: #1a1a1a;
+            font-size: 20px;
+        }
+
+        #staff-dialog p {
+            margin-bottom: 18px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .staff-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .staff-row input {
+            flex: 1;
+            min-width: 0;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+        }
+
+        .staff-row button,
+        .staff-dialog-actions button,
+        #add-staff {
+            padding: 9px 12px;
+            border: 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .staff-row button {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        #add-staff {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .staff-dialog-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .staff-dialog-actions .btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .staff-dialog-actions .btn-confirm {
+            background: #e0201a;
+            color: #fff;
+        }
+
         @media (max-width: 900px) {
             .login-container {
                 flex-direction: column;
@@ -310,12 +388,82 @@
                 <button type="submit" class="btn-submit">
                     <i></i> Sign In
                 </button>
+
+                <dialog id="staff-dialog" aria-labelledby="staff-dialog-title">
+                    <h2 id="staff-dialog-title">Karyawan yang Bertugas</h2>
+                    <p>Isi nama karyawan yang bertugas hari ini. Kolom yang kosong akan dilewati.</p>
+                    <div id="staff-list"></div>
+                    <button type="button" id="add-staff">Tambah nama</button>
+                    <div class="staff-dialog-actions">
+                        <button type="button" class="btn-cancel" id="cancel-staff">Batal</button>
+                        <button type="button" class="btn-confirm" id="confirm-login">Lanjutkan login</button>
+                    </div>
+                </dialog>
             </form>
         </div>
     </div>
 
     <!-- Toggle Password Visibility Script -->
     <script>
+        const loginForm = document.querySelector('form[action="{{ route('login.submit') }}"]');
+        const loginButton = loginForm.querySelector('button[type="submit"]');
+        const staffDialog = document.getElementById('staff-dialog');
+        const staffList = document.getElementById('staff-list');
+        let loginConfirmed = false;
+
+        function addStaffInput(value = '') {
+            const row = document.createElement('div');
+            row.className = 'staff-row';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'karyawan[]';
+            input.maxLength = 100;
+            input.placeholder = 'Nama karyawan';
+            input.value = value;
+            input.autocomplete = 'off';
+            input.setAttribute('aria-label', 'Nama karyawan');
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.textContent = 'Hapus';
+            removeButton.setAttribute('aria-label', 'Hapus nama karyawan');
+            removeButton.addEventListener('click', () => {
+                row.remove();
+                if (staffList.children.length === 0) {
+                    addStaffInput();
+                }
+            });
+
+            row.append(input, removeButton);
+            staffList.appendChild(row);
+        }
+
+        const oldStaffNames = @json(old('karyawan', []));
+        if (Array.isArray(oldStaffNames) && oldStaffNames.length > 0) {
+            oldStaffNames.forEach((name) => addStaffInput(name ?? ''));
+        } else {
+            addStaffInput();
+            addStaffInput();
+            addStaffInput();
+        }
+
+        loginForm.addEventListener('submit', (event) => {
+            if (!loginConfirmed) {
+                event.preventDefault();
+                if (!staffDialog.open) {
+                    staffDialog.showModal();
+                }
+            }
+        });
+
+        document.getElementById('add-staff').addEventListener('click', () => addStaffInput());
+        document.getElementById('cancel-staff').addEventListener('click', () => staffDialog.close());
+        document.getElementById('confirm-login').addEventListener('click', () => {
+            loginConfirmed = true;
+            loginForm.requestSubmit(loginButton);
+        });
+
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const pwIcon = document.getElementById('pw-icon');

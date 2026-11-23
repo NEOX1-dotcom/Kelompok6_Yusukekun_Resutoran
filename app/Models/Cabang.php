@@ -26,4 +26,9 @@ class Cabang extends Model
     {
         return $this->hasMany(Omset::class, 'id_cabang', 'id_cabang');
     }
+
+    public function karyawan(): HasMany
+    {
+        return $this->hasMany(Karyawan::class, 'id_cabang', 'id_cabang');
+    }
 }
