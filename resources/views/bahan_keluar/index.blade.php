@@ -6,7 +6,6 @@
     <title>Stok Bahan - Bahan Keluar</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         * {
@@ -69,14 +68,10 @@
             border-radius: 8px;
         }
 
-        .sidebar nav a i {
-            width: 18px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .sidebar nav a i.fa-gauge {
-            font-size: 15px;
+        .sidebar nav a svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         .sidebar nav a:hover {
@@ -124,26 +119,8 @@
             background: #f8f9fa;
         }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 24px;
-            background: #fafafa;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .topbar .title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .topbar .avatar {
-            font-size: 26px;
-        }
-
         .content {
-            padding: 24px;
+            padding: 28px 24px 24px;
         }
 
         .content h1 {
@@ -152,10 +129,21 @@
             margin-bottom: 16px;
         }
 
+        .tabs-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .tabs-row form {
+            margin: 0;
+        }
+
         .tabs {
             display: flex;
             gap: 16px;
-            margin-bottom: 24px;
         }
 
         .tab {
@@ -180,35 +168,6 @@
             font-weight: 500;
         }
 
-        .panel {
-            background: #fff;
-            border-radius: 10px;
-            padding: 20px 18px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        .panel-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .btn-tambah {
-            background: #ff9a9a;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 9px 18px;
-            font-family: inherit;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .btn-tambah:hover {
-            background: #f98585;
-        }
-
         .pilih-bulan {
             appearance: none;
             -webkit-appearance: none;
@@ -229,9 +188,37 @@
             color: #111;
         }
 
+        .panel {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 18px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
         .periode {
             font-size: 16px;
-            margin-bottom: 10px;
+        }
+
+        .btn-tambah {
+            background: #ff9a9a;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 18px;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-tambah:hover {
+            background: #f98585;
         }
 
         .table-wrap {
@@ -270,6 +257,10 @@
             display: flex;
             justify-content: center;
             gap: 8px;
+        }
+
+        .aksi form {
+            margin: 0;
         }
 
         .btn-ikon {
@@ -486,12 +477,13 @@
         </div>
 
         <nav>
-            <a href="{{ route('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="{{ route('kasir.index') }}"><i class="ti ti-shopping-cart"></i> Kasir</a>
-            <a href="{{ route('data-bahan.index') }}" class="active"><i class="ti ti-box"></i> Stok Bahan</a>
-            <a href="{{ route('riwayat.index') }}"><i class="ti ti-clock"></i> Riwayat Transaksi</a>
-            <a href="{{ route('omset-harian.index') }}"><i class="ti ti-clipboard-list"></i> Omset Harian</a>
-            <a href="{{ route('omset-bulanan.index') }}"><i class="ti ti-calendar-month"></i> Omset Bulanan</a>
+            <a href="{{ route('dashboard') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 19.5a9 9 0 1 1 12.8 0z"/><path d="M12 14l3.5-3.5"/><path d="M7.5 12h.5M12 7.5V8M16.5 12H16M8.8 8.8l.4.4"/></svg> Dashboard</a>
+            <a href="{{ route('kasir.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h2.5l2.3 11.5h11.4L20.5 6H5.2"/><path d="M8 19.5h1.5M15.5 19.5H17"/></svg> Kasir</a>
+            <a href="{{ route('data-bahan.index') }}" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg> Stok Bahan</a>
+            <a href="{{ route('riwayat.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l3.5 3.5"/></svg> Riwayat Transaksi</a>
+            <a href="{{ route('omset-harian.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="19" rx="2"/><path d="M10 3h4v2h-4z"/><path d="M8 11l1.2 1.2L11 10.4M13.5 11.5H16M8 16.5h2M13.5 16.5H16"/></svg> Omset Harian</a>
+            <a href="{{ route('omset-bulanan.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 7.5h18M7.5 3v4M12 3v4M16.5 3v4"/><path d="M7 13.5h.01M10.3 13.5h.01M13.7 13.5h.01M17 13.5h.01M7 17h.01M10.3 17h.01M13.7 17h.01M17 17h.01" stroke-width="2.5"/></svg> Omset Bulanan</a>
+            <a href="{{ Route::has('karyawan.index') ? route('karyawan.index') : '#' }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.5"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/><path d="M8.5 20.5V17a3.5 3.5 0 0 1 7 0v3.5z"/><path d="M5.5 19.5H2.5v-2a2.5 2.5 0 0 1 3.7-2.2M18.5 19.5h3v-2a2.5 2.5 0 0 0-3.7-2.2"/></svg> Kehadiran Karyawan</a>
         </nav>
 
         <div class="logout-box">
@@ -506,40 +498,36 @@
 
     <div class="main">
 
-        <div class="topbar">
-            <div class="title">{{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? '' }}</div>
-            <div class="avatar"><i class="fa-solid fa-circle-user"></i></div>
-        </div>
-
         <div class="content">
             <h1>Stok Bahan</h1>
 
-            <div class="tabs">
-                <a href="{{ route('data-bahan.index') }}" class="tab">Data Bahan</a>
-                <a href="{{ route('bahan-masuk.index') }}" class="tab">Bahan Masuk</a>
-                <a href="{{ route('bahan-keluar.index') }}" class="tab active">Bahan Keluar</a>
-                <a href="{{ route('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
+            <div class="tabs-row">
+                <div class="tabs">
+                    <a href="{{ route('data-bahan.index') }}" class="tab">Data Bahan</a>
+                    <a href="{{ route('bahan-masuk.index') }}" class="tab">Bahan Masuk</a>
+                    <a href="{{ route('bahan-keluar.index') }}" class="tab active">Bahan Keluar</a>
+                    <a href="{{ route('sisa-bahan.index') }}" class="tab">Sisa Bahan Akhir Bulan</a>
+                </div>
+
+                <form method="GET" action="{{ route('bahan-keluar.index') }}">
+                    <select name="bulan" class="pilih-bulan" onchange="this.form.submit()">
+                        @for ($i = 0; $i < 12; $i++)
+                            @php $pilihan = now()->startOfMonth()->subMonths($i); @endphp
+                            <option value="{{ $pilihan->format('Y-m') }}" {{ $pilihan->format('Y-m') == $bulanDipilih ? 'selected' : '' }}>
+                                {{ $pilihan->locale('id')->translatedFormat('F Y') }}
+                            </option>
+                        @endfor
+                    </select>
+                </form>
             </div>
 
             <div class="panel">
 
                 <div class="panel-top">
+                    <div class="periode">
+                        {{ \Carbon\Carbon::parse($bulanDipilih . '-01')->locale('id')->translatedFormat('F Y') }}
+                    </div>
                     <button type="button" class="btn-tambah" onclick="bukaTambah()">+ Tambah data</button>
-
-                    <form method="GET" action="{{ route('bahan-keluar.index') }}">
-                        <select name="bulan" class="pilih-bulan" onchange="this.form.submit()">
-                            @for ($i = 0; $i < 12; $i++)
-                                @php $bulan = now()->startOfMonth()->subMonths($i); @endphp
-                                <option value="{{ $bulan->format('Y-m') }}" {{ $bulan->format('Y-m') == $bulanDipilih ? 'selected' : '' }}>
-                                    {{ $bulan->locale('id')->translatedFormat('F Y') }}
-                                </option>
-                            @endfor
-                        </select>
-                    </form>
-                </div>
-
-                <div class="periode">
-                    {{ \Carbon\Carbon::parse($bulanDipilih . '-01')->locale('id')->translatedFormat('F Y') }}
                 </div>
 
                 <div class="table-wrap">
@@ -550,7 +538,7 @@
                                 <th>Nama Bahan</th>
                                 <th style="width: 110px;">Jumlah</th>
                                 <th>Tanggal</th>
-                                <th style="width: 140px;">Aksi</th>
+                                <th style="width: 120px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
