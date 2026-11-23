@@ -48,7 +48,7 @@
                         {{ $bahanMasuk->bahan->nama_bahan ?? 'Bahan #' . $bahanMasuk->id_bahan }}
                     </span>
                     <span class="text-xs text-gray-500">
-                        Kategori: {{ $bahanMasuk->bahan->kategori ?? '-' }} &bull; Satuan: {{ $bahanMasuk->bahan->satuan ?? '-' }}
+                        Kategori: {{ $bahanMasuk->bahan->kategori ?? '-' }}
                     </span>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                         <tr>
                             <td class="px-4 py-3 font-medium">Jumlah Masuk</td>
                             <td class="px-4 py-3 text-right font-semibold text-gray-900">
-                                {{ number_format($bahanMasuk->jumlah, 2, ',', '.') }} {{ $bahanMasuk->bahan->satuan ?? '' }}
+                                {{ number_format($bahanMasuk->jumlah, 2, ',', '.') }}
                             </td>
                         </tr>
                     </tbody>
