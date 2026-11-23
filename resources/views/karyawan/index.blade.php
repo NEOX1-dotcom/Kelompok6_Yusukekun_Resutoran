@@ -55,7 +55,6 @@
                         <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Nama Karyawan</th>
                         <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Cabang</th>
                         <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Tanggal</th>
-                        <th scope="col" class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Jam Masuk</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
@@ -65,11 +64,10 @@
                             <td class="whitespace-nowrap px-5 py-3 text-sm font-medium text-gray-900">{{ $item->nama_karyawan }}</td>
                             <td class="whitespace-nowrap px-5 py-3 text-sm text-gray-600">{{ $item->cabang->nama_cabang }}</td>
                             <td class="whitespace-nowrap px-5 py-3 text-sm text-gray-600">{{ $item->tanggal->format('d-m-Y') }}</td>
-                            <td class="whitespace-nowrap px-5 py-3 text-sm text-gray-600">{{ substr($item->jam_masuk, 0, 5) }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-5 py-10 text-center text-sm text-gray-500">
+                            <td colspan="4" class="px-5 py-10 text-center text-sm text-gray-500">
                                 Belum ada data karyawan untuk filter yang dipilih.
                             </td>
                         </tr>

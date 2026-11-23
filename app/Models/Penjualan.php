@@ -10,12 +10,14 @@ class Penjualan extends Model
 {
     use HasFactory;
 
-    protected $table = 'penjualan';
-    protected $primaryKey = 'id_penjualan';
+    protected $table = 'riwayat';
+    protected $primaryKey = 'id_riwayat';
 
     protected $fillable = [
         'tanggal',
+        'kode_transaksi',
         'id_omset',
+        'id_cabang',
         'id_produk',
         'jumlah_terjual',
         'harga_satuan',
@@ -32,6 +34,23 @@ class Penjualan extends Model
             'harga_satuan' => 'decimal:2',
             'total' => 'decimal:2',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $penjualan): void {
+            if ($penjualan->id_cabang) {
+                return;
+            }
+
+            $idCabang = Cabang::query()->orderBy('id_cabang')->value('id_cabang');
+
+            if (!$idCabang) {
+                throw new \RuntimeException('Minimal satu cabang harus tersedia sebelum mencatat penjualan.');
+            }
+
+            $penjualan->id_cabang = $idCabang;
+        });
     }
 
     /**

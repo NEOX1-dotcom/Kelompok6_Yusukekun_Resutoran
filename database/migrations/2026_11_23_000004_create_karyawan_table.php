@@ -16,7 +16,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('nama_karyawan', 100);
             $table->date('tanggal');
-            $table->time('jam_masuk');
             $table->timestamps();
         });
     }

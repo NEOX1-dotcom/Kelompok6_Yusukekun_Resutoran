@@ -33,11 +33,11 @@ class KaryawanTest extends TestCase
                 'id_cabang' => $cabang->id_cabang,
                 'nama_karyawan' => 'Ani',
                 'tanggal' => '2026-11-23',
-                'jam_masuk' => '09:15:30',
             ]);
             $this->assertDatabaseHas('karyawan', [
                 'id_cabang' => $cabang->id_cabang,
                 'nama_karyawan' => 'Budi',
+                'tanggal' => '2026-11-23',
             ]);
         } finally {
             Carbon::setTestNow();
@@ -90,19 +90,16 @@ class KaryawanTest extends TestCase
             'id_cabang' => $cabangA->id_cabang,
             'nama_karyawan' => 'Ani',
             'tanggal' => '2026-11-23',
-            'jam_masuk' => '09:00:00',
         ]);
         Karyawan::create([
             'id_cabang' => $cabangB->id_cabang,
             'nama_karyawan' => 'Budi',
             'tanggal' => '2026-11-23',
-            'jam_masuk' => '10:00:00',
         ]);
         Karyawan::create([
             'id_cabang' => $cabangA->id_cabang,
             'nama_karyawan' => 'Cici',
             'tanggal' => '2026-11-22',
-            'jam_masuk' => '09:00:00',
         ]);
 
         $this->actingAs($admin)

@@ -27,9 +27,9 @@ class KasirController extends Controller
             'id_produk' => ['required', 'integer', 'exists:produk,id_produk'],
             'jumlah_terjual' => ['required', 'numeric', 'min:0.01'],
             'metode_pembayaran' => ['required', 'in:Tunai,QRIS,Transfer,Kartu Debit/Kredit,Lainnya'],
-            'keterangan' => ['nullable', 'string', 'max:255'],
+            'keterangan' => ['nullable', 'string', 'max:255'],'kode_transaksi' => ['nullable', 'string', 'max:20'],
+            'id_cabang' => ['nullable', 'integer', 'exists:cabang,id_cabang'],
         ]);
-
         DB::transaction(function () use ($validated) {
             $produk = Produk::findOrFail($validated['id_produk']);
             $hargaSatuan = (float) $produk->harga;

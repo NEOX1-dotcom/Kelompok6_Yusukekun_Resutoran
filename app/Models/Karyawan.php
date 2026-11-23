@@ -18,7 +18,6 @@ class Karyawan extends Model
         'id_cabang',
         'nama_karyawan',
         'tanggal',
-        'jam_masuk',
     ];
 
     protected function casts(): array

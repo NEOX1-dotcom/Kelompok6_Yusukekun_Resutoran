@@ -21,7 +21,7 @@ class KaryawanController extends Controller
 
         $query = Karyawan::with('cabang')
             ->orderByDesc('tanggal')
-            ->orderByDesc('jam_masuk');
+            ->orderByDesc('id_karyawan');
 
         if ($tanggal !== '') {
             $query->whereDate('tanggal', $tanggal);

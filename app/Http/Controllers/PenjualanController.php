@@ -34,7 +34,6 @@ class PenjualanController extends Controller
             'metode_pembayaran' => ['required', 'in:Tunai,QRIS,Transfer,Kartu Debit/Kredit,Lainnya'],
             'keterangan' => ['nullable', 'string', 'max:255'],
         ]);
-
         DB::transaction(function () use ($validated) {
             $produk = Produk::findOrFail($validated['id_produk']);
             $hargaSatuan = (float) $produk->harga;

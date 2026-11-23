@@ -55,7 +55,7 @@ class DashboardController extends Controller
         $totalOmset6Bulan = (float) $omset6Bulan->sum('total');
         $transaksiTerbaru = Penjualan::with('produk')
             ->orderByDesc('tanggal')
-            ->orderByDesc('id_penjualan')
+            ->orderByDesc('id_riwayat')
             ->limit(5)
             ->get();
 

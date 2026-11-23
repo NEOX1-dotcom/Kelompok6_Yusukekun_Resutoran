@@ -98,15 +98,14 @@ class AuthController extends Controller
         }
 
         if ($namaKaryawan->isNotEmpty()) {
-            $waktuMasuk = now();
+            $tanggalKehadiran = now()->toDateString();
 
-            DB::transaction(function () use ($namaKaryawan, $admin, $waktuMasuk): void {
+            DB::transaction(function () use ($namaKaryawan, $admin, $tanggalKehadiran): void {
                 foreach ($namaKaryawan as $nama) {
                     Karyawan::create([
                         'id_cabang' => $admin->id_cabang,
                         'nama_karyawan' => $nama,
-                        'tanggal' => $waktuMasuk->toDateString(),
-                        'jam_masuk' => $waktuMasuk->format('H:i:s'),
+                        'tanggal' => $tanggalKehadiran,
                     ]);
                 }
             });

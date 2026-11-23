@@ -9,9 +9,11 @@ class CabangSeeder extends Seeder
 {
     public function run(): void
     {
-        Cabang::firstOrCreate(
-            ['nama_cabang' => 'Yusukekun Resutoran'],
-            ['anggota1' => 'rizki', 'anggota2' => 'naufal', 'anggota3' => 'fikri', 'alamat' => 'Jl. Raya No. 123, Kota Contoh']
-        );
+        foreach (['Cabang 1', 'Cabang 2', 'Cabang 3'] as $namaCabang) {
+            Cabang::firstOrCreate(
+                ['nama_cabang' => $namaCabang],
+                ['anggota1' => 'Belum ditentukan']
+            );
+        }
     }
 }

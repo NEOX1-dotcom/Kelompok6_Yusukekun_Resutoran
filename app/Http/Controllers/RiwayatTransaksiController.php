@@ -35,7 +35,7 @@ class RiwayatController extends Controller
         $totalPenjualan = (clone $query)->sum('total');
         $transaksi = $query
             ->orderByDesc('tanggal')
-            ->orderByDesc('id_penjualan')
+            ->orderByDesc('id_riwayat')
             ->paginate(15)
             ->withQueryString();
 

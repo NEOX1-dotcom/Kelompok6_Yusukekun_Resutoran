@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Bahan;
 use App\Models\BahanKeluar;
 use App\Models\BahanMasuk;
+use App\Models\Cabang;
 use App\Models\Omset;
 use App\Models\Penjualan;
 use App\Models\Produk;
@@ -23,6 +24,7 @@ class TransaksiSeeder extends Seeder
         $bulanSekarang = Carbon::now()->format('Y-m'); // e.g. 2026-09
         $bahanList = Bahan::all();
         $produkList = Produk::all();
+        $idCabang = Cabang::query()->orderBy('id_cabang')->value('id_cabang');
 
         if ($bahanList->isEmpty() || $produkList->isEmpty()) {
             return;
@@ -274,7 +276,10 @@ class TransaksiSeeder extends Seeder
                 'tanggal' => $penjualanData['tanggal'],
                 'id_produk' => $penjualanData['id_produk'],
                 'keterangan' => $penjualanData['keterangan'],
-            ], $penjualanData);
+            ], [
+                ...$penjualanData,
+                'id_cabang' => $idCabang,
+            ]);
             $tanggalSeed[] = $penjualanData['tanggal'];
         }
 
