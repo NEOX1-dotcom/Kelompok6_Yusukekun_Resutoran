@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BahanMasukController;
 use App\Http\Controllers\DataBahanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KaryawanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,7 @@ Route::middleware(['auth', 'session-closing-time', 'prevent-back-history'])->gro
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
 
     Route::resource('data-bahan', DataBahanController::class)->only([
         'index',

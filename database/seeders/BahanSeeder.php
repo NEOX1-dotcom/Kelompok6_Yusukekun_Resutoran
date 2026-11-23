@@ -16,67 +16,54 @@ class BahanSeeder extends Seeder
             [
                 'nama_bahan' => 'Chuka sushi',
                 'kategori' => 'Makanan',
-                'satuan' => 'porsi',
             ],
             [
                 'nama_bahan' => 'Beef enoki',
                 'kategori' => 'Makanan',
-                'satuan' => 'porsi',
             ],
             [
                 'nama_bahan' => 'Jeruk lemon',
                 'kategori' => 'Buah & Sayur',
-                'satuan' => 'kg',
             ],
             [
                 'nama_bahan' => 'Sirup',
                 'kategori' => 'Minuman',
-                'satuan' => 'botol',
             ],
             [
                 'nama_bahan' => 'Gula cair',
                 'kategori' => 'Minuman',
-                'satuan' => 'liter',
             ],
             [
                 'nama_bahan' => 'Ebi katsu',
                 'kategori' => 'Makanan',
-                'satuan' => 'pcs',
             ],
             [
                 'nama_bahan' => 'Chicken katsu',
                 'kategori' => 'Makanan',
-                'satuan' => 'pcs',
             ],
             [
                 'nama_bahan' => 'Minyak cabai',
                 'kategori' => 'Bumbu & Saus',
-                'satuan' => 'botol',
             ],
             [
                 'nama_bahan' => 'Timun',
                 'kategori' => 'Sayuran',
-                'satuan' => 'kg',
             ],
             [
                 'nama_bahan' => 'Ogawa dressing',
                 'kategori' => 'Bumbu & Saus',
-                'satuan' => 'botol',
             ],
             [
                 'nama_bahan' => 'Pakcoy',
                 'kategori' => 'Sayuran',
-                'satuan' => 'kg',
             ],
             [
                 'nama_bahan' => 'Es batu',
                 'kategori' => 'Minuman',
-                'satuan' => 'kg',
             ],
             [
                 'nama_bahan' => 'Ogawa tofu',
                 'kategori' => 'Makanan',
-                'satuan' => 'pack',
             ],
         ];
 
@@ -202,7 +189,7 @@ class BahanSeeder extends Seeder
         foreach ($namaBahanOktober as $namaBahan) {
             Bahan::firstOrCreate(
                 ['nama_bahan' => $namaBahan],
-                ['kategori' => null, 'satuan' => '-']
+                ['kategori' => null]
             );
         }
     }

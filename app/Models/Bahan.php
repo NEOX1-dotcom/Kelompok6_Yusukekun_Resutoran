@@ -11,6 +11,7 @@ class Bahan extends Model
     use HasFactory;
 
     protected $table = 'bahan';
+
     protected $primaryKey = 'id_bahan';
 
     protected $fillable = [

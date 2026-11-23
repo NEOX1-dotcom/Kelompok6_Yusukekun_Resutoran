@@ -48,8 +48,8 @@
                     <select name="id_bahan" id="id_bahan" required class="w-full px-4 py-2.5 text-sm border @error('id_bahan') border-red-500 @else border-gray-300 @enderror rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none bg-white">
                         <option value="">-- Pilih Bahan Baku --</option>
                         @foreach($bahan as $b)
-                            <option value="{{ $b->id_bahan }}" data-satuan="{{ $b->satuan }}" {{ old('id_bahan', $bahanMasuk->id_bahan) == $b->id_bahan ? 'selected' : '' }}>
-                                {{ $b->nama_bahan }} ({{ $b->satuan }})
+                            <option value="{{ $b->id_bahan }}" {{ old('id_bahan', $bahanMasuk->id_bahan) == $b->id_bahan ? 'selected' : '' }}>
+                                {{ $b->nama_bahan }}
                             </option>
                         @endforeach
                     </select>
@@ -64,7 +64,6 @@
                 <div>
                     <label for="jumlah" class="block text-sm font-semibold text-gray-800 mb-1.5">
                         Jumlah Masuk <span class="text-red-500">*</span>
-                        <span id="labelSatuan" class="text-xs text-orange-600 font-normal"></span>
                     </label>
                     <div class="relative">
                         <input type="number" step="0.01" min="0.01" name="jumlah" id="jumlah" value="{{ old('jumlah', $bahanMasuk->jumlah) }}" placeholder="Contoh: 10 atau 2.5" required class="w-full px-4 py-2.5 text-sm border @error('jumlah') border-red-500 @else border-gray-300 @enderror rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none">
@@ -99,26 +98,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectBahan = document.getElementById('id_bahan');
-        const labelSatuan = document.getElementById('labelSatuan');
-
-        function updateSatuan() {
-            const selectedOption = selectBahan.options[selectBahan.selectedIndex];
-            const satuan = selectedOption ? selectedOption.getAttribute('data-satuan') : '';
-            if (satuan) {
-                labelSatuan.textContent = `(Satuan: ${satuan})`;
-            } else {
-                labelSatuan.textContent = '';
-            }
-        }
-
-        selectBahan.addEventListener('change', updateSatuan);
-
-        updateSatuan();
-    });
-</script>
-@endpush
