@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\ExpireSessionAtClosingTime;
 use App\Models\Admin;
+use App\Support\SessionClosingTime;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +73,10 @@ class AuthController extends Controller
         // 5. Autentikasi berhasil: login dan buat sesi baru
         Auth::login($admin, $request->boolean('remember'));
         $request->session()->regenerate();
+        $request->session()->put(
+            ExpireSessionAtClosingTime::SESSION_EXPIRY_KEY,
+            SessionClosingTime::nextClosingTimestamp()
+        );
 
         return redirect()->intended(route('dashboard'))
             ->with('success', 'Selamat datang, ' . $admin->nama_admin . '! Berhasil masuk.');

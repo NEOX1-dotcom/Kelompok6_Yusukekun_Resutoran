@@ -11,6 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('omset')) {
+            foreach (Schema::getForeignKeys('omset') as $foreignKey) {
+                if ($foreignKey['columns'] === ['id_cabang'] && $foreignKey['foreign_table'] === 'cabang') {
+                    return;
+                }
+            }
+
+            Schema::table('omset', function (Blueprint $table) {
+                $table->foreign('id_cabang')
+                    ->references('id_cabang')
+                    ->on('cabang')
+                    ->cascadeOnUpdate()
+                    ->cascadeOnDelete();
+            });
+
+            return;
+        }
+
         Schema::create('omset', function (Blueprint $table) {
             $table->id('id_omset');
             $table->date('tanggal')->unique();

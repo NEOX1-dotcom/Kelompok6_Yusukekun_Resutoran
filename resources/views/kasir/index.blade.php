@@ -469,6 +469,12 @@
             gap: 2px;
         }
 
+        .input-diskon-value {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
         /* ===== METODE PEMBAYARAN ===== */
         .metode-bayar {
             display: flex;
@@ -663,7 +669,9 @@
                         <div class="ringkasan-row">
                             <span>Diskon</span>
                             <span class="input-diskon">
-                                <input type="number" id="diskon" value="0" min="0" max="100">%
+                                <span class="input-diskon-value">
+                                    <input type="number" id="diskon" value="0" min="0" max="100">%
+                                </span>
                             </span>
                         </div>
                         <div class="ringkasan-row">
@@ -703,6 +711,8 @@
         const cartList         = document.getElementById('cartList');
         const inputDiskon      = document.getElementById('diskon');
         const inputPenyesuaian = document.getElementById('penyesuaian');
+        let diskonManual       = inputDiskon.value;
+        let diskonOtomatisAktif = false;
 
         // ===== FILTER KATEGORI & PENCARIAN MENU =====
         let kategoriAktif = 'semua';
@@ -808,7 +818,27 @@
         }
 
         // ===== HITUNG TOTAL =====
+        function perbaruiModeDiskon() {
+            const waktu = new Date();
+            const menitSekarang = waktu.getHours() * 60 + waktu.getMinutes();
+            const promoAktif = menitSekarang >= 11 * 60 && menitSekarang < 13 * 60;
+
+            if (promoAktif !== diskonOtomatisAktif) {
+                if (promoAktif) {
+                    diskonManual = inputDiskon.value;
+                    inputDiskon.value = 10;
+                } else {
+                    inputDiskon.value = diskonManual;
+                }
+                diskonOtomatisAktif = promoAktif;
+            }
+
+            inputDiskon.readOnly = promoAktif;
+        }
+
         function hitungTotal() {
+            perbaruiModeDiskon();
+
             let subTotal = 0;
             cart.forEach((item) => subTotal += item.harga * item.qty);
 
@@ -824,8 +854,14 @@
             return { subTotal, diskon, penyesuaian, total };
         }
 
-        inputDiskon.addEventListener('input', hitungTotal);
+        inputDiskon.addEventListener('input', () => {
+            if (!diskonOtomatisAktif) {
+                diskonManual = inputDiskon.value;
+            }
+            hitungTotal();
+        });
         inputPenyesuaian.addEventListener('input', hitungTotal);
+        setInterval(hitungTotal, 30000);
 
         // ===== PILIH METODE PEMBAYARAN =====
         let metodeAktif = null;
@@ -842,6 +878,8 @@
         function resetKasir() {
             cart.clear();
             inputDiskon.value = 0;
+            diskonManual = 0;
+            diskonOtomatisAktif = false;
             inputPenyesuaian.value = 0;
             metodeAktif = null;
             metodeBtns.forEach((b) => b.classList.remove('active'));
@@ -858,6 +896,19 @@
                 confirmButtonText: 'Selesai'
             });
             resetKasir();
+        }
+
+        function totalMasihSama(totalSebelumnya) {
+            const totalTerbaru = hitungTotal().total;
+            if (totalTerbaru === totalSebelumnya) return true;
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Total berubah',
+                text: 'Waktu promo berubah. Total terbaru ' + rupiah(totalTerbaru) + '. Silakan ulangi pembayaran.',
+                confirmButtonColor: '#ff8a8a'
+            });
+            return false;
         }
 
         // ===== BAYAR (sementara simulasi, belum ke backend) =====
@@ -904,6 +955,7 @@
                     }
                 }).then((result) => {
                     if (!result.isConfirmed) return;
+                    if (!totalMasihSama(total)) return;
 
                     const kembalian = Number(result.value) - total;
                     pembayaranBerhasil(
@@ -929,6 +981,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (!result.isConfirmed) return;
+                if (!totalMasihSama(total)) return;
 
                 pembayaranBerhasil(
                     'Metode: <b>QRIS</b><br>' +
