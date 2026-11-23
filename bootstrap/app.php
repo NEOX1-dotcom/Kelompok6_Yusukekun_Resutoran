@@ -13,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+            'session-closing-time' => \App\Http\Middleware\ExpireSessionAtClosingTime::class,
         ]);
 
         $middleware->redirectGuestsTo(function ($request) {

@@ -23,7 +23,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Rute yang membutuhkan autentikasi / akun yang sudah login
-Route::middleware(['auth', 'prevent-back-history'])->group(function () {
+Route::middleware(['auth', 'session-closing-time', 'prevent-back-history'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
