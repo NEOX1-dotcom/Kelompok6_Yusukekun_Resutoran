@@ -596,10 +596,23 @@
                 </div>
 
                 @if ($dataBahan->lastPage() > 1)
+                    @php
+                        $mulai = max(1, min($dataBahan->currentPage() - 1, $dataBahan->lastPage() - 2));
+                        $akhir = min($dataBahan->lastPage(), $mulai + 2);
+                    @endphp
+
                     <div class="pagination">
-                        @foreach ($dataBahan->getUrlRange(1, $dataBahan->lastPage()) as $halaman => $url)
+                        @if ($mulai > 1)
+                            <a href="{{ $dataBahan->url($mulai - 1) }}">...</a>
+                        @endif
+
+                        @foreach ($dataBahan->getUrlRange($mulai, $akhir) as $halaman => $url)
                             <a href="{{ $url }}" class="{{ $halaman == $dataBahan->currentPage() ? 'active' : '' }}">{{ $halaman }}</a>
                         @endforeach
+
+                        @if ($akhir < $dataBahan->lastPage())
+                            <a href="{{ $dataBahan->url($akhir + 1) }}">...</a>
+                        @endif
                     </div>
                 @endif
 

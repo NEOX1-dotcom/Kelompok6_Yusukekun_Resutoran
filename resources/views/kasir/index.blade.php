@@ -440,10 +440,6 @@
             -moz-appearance: textfield;
         }
 
-        .input-diskon input:hover,
-        .input-diskon input:focus {
-            border-color: #ccc;
-        }
 
         .metode {
             display: flex;
@@ -636,7 +632,7 @@
                         <div class="menu-card"
                              data-id="{{ $item->id_produk ?? $item->id ?? $loop->index }}"
                              data-nama="{{ $nama }}"
-                             data-kategori="{{ strtolower($kategori) }}"
+                             data-kategori="{{ str_contains(strtolower($kategori), 'minum') ? 'minuman' : 'makanan' }}"
                              data-harga="{{ $harga }}">
 
                             <div class="menu-foto">
@@ -681,7 +677,7 @@
                 <div class="ringkasan-row tebal">
                     <span>Diskon</span>
                     <span class="input-diskon">
-                        <input type="number" id="diskon" value="0" min="0" max="100">%
+                        <input type="number" id="diskon" value="0" readonly>%
                     </span>
                 </div>
                 <div class="ringkasan-row tebal">
@@ -727,6 +723,7 @@
         const semuaKartu = document.querySelectorAll('.menu-card');
         let kategoriAktif = 'semua';
         let metodeBayar = '';
+        const idCabang = "{{ Auth::user()->id_cabang ?? '' }}";
         const urlSimpan = "{{ Route::has('kasir.store') ? route('kasir.store') : '' }}";
 
         const ikonKurang = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"/></svg>';
@@ -856,7 +853,14 @@
             return { diskon: diskon, total: total };
         }
 
-        inputDiskon.addEventListener('input', hitungTotal);
+        function cekDiskon() {
+            const jam = new Date().getHours();
+            inputDiskon.value = (jam >= 11 && jam < 13) ? 10 : 0;
+            hitungTotal();
+        }
+
+        cekDiskon();
+        setInterval(cekDiskon, 60000);
 
         document.querySelectorAll('.btn-metode').forEach(function (tombol) {
             tombol.addEventListener('click', function () {
@@ -872,12 +876,20 @@
             for (const id in keranjang) {
                 delete keranjang[id];
             }
-            inputDiskon.value = 0;
             metodeBayar = '';
             document.querySelectorAll('.btn-metode').forEach(function (t) {
                 t.classList.remove('active');
             });
             tampilkanKeranjang();
+        }
+
+        function buatKode() {
+            const huruf = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let kode = '';
+            for (let i = 0; i < 10; i++) {
+                kode += huruf[Math.floor(Math.random() * huruf.length)];
+            }
+            return kode;
         }
 
         async function simpanTransaksi() {
@@ -886,6 +898,7 @@
             }
 
             const tanggal = new Date().toLocaleDateString('en-CA');
+            const kodeTransaksi = buatKode();
 
             for (const id in keranjang) {
                 const data = new FormData();
@@ -893,6 +906,8 @@
                 data.append('id_produk', id);
                 data.append('jumlah_terjual', keranjang[id].qty);
                 data.append('metode_pembayaran', metodeBayar === 'qris' ? 'QRIS' : 'Tunai');
+                data.append('kode_transaksi', kodeTransaksi);
+                data.append('id_cabang', idCabang);
 
                 const respon = await fetch(urlSimpan, {
                     method: 'POST',

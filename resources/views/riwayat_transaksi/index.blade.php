@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Transaksi</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,37 +15,35 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #fff;
             display: flex;
             min-height: 100vh;
             color: #111;
         }
 
-        /* ===== SIDEBAR ===== */
         .sidebar {
             width: 220px;
             background: #fff;
             border-right: 2px solid #ddd;
-            flex-shrink: 0;
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
-        .sidebar .brand {
+        .brand {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 22px 18px;
         }
 
-        .sidebar .brand img {
+        .brand img {
             width: 42px;
             height: 42px;
             border-radius: 50%;
             object-fit: cover;
         }
 
-        .sidebar .brand span {
+        .brand span {
             color: #d40000;
             font-weight: 600;
             font-size: 15px;
@@ -61,30 +57,29 @@
         .sidebar nav a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
+            gap: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
             color: #111;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
+            font-weight: 500;
             border-radius: 8px;
-            margin-bottom: 6px;
-            transition: background 0.2s ease;
         }
 
-        .sidebar nav a i {
-            width: 18px;
-            text-align: center;
-            font-size: 15px;
+        .sidebar nav a svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar nav a:hover {
+            background: #ffe3e3;
         }
 
         .sidebar nav a.active {
             background: #ff9a9a;
             color: #fff;
-            font-weight: 500;
-        }
-
-        .sidebar nav a:not(.active):hover {
-            background: #ffe3e3;
         }
 
         .logout-box {
@@ -95,56 +90,36 @@
 
         .logout-btn {
             width: 100%;
-            text-align: left;
-            background: #f8d3d3;
-            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 10px 14px;
+            background: #f8d3d3;
             color: #d40000;
+            border: none;
+            border-radius: 8px;
             font-family: inherit;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        }
+
+        .logout-btn i {
+            font-size: 18px;
         }
 
         .logout-btn:hover {
             background: #f3bcbc;
         }
 
-        /* ===== MAIN & TOPBAR ===== */
         .main {
             flex: 1;
             min-width: 0;
-            display: flex;
-            flex-direction: column;
             background: #f8f9fa;
         }
 
-        .topbar {
-            background: #fafafa;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .topbar .title {
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        .topbar .avatar {
-            font-size: 26px;
-            line-height: 1;
-            color: #000;
-        }
-
         .content {
-            padding: 24px;
+            padding: 28px 24px 24px;
         }
 
         .content h1 {
@@ -153,24 +128,32 @@
             margin-bottom: 16px;
         }
 
-        /* ===== TAB CABANG ===== */
+        .tabs-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .tabs-row form {
+            margin: 0;
+        }
+
         .tabs {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 16px;
         }
 
         .tab {
             min-width: 135px;
-            padding: 8px 26px;
-            border: 1px solid #aaa;
+            padding: 8px 20px;
+            border: 1px solid #ccc;
             border-radius: 6px;
-            background: transparent;
             color: #999;
-            font-family: inherit;
             font-size: 12px;
-            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
         }
 
         .tab:hover {
@@ -184,57 +167,44 @@
             font-weight: 500;
         }
 
-        /* ===== PANEL ===== */
+        .pilih-bulan {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #ff9a9a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23fff'/%3E%3C/svg%3E") no-repeat right 12px center;
+            color: #fff;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            padding: 9px 30px 9px 14px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .pilih-bulan option {
+            background: #fff;
+            color: #111;
+        }
+
         .panel {
             background: #fff;
             border-radius: 10px;
-            padding: 20px 18px 30px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+            padding: 20px 18px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .panel-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
-        .periode {
+        .judul-panel {
             font-size: 16px;
         }
 
-        /* ===== PAGINATION ===== */
-        .pagination {
-            display: flex;
-            gap: 8px;
-        }
-
-        .pagination button {
-            min-width: 30px;
-            height: 30px;
-            padding: 0 7px;
-            border: 1px solid #bbb;
-            border-radius: 7px;
-            background: #fff;
-            color: #888;
-            font-family: inherit;
-            font-size: 11px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-        }
-
-        .pagination button:hover,
-        .pagination button.active {
-            background: #ff9a9a;
-            border-color: #ff9a9a;
-            color: #fff;
-        }
-
-        /* ===== TABEL ===== */
         .table-wrap {
             border: 1px solid #888;
             border-radius: 7px;
@@ -249,7 +219,7 @@
 
         th, td {
             border: 1px solid #aaa;
-            padding: 9px 12px;
+            padding: 8px 12px;
             text-align: center;
         }
 
@@ -259,110 +229,67 @@
         }
 
         tr > :first-child { border-left: none; }
-        tr > :last-child  { border-right: none; }
+        tr > :last-child { border-right: none; }
         thead tr:first-child th { border-top: none; }
         tbody tr:last-child td { border-bottom: none; }
 
-        tbody tr.data-row:hover {
+        tbody tr:hover {
             background: #fff6f6;
         }
 
-        .btn-detail {
-            border: none;
-            background: #ff9a9a;
-            color: #fff;
-            font-family: inherit;
-            font-size: 11px;
-            padding: 5px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-detail:hover {
-            background: #f98585;
-        }
-
-        .empty-text {
+        .kosong {
             color: #999;
             padding: 20px;
         }
 
-        /* ===== POPUP DETAIL ===== */
-        .detail-info {
-            text-align: left;
-            font-size: 13px;
-            margin-bottom: 12px;
-            line-height: 1.7;
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 16px;
         }
 
-        .detail-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
+        .pagination a {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 7px;
+            border: 1px solid #bbb;
+            border-radius: 7px;
+            background: #fff;
+            color: #888;
+            font-size: 11px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .detail-table th,
-        .detail-table td {
-            border: none;
-            border-bottom: 1px solid #ddd;
-            padding: 8px 6px;
-            background: transparent;
+        .pagination a:hover,
+        .pagination a.active {
+            background: #ff9a9a;
+            border-color: #ff9a9a;
+            color: #fff;
         }
 
-        .detail-table th:first-child,
-        .detail-table td:first-child {
-            text-align: left;
-        }
-
-        .detail-table .kanan {
-            text-align: right;
-        }
-
-        .detail-table tfoot td {
-            font-weight: 600;
-            border-bottom: none;
-        }
-
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ddd; }
-            .sidebar nav { display: flex; flex-wrap: wrap; }
-            .logout-box { margin: 0 12px; }
-            .tabs { gap: 10px; }
-            .tab { min-width: 0; flex: 1; padding: 8px 12px; }
-        }
     </style>
 </head>
 <body>
 
     @php
-        // Link aman: kalau route belum dibuat, otomatis jadi "#" (tidak error)
-        $link = fn ($nama, $param = null) => \Illuminate\Support\Facades\Route::has($nama)
-            ? route($nama, $param)
-            : '#';
+        $daftarCabang = \App\Models\Cabang::orderBy('id_cabang')->get();
+        $bulanDipilih = request('bulan', now()->format('Y-m'));
+        $cabangAktif = request('cabang', Auth::user()->id_cabang ?? ($daftarCabang->first()->id_cabang ?? ''));
 
-        // Data transaksi dari route / controller
-        $items = $transaksi ?? $riwayat ?? $data ?? collect();
-        $daftarCabang = $cabang ?? ['Cabang 1', 'Cabang 2', 'Cabang 3'];
-
-        $formatTanggal = fn ($tgl) => !empty($tgl)
-            ? rescue(fn () => \Carbon\Carbon::parse($tgl)->format('d/m/Y  H:i'), $tgl)
-            : '-';
-
-        // Rincian setiap transaksi untuk popup "Lihat Detail"
-        $detailMap = collect($items)->mapWithKeys(fn ($t) => [
-            (string) $t->id => [
-                'kode'    => $t->kode ?? $t->id_transaksi ?? '-',
-                'cabang'  => $t->cabang ?? '-',
-                'tanggal' => $formatTanggal($t->tanggal ?? $t->created_at ?? null),
-                'total'   => (int) ($t->total ?? 0),
-                'items'   => collect($t->items ?? $t->detail ?? [])->map(fn ($i) => [
-                    'nama'  => data_get($i, 'nama') ?? data_get($i, 'nama_menu', '-'),
-                    'qty'   => (int) data_get($i, 'qty', data_get($i, 'jumlah', 1)),
-                    'harga' => (int) data_get($i, 'harga', 0),
-                ])->values(),
-            ],
-        ]);
+        $riwayat = \Illuminate\Support\Facades\DB::table('riwayat')
+            ->select('kode_transaksi', 'metode_pembayaran')
+            ->selectRaw('MIN(tanggal) as tanggal, MAX(created_at) as waktu, SUM(total) as total')
+            ->where('id_cabang', $cabangAktif)
+            ->whereYear('tanggal', substr($bulanDipilih, 0, 4))
+            ->whereMonth('tanggal', substr($bulanDipilih, 5, 2))
+            ->groupBy('kode_transaksi', 'metode_pembayaran')
+            ->orderByDesc('waktu')
+            ->paginate(10)
+            ->withQueryString();
     @endphp
 
     <div class="sidebar">
@@ -372,203 +299,107 @@
         </div>
 
         <nav>
-            <a href="{{ $link('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="{{ $link('bahan-masuk.index') }}"><i class="fa-solid fa-box"></i> Stok Bahan</a>
-            <a href="{{ $link('kasir.index') }}"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
-            <a href="{{ $link('riwayat.index') }}" class="active"><i class="fa-regular fa-clock"></i> Riwayat Transaksi</a>
-            <a href="{{ $link('omset-harian.index') }}"><i class="fa-regular fa-calendar-check"></i> Omset Harian</a>
-            <a href="{{ $link('omset-bulanan.index') }}"><i class="fa-regular fa-calendar-days"></i> Omset Bulanan</a>
+            <a href="{{ route('dashboard') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 19.5a9 9 0 1 1 12.8 0z"/><path d="M12 14l3.5-3.5"/><path d="M7.5 12h.5M12 7.5V8M16.5 12H16M8.8 8.8l.4.4"/></svg> Dashboard</a>
+            <a href="{{ route('kasir.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h2.5l2.3 11.5h11.4L20.5 6H5.2"/><path d="M8 19.5h1.5M15.5 19.5H17"/></svg> Kasir</a>
+            <a href="{{ route('data-bahan.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg> Stok Bahan</a>
+            <a href="{{ route('riwayat.index') }}" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l3.5 3.5"/></svg> Riwayat Transaksi</a>
+            <a href="{{ route('omset-harian.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="19" rx="2"/><path d="M10 3h4v2h-4z"/><path d="M8 11l1.2 1.2L11 10.4M13.5 11.5H16M8 16.5h2M13.5 16.5H16"/></svg> Omset Harian</a>
+            <a href="{{ route('omset-bulanan.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 7.5h18M7.5 3v4M12 3v4M16.5 3v4"/><path d="M7 13.5h.01M10.3 13.5h.01M13.7 13.5h.01M17 13.5h.01M7 17h.01M10.3 17h.01M13.7 17h.01M17 17h.01" stroke-width="2.5"/></svg> Omset Bulanan</a>
+            <a href="{{ Route::has('karyawan.index') ? route('karyawan.index') : '#' }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.5"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/><path d="M8.5 20.5V17a3.5 3.5 0 0 1 7 0v3.5z"/><path d="M5.5 19.5H2.5v-2a2.5 2.5 0 0 1 3.7-2.2M18.5 19.5h3v-2a2.5 2.5 0 0 0-3.7-2.2"/></svg> Kehadiran Karyawan</a>
         </nav>
 
         <div class="logout-box">
-            <form action="{{ $link('logout') }}" method="POST" style="margin: 0;">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                    <i class="ti ti-logout"></i> Log Out
                 </button>
             </form>
         </div>
     </div>
 
     <div class="main">
-        <div class="topbar">
-            <div class="title">
-                {{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? $namaUser ?? 'Administrator' }}
-            </div>
-
-            <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}">
-                <i class="fa-solid fa-circle-user"></i>
-            </div>
-        </div>
-
         <div class="content">
             <h1>Riwayat Transaksi</h1>
 
-            <div class="tabs">
-                @foreach ($daftarCabang as $c)
-                    <button type="button" class="tab {{ $loop->first ? 'active' : '' }}" data-cabang="{{ $c }}">{{ $c }}</button>
-                @endforeach
+            <div class="tabs-row">
+                <div class="tabs">
+                    @foreach ($daftarCabang as $cabang)
+                        <a href="{{ route('riwayat.index', ['cabang' => $cabang->id_cabang, 'bulan' => $bulanDipilih]) }}"
+                           class="tab {{ $cabang->id_cabang == $cabangAktif ? 'active' : '' }}">{{ $cabang->nama_cabang }}</a>
+                    @endforeach
+                </div>
+
+                <form method="GET" action="{{ route('riwayat.index') }}">
+                    <input type="hidden" name="cabang" value="{{ $cabangAktif }}">
+                    <select name="bulan" class="pilih-bulan" onchange="this.form.submit()">
+                        @for ($i = 0; $i < 12; $i++)
+                            @php $pilihan = now()->startOfMonth()->subMonths($i); @endphp
+                            <option value="{{ $pilihan->format('Y-m') }}" {{ $pilihan->format('Y-m') == $bulanDipilih ? 'selected' : '' }}>
+                                {{ $pilihan->locale('id')->translatedFormat('F Y') }}
+                            </option>
+                        @endfor
+                    </select>
+                </form>
             </div>
 
             <div class="panel">
                 <div class="panel-top">
-                    <div class="periode">
-                        {{ $periode ?? \Carbon\Carbon::now()->locale('id')->translatedFormat('F Y') }}
-                    </div>
-
-                    {{-- Pagination: 1 2 3 ... (tombol "..." = halaman berikutnya) --}}
-                    <div class="pagination" id="pagination"></div>
+                    <div class="judul-panel">{{ \Carbon\Carbon::parse($bulanDipilih . '-01')->locale('id')->translatedFormat('F Y') }}</div>
                 </div>
 
                 <div class="table-wrap">
-                    <table id="tabelTransaksi">
+                    <table>
                         <thead>
                             <tr>
-                                <th style="width: 80px;">No</th>
+                                <th style="width: 70px;">No</th>
                                 <th>ID Transaksi</th>
                                 <th>Tanggal</th>
+                                <th>Metode Pembayaran</th>
                                 <th>Total</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($items as $t)
-                                <tr class="data-row" data-cabang="{{ $t->cabang ?? '' }}">
-                                    <td class="no">{{ $loop->iteration }}</td>
-                                    <td>{{ $t->kode ?? $t->id_transaksi ?? '-' }}</td>
-                                    <td>{{ $formatTanggal($t->tanggal ?? $t->created_at ?? null) }}</td>
-                                    <td>Rp{{ number_format($t->total ?? 0, 0, ',', '.') }}</td>
-                                    <td>
-                                        <button type="button" class="btn-detail" data-id="{{ $t->id }}">Lihat Detail</button>
-                                    </td>
+                            @forelse ($riwayat as $item)
+                                <tr>
+                                    <td>{{ $riwayat->firstItem() + $loop->index }}</td>
+                                    <td>{{ $item->kode_transaksi ?? '-' }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}&nbsp;&nbsp;{{ $item->waktu ? \Carbon\Carbon::parse($item->waktu)->format('H:i') : '' }}</td>
+                                    <td>{{ $item->metode_pembayaran == 'Tunai' ? 'CASH' : strtoupper($item->metode_pembayaran) }}</td>
+                                    <td>Rp{{ number_format($item->total, 0, ',', '.') }}</td>
                                 </tr>
-                            @endforeach
-
-                            <tr id="barisKosong" style="display: none;">
-                                <td colspan="5" class="empty-text">Belum ada transaksi di cabang ini.</td>
-                            </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="kosong">Belum ada transaksi di bulan ini.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
+
+                @if ($riwayat->lastPage() > 1)
+                    @php
+                        $mulai = max(1, min($riwayat->currentPage() - 1, $riwayat->lastPage() - 2));
+                        $akhir = min($riwayat->lastPage(), $mulai + 2);
+                    @endphp
+
+                    <div class="pagination">
+                        @if ($mulai > 1)
+                            <a href="{{ $riwayat->url($mulai - 1) }}">...</a>
+                        @endif
+
+                        @foreach ($riwayat->getUrlRange($mulai, $akhir) as $halaman => $url)
+                            <a href="{{ $url }}" class="{{ $halaman == $riwayat->currentPage() ? 'active' : '' }}">{{ $halaman }}</a>
+                        @endforeach
+
+                        @if ($akhir < $riwayat->lastPage())
+                            <a href="{{ $riwayat->url($akhir + 1) }}">...</a>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const detailMap = @json($detailMap);
-        const rupiah = (n) => 'Rp' + Math.round(n).toLocaleString('id-ID');
-        const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-
-        // ===== FILTER CABANG + PAGINATION =====
-        const perPage = 7;
-        const rows = [...document.querySelectorAll('#tabelTransaksi tbody tr.data-row')];
-        const box = document.getElementById('pagination');
-        const barisKosong = document.getElementById('barisKosong');
-        const tabs = [...document.querySelectorAll('.tab')];
-
-        let cabangAktif = tabs.length ? tabs[0].dataset.cabang : '';
-        let current = 1;
-
-        function tombol(label, page, aktif, title) {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.textContent = label;
-            if (aktif) b.className = 'active';
-            if (title) b.title = title;
-            b.onclick = () => { current = page; render(); };
-            box.appendChild(b);
-        }
-
-        function render() {
-            const terfilter = rows.filter((tr) => tr.dataset.cabang === cabangAktif);
-            const last = Math.max(1, Math.ceil(terfilter.length / perPage));
-            if (current > last) current = last;
-
-            rows.forEach((tr) => tr.style.display = 'none');
-
-            terfilter.forEach((tr, i) => {
-                const visible = i >= (current - 1) * perPage && i < current * perPage;
-                tr.style.display = visible ? '' : 'none';
-                tr.querySelector('.no').textContent = i + 1;
-            });
-
-            barisKosong.style.display = terfilter.length === 0 ? '' : 'none';
-
-            box.innerHTML = '';
-            const start = Math.floor((current - 1) / 3) * 3 + 1;
-
-            if (start > 1) tombol('...', start - 1, false, 'Halaman sebelumnya');
-            for (let p = start; p <= start + 2; p++) tombol(p, p, p === current);
-            tombol('...', current < last ? current + 1 : current, false, 'Halaman berikutnya');
-        }
-
-        tabs.forEach((tab) => {
-            tab.addEventListener('click', () => {
-                tabs.forEach((t) => t.classList.remove('active'));
-                tab.classList.add('active');
-                cabangAktif = tab.dataset.cabang;
-                current = 1;
-                render();
-            });
-        });
-
-        // ===== POPUP LIHAT DETAIL =====
-        document.querySelectorAll('.btn-detail').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const d = detailMap[btn.dataset.id];
-                if (!d) return;
-
-                let isiItem = '';
-                if (d.items.length === 0) {
-                    isiItem = '<tr><td colspan="4" style="text-align:center;color:#999;">Rincian item belum tersedia.</td></tr>';
-                } else {
-                    d.items.forEach((it) => {
-                        isiItem += `
-                            <tr>
-                                <td>${esc(it.nama)}</td>
-                                <td>${it.qty}</td>
-                                <td class="kanan">${rupiah(it.harga)}</td>
-                                <td class="kanan">${rupiah(it.harga * it.qty)}</td>
-                            </tr>`;
-                    });
-                }
-
-                Swal.fire({
-                    title: 'Detail Transaksi',
-                    width: 600,
-                    confirmButtonText: 'Tutup',
-                    confirmButtonColor: '#ff8a8a',
-                    html: `
-                        <div class="detail-info">
-                            <div><b>ID Transaksi:</b> ${esc(d.kode)}</div>
-                            <div><b>Cabang:</b> ${esc(d.cabang)}</div>
-                            <div><b>Tanggal:</b> ${esc(d.tanggal)}</div>
-                        </div>
-                        <table class="detail-table">
-                            <thead>
-                                <tr>
-                                    <th>Menu</th>
-                                    <th>Qty</th>
-                                    <th class="kanan">Harga</th>
-                                    <th class="kanan">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>${isiItem}</tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3">Total</td>
-                                    <td class="kanan">${rupiah(d.total)}</td>
-                                </tr>
-                            </tfoot>
-                        </table>`
-                });
-            });
-        });
-
-        render();
-    </script>
 </body>
 </html>

@@ -282,7 +282,7 @@
         $karyawan = \App\Models\Karyawan::with('cabang')
             ->whereDate('tanggal', $tanggalAktif)
             ->where('id_cabang', $cabangAktif)
-            ->orderBy('jam_masuk')
+            ->orderBy('created_at')
             ->paginate(15)
             ->withQueryString();
     @endphp
@@ -371,10 +371,23 @@
                 </div>
 
                 @if ($karyawan->lastPage() > 1)
+                    @php
+                        $mulai = max(1, min($karyawan->currentPage() - 1, $karyawan->lastPage() - 2));
+                        $akhir = min($karyawan->lastPage(), $mulai + 2);
+                    @endphp
+
                     <div class="pagination">
-                        @foreach ($karyawan->getUrlRange(1, $karyawan->lastPage()) as $halaman => $url)
+                        @if ($mulai > 1)
+                            <a href="{{ $karyawan->url($mulai - 1) }}">...</a>
+                        @endif
+
+                        @foreach ($karyawan->getUrlRange($mulai, $akhir) as $halaman => $url)
                             <a href="{{ $url }}" class="{{ $halaman == $karyawan->currentPage() ? 'active' : '' }}">{{ $halaman }}</a>
                         @endforeach
+
+                        @if ($akhir < $karyawan->lastPage())
+                            <a href="{{ $karyawan->url($akhir + 1) }}">...</a>
+                        @endif
                     </div>
                 @endif
             </div>

@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Omset Harian</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-        <style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -17,37 +15,35 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #fff;
             display: flex;
             min-height: 100vh;
             color: #111;
         }
 
-        /* ===== SIDEBAR ===== */
         .sidebar {
             width: 220px;
             background: #fff;
             border-right: 2px solid #ddd;
-            flex-shrink: 0;
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
         }
 
-        .sidebar .brand {
+        .brand {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 22px 18px;
         }
 
-        .sidebar .brand img {
+        .brand img {
             width: 42px;
             height: 42px;
             border-radius: 50%;
             object-fit: cover;
         }
 
-        .sidebar .brand span {
+        .brand span {
             color: #d40000;
             font-weight: 600;
             font-size: 15px;
@@ -61,30 +57,29 @@
         .sidebar nav a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
+            gap: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
             color: #111;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
+            font-weight: 500;
             border-radius: 8px;
-            margin-bottom: 6px;
-            transition: background 0.2s ease;
         }
 
-        .sidebar nav a i {
-            width: 18px;
-            text-align: center;
-            font-size: 15px;
+        .sidebar nav a svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar nav a:hover {
+            background: #ffe3e3;
         }
 
         .sidebar nav a.active {
             background: #ff9a9a;
             color: #fff;
-            font-weight: 500;
-        }
-
-        .sidebar nav a:not(.active):hover {
-            background: #ffe3e3;
         }
 
         .logout-box {
@@ -95,56 +90,36 @@
 
         .logout-btn {
             width: 100%;
-            text-align: left;
-            background: #f8d3d3;
-            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 10px 14px;
+            background: #f8d3d3;
             color: #d40000;
+            border: none;
+            border-radius: 8px;
             font-family: inherit;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        }
+
+        .logout-btn i {
+            font-size: 18px;
         }
 
         .logout-btn:hover {
             background: #f3bcbc;
         }
 
-        /* ===== MAIN & TOPBAR ===== */
         .main {
             flex: 1;
             min-width: 0;
-            display: flex;
-            flex-direction: column;
             background: #f8f9fa;
         }
 
-        .topbar {
-            background: #fafafa;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .topbar .title {
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        .topbar .avatar {
-            font-size: 26px;
-            line-height: 1;
-            color: #000;
-        }
-
         .content {
-            padding: 24px;
+            padding: 28px 24px 24px;
         }
 
         .content h1 {
@@ -153,114 +128,83 @@
             margin-bottom: 16px;
         }
 
-        /* ===== PANEL ===== */
-        .panel {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
-        }
-
-        /* ===== KARTU RINGKASAN ===== */
-        .ringkasan {
+        .tabs-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            padding: 16px 18px;
             margin-bottom: 24px;
         }
 
-        .ringkasan-kiri {
+        .tabs-row form {
+            margin: 0;
+        }
+
+        .tabs {
             display: flex;
-            align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
-        .ringkasan-kiri i {
-            font-size: 38px;
-            color: #222;
-        }
-
-        .ringkasan-label {
+        .tab {
+            min-width: 135px;
+            padding: 8px 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            color: #999;
             font-size: 12px;
+            text-align: center;
+            text-decoration: none;
         }
 
-        .ringkasan-tanggal {
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 6px;
+        .tab:hover {
+            background: #f1f1f1;
         }
 
-        .ringkasan-kanan {
-            display: flex;
-            align-items: stretch;
+        .tab.active {
+            background: #ff9a9a;
+            border-color: #ff9a9a;
+            color: #fff;
+            font-weight: 500;
         }
 
-        .ringkasan-angka {
-            padding: 6px 16px;
-            font-size: 12px;
+        .pilih-bulan {
+            appearance: none;
+            -webkit-appearance: none;
+            background: #ff9a9a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23fff'/%3E%3C/svg%3E") no-repeat right 12px center;
+            color: #fff;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            padding: 9px 30px 9px 14px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .ringkasan-angka + .ringkasan-angka {
-            border-left: 1px solid #555;
+        .pilih-bulan option {
+            background: #fff;
+            color: #111;
         }
 
-        .ringkasan-angka strong {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 6px;
-        }
-
-        /* ===== DAFTAR TRANSAKSI ===== */
-        .daftar {
-            padding: 20px 18px 30px;
+        .panel {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 18px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
 
         .panel-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
-        .panel-top h2 {
+        .judul-panel {
             font-size: 16px;
-            font-weight: 400;
         }
 
-        /* ===== PAGINATION ===== */
-        .pagination {
-            display: flex;
-            gap: 8px;
-        }
-
-        .pagination button {
-            min-width: 30px;
-            height: 30px;
-            padding: 0 7px;
-            border: 1px solid #bbb;
-            border-radius: 7px;
-            background: #fff;
-            color: #888;
-            font-family: inherit;
-            font-size: 11px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-        }
-
-        .pagination button:hover,
-        .pagination button.active {
-            background: #ff9a9a;
-            border-color: #ff9a9a;
-            color: #fff;
-        }
-
-        /* ===== TABEL ===== */
         .table-wrap {
             border: 1px solid #888;
             border-radius: 7px;
@@ -275,7 +219,7 @@
 
         th, td {
             border: 1px solid #aaa;
-            padding: 9px 12px;
+            padding: 8px 12px;
             text-align: center;
         }
 
@@ -285,115 +229,205 @@
         }
 
         tr > :first-child { border-left: none; }
-        tr > :last-child  { border-right: none; }
+        tr > :last-child { border-right: none; }
         thead tr:first-child th { border-top: none; }
         tbody tr:last-child td { border-bottom: none; }
 
-        tbody tr.data-row:hover {
+        tbody tr:hover {
             background: #fff6f6;
         }
 
-        .btn-detail {
-            border: none;
-            background: #ff9a9a;
-            color: #fff;
-            font-family: inherit;
-            font-size: 11px;
-            padding: 5px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-detail:hover {
-            background: #f98585;
-        }
-
-        .empty-text {
+        .kosong {
             color: #999;
             padding: 20px;
         }
 
-        /* ===== POPUP DETAIL ===== */
-        .detail-info {
-            text-align: left;
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .pagination a {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 7px;
+            border: 1px solid #bbb;
+            border-radius: 7px;
+            background: #fff;
+            color: #888;
+            font-size: 11px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pagination a:hover,
+        .pagination a.active {
+            background: #ff9a9a;
+            border-color: #ff9a9a;
+            color: #fff;
+        }
+
+
+        .kartu-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .kartu {
+            background: #fff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .kartu-judul {
             font-size: 13px;
-            margin-bottom: 12px;
-            line-height: 1.7;
+            margin-bottom: 10px;
         }
 
-        .detail-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
+        .kartu-isi {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .detail-table th,
-        .detail-table td {
-            border: none;
-            border-bottom: 1px solid #ddd;
-            padding: 8px 6px;
-            background: transparent;
+        .kartu-ikon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #ff9a9a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
         }
 
-        .detail-table th:first-child,
-        .detail-table td:first-child {
-            text-align: left;
-        }
-
-        .detail-table .kanan {
-            text-align: right;
-        }
-
-        .detail-table tfoot td {
+        .kartu-nilai {
+            font-size: 17px;
             font-weight: 600;
-            border-bottom: none;
         }
 
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #ddd; }
-            .sidebar nav { display: flex; flex-wrap: wrap; }
-            .logout-box { margin: 0 12px; }
-            .ringkasan { flex-direction: column; align-items: flex-start; }
+        .kartu-nilai.merah {
+            color: #d40000;
+        }
+
+        .kartu-ket {
+            font-size: 11px;
+            margin-top: 12px;
+        }
+
+        .kartu-ket .hijau {
+            color: #1fa34d;
+        }
+
+        .target {
+            display: grid;
+            grid-template-columns: 1fr auto 1px 230px;
+            align-items: center;
+            gap: 20px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .target-judul {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .target-angka {
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+
+        .bar {
+            height: 14px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-isi {
+            height: 100%;
+            background: #ff8a8a;
+            border-radius: 10px;
+        }
+
+        .persen {
+            text-align: left;
+            padding-top: 18px;
+        }
+
+        .persen strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .persen span {
+            font-size: 11px;
+        }
+
+        .garis {
+            align-self: stretch;
+            background: #bbb;
+        }
+
+        .bonus-judul {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .bonus-nilai {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .bonus-status {
+            font-size: 12px;
+        }
+
+        .bonus-status.tercapai {
+            color: #1fa34d;
         }
     </style>
 </head>
 <body>
 
     @php
-        // Link aman: kalau route belum dibuat, otomatis jadi "#" (tidak error)
-        $link = fn ($nama, $param = null) => \Illuminate\Support\Facades\Route::has($nama)
-            ? route($nama, $param)
-            : '#';
+        $targetOmset = 3000000;
+        $bonusKaryawan = 50000;
 
-        // Data transaksi hari ini dari route / controller
-        $items = collect($transaksi ?? $data ?? []);
+        $daftarCabang = \App\Models\Cabang::orderBy('id_cabang')->get();
+        $tanggalAktif = request('tanggal', now()->format('Y-m-d'));
+        $cabangAktif = request('cabang', Auth::user()->id_cabang ?? ($daftarCabang->first()->id_cabang ?? ''));
 
-        // Tanggal ringkasan
-        $tgl = \Carbon\Carbon::parse($tanggal ?? now())->locale('id');
+        $transaksi = \Illuminate\Support\Facades\DB::table('riwayat')
+            ->where('id_cabang', $cabangAktif)
+            ->whereDate('tanggal', $tanggalAktif);
 
-        // Kalau total & jumlah tidak dikirim, hitung otomatis dari data
-        $totalOmset     = $totalOmset ?? $items->sum(fn ($t) => (int) ($t->total ?? 0));
-        $jumlahTransaksi = $jumlahTransaksi ?? $items->count();
+        $omsetKotor = (clone $transaksi)->sum('total');
+        $jamDiskon = (clone $transaksi)->whereTime('created_at', '>=', '11:00:00')->whereTime('created_at', '<', '13:00:00');
+        $totalDiskon = (clone $jamDiskon)->sum('total') * 10 / 100;
+        $transaksiDiskon = (clone $jamDiskon)->distinct()->count('kode_transaksi');
 
-        $formatWaktu = fn ($w) => !empty($w)
-            ? rescue(fn () => \Carbon\Carbon::parse($w)->format('H:i'), $w)
-            : '-';
+        $omsetBersih = $omsetKotor - $totalDiskon;
+        $jumlahTransaksi = (clone $transaksi)->distinct()->count('kode_transaksi');
 
-        // Rincian setiap transaksi untuk popup "Lihat Detail"
-        $detailMap = $items->mapWithKeys(fn ($t) => [
-            (string) $t->id => [
-                'kode'   => $t->kode ?? $t->id_transaksi ?? '-',
-                'waktu'  => $formatWaktu($t->waktu ?? $t->tanggal ?? $t->created_at ?? null),
-                'metode' => $t->metode ?? $t->metode_pembayaran ?? '-',
-                'total'  => (int) ($t->total ?? 0),
-                'items'  => collect($t->items ?? $t->detail ?? [])->map(fn ($i) => [
-                    'nama'  => data_get($i, 'nama') ?? data_get($i, 'nama_menu', '-'),
-                    'qty'   => (int) data_get($i, 'qty', data_get($i, 'jumlah', 1)),
-                    'harga' => (int) data_get($i, 'harga', 0),
-                ])->values(),
-            ],
-        ]);
+        $persen = $targetOmset > 0 ? min(100, round($omsetBersih / $targetOmset * 100)) : 0;
+        $kurang = max(0, $targetOmset - $omsetBersih);
+        $tercapai = $omsetBersih >= $targetOmset;
     @endphp
 
     <div class="sidebar">
@@ -403,199 +437,103 @@
         </div>
 
         <nav>
-            <a href="{{ $link('dashboard') }}"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            <a href="{{ $link('bahan-masuk.index') }}"><i class="fa-solid fa-box"></i> Stok Bahan</a>
-            <a href="{{ $link('kasir.index') }}"><i class="fa-solid fa-cart-shopping"></i> Kasir</a>
-            <a href="{{ $link('riwayat.index') }}"><i class="fa-regular fa-clock"></i> Riwayat Transaksi</a>
-            <a href="{{ $link('omset-harian.index') }}" class="active"><i class="fa-regular fa-calendar-check"></i> Omset Harian</a>
-            <a href="{{ route('omset-bulanan.index') }}"><i class="fa-regular fa-calendar-days"></i> Omset Bulanan</a>
+            <a href="{{ route('dashboard') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 19.5a9 9 0 1 1 12.8 0z"/><path d="M12 14l3.5-3.5"/><path d="M7.5 12h.5M12 7.5V8M16.5 12H16M8.8 8.8l.4.4"/></svg> Dashboard</a>
+            <a href="{{ route('kasir.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h2.5l2.3 11.5h11.4L20.5 6H5.2"/><path d="M8 19.5h1.5M15.5 19.5H17"/></svg> Kasir</a>
+            <a href="{{ route('data-bahan.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg> Stok Bahan</a>
+            <a href="{{ route('riwayat.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l3.5 3.5"/></svg> Riwayat Transaksi</a>
+            <a href="{{ route('omset-harian.index') }}" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="19" rx="2"/><path d="M10 3h4v2h-4z"/><path d="M8 11l1.2 1.2L11 10.4M13.5 11.5H16M8 16.5h2M13.5 16.5H16"/></svg> Omset Harian</a>
+            <a href="{{ route('omset-bulanan.index') }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 7.5h18M7.5 3v4M12 3v4M16.5 3v4"/><path d="M7 13.5h.01M10.3 13.5h.01M13.7 13.5h.01M17 13.5h.01M7 17h.01M10.3 17h.01M13.7 17h.01M17 17h.01" stroke-width="2.5"/></svg> Omset Bulanan</a>
+            <a href="{{ Route::has('karyawan.index') ? route('karyawan.index') : '#' }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.5"/><circle cx="5" cy="9" r="2"/><circle cx="19" cy="9" r="2"/><path d="M8.5 20.5V17a3.5 3.5 0 0 1 7 0v3.5z"/><path d="M5.5 19.5H2.5v-2a2.5 2.5 0 0 1 3.7-2.2M18.5 19.5h3v-2a2.5 2.5 0 0 0-3.7-2.2"/></svg> Kehadiran Karyawan</a>
         </nav>
 
         <div class="logout-box">
-            <form action="{{ $link('logout') }}" method="POST" style="margin: 0;">
+            <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                    <i class="ti ti-logout"></i> Log Out
                 </button>
             </form>
         </div>
     </div>
 
     <div class="main">
-        <div class="topbar">
-            <div class="title">
-                {{ Auth::user()->jabatan ?? 'Manajer' }}, {{ Auth::user()->nama_admin ?? $namaUser ?? 'Administrator' }}
-            </div>
-
-            <div class="avatar" title="{{ Auth::user()->username ?? 'admin' }}">
-                <i class="fa-solid fa-circle-user"></i>
-            </div>
-        </div>
-
         <div class="content">
             <h1>Omset Harian</h1>
 
-            {{-- ===== KARTU RINGKASAN ===== --}}
-            <div class="panel ringkasan">
-                <div class="ringkasan-kiri">
-                    <i class="fa-regular fa-clipboard"></i>
-                    <div>
-                        <div class="ringkasan-label">Ringkasan Penjualan . {{ $tgl->translatedFormat('l') }}</div>
-                        <div class="ringkasan-tanggal">{{ $tgl->translatedFormat('d F Y') }}</div>
-                    </div>
+            <div class="tabs-row">
+                <div class="tabs">
+                    @foreach ($daftarCabang as $cabang)
+                        <a href="{{ route('omset-harian.index', ['cabang' => $cabang->id_cabang, 'tanggal' => $tanggalAktif]) }}"
+                           class="tab {{ $cabang->id_cabang == $cabangAktif ? 'active' : '' }}">{{ $cabang->nama_cabang }}</a>
+                    @endforeach
                 </div>
 
-                <div class="ringkasan-kanan">
-                    <div class="ringkasan-angka">
-                        Total Omset Hari Ini
-                        <strong>Rp{{ number_format($totalOmset, 0, ',', '.') }}</strong>
+                <form method="GET" action="{{ route('omset-harian.index') }}">
+                    <input type="hidden" name="cabang" value="{{ $cabangAktif }}">
+                    <select name="tanggal" class="pilih-bulan" onchange="this.form.submit()">
+                        @for ($i = 0; $i < 31; $i++)
+                            @php $hari = now()->subDays($i); @endphp
+                            <option value="{{ $hari->format('Y-m-d') }}" {{ $hari->format('Y-m-d') == $tanggalAktif ? 'selected' : '' }}>
+                                {{ $hari->locale('id')->translatedFormat('d F Y') }}
+                            </option>
+                        @endfor
+                    </select>
+                </form>
+            </div>
+
+            <div class="kartu-row">
+                <div class="kartu">
+                    <div class="kartu-judul">Omset Kotor</div>
+                    <div class="kartu-isi">
+                        <div class="kartu-ikon"><i class="ti ti-moneybag"></i></div>
+                        <div class="kartu-nilai">Rp{{ number_format($omsetKotor, 0, ',', '.') }}</div>
                     </div>
-                    <div class="ringkasan-angka">
-                        Transaksi
-                        <strong>{{ $jumlahTransaksi }}</strong>
+                    <div class="kartu-ket">Sebelum potongan diskon</div>
+                </div>
+
+                <div class="kartu">
+                    <div class="kartu-judul">Total Diskon</div>
+                    <div class="kartu-isi">
+                        <div class="kartu-ikon"><i class="ti ti-percentage"></i></div>
+                        <div class="kartu-nilai merah">-Rp{{ number_format($totalDiskon, 0, ',', '.') }}</div>
                     </div>
+                    <div class="kartu-ket">{{ $transaksiDiskon }} transaksi pakai diskon</div>
+                </div>
+
+                <div class="kartu">
+                    <div class="kartu-judul">Omset Bersih</div>
+                    <div class="kartu-isi">
+                        <div class="kartu-ikon"><i class="ti ti-check"></i></div>
+                        <div class="kartu-nilai">Rp{{ number_format($omsetBersih, 0, ',', '.') }}</div>
+                    </div>
+                    <div class="kartu-ket"><span class="hijau">{{ $jumlahTransaksi }}</span> Transaksi</div>
                 </div>
             </div>
 
-            {{-- ===== DAFTAR TRANSAKSI ===== --}}
-            <div class="panel daftar">
-                <div class="panel-top">
-                    <h2>Daftar Transaksi</h2>
-
-                    {{-- Pagination: 1 2 3 ... (tombol "..." = halaman berikutnya) --}}
-                    <div class="pagination" id="pagination"></div>
+            <div class="target">
+                <div>
+                    <div class="target-judul">Target Omset Bersih</div>
+                    <div class="target-angka">Rp{{ number_format($omsetBersih, 0, ',', '.') }} dari {{ number_format($targetOmset, 0, ',', '.') }}</div>
+                    <div class="bar">
+                        <div class="bar-isi" style="width: {{ $persen }}%;"></div>
+                    </div>
                 </div>
 
-                <div class="table-wrap">
-                    <table id="tabelTransaksi">
-                        <thead>
-                            <tr>
-                                <th style="width: 70px;">No</th>
-                                <th>ID Transaksi</th>
-                                <th>Waktu</th>
-                                <th>Metode Pembayaran</th>
-                                <th>Total</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($items as $t)
-                                <tr class="data-row">
-                                    <td class="no">{{ $loop->iteration }}</td>
-                                    <td>{{ $t->kode ?? $t->id_transaksi ?? '-' }}</td>
-                                    <td>{{ $formatWaktu($t->waktu ?? $t->tanggal ?? $t->created_at ?? null) }}</td>
-                                    <td>{{ $t->metode ?? $t->metode_pembayaran ?? '-' }}</td>
-                                    <td>Rp{{ number_format($t->total ?? 0, 0, ',', '.') }}</td>
-                                    <td>
-                                        <button type="button" class="btn-detail" data-id="{{ $t->id }}">Lihat Detail</button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="empty-text">Belum ada transaksi hari ini.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                <div class="persen">
+                    <strong>{{ $persen }}%</strong>
+                    <span>{{ $tercapai ? 'Target tercapai' : 'Kurang Rp' . number_format($kurang, 0, ',', '.') }}</span>
+                </div>
+
+                <div class="garis"></div>
+
+                <div>
+                    <div class="bonus-judul">Bonus Karyawan</div>
+                    <div class="bonus-nilai">Rp{{ number_format($bonusKaryawan, 0, ',', '.') }}</div>
+                    <div class="bonus-status {{ $tercapai ? 'tercapai' : '' }}">{{ $tercapai ? 'Target Tercapai' : 'Target Belum Tercapai' }}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const detailMap = @json($detailMap);
-        const rupiah = (n) => 'Rp' + Math.round(n).toLocaleString('id-ID');
-        const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-
-        // ===== PAGINATION =====
-        const perPage = 7;
-        const rows = [...document.querySelectorAll('#tabelTransaksi tbody tr.data-row')];
-        const box = document.getElementById('pagination');
-        const last = Math.max(1, Math.ceil(rows.length / perPage));
-        let current = 1;
-
-        function tombol(label, page, aktif, title) {
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.textContent = label;
-            if (aktif) b.className = 'active';
-            if (title) b.title = title;
-            b.onclick = () => { current = page; render(); };
-            box.appendChild(b);
-        }
-
-        function render() {
-            rows.forEach((tr, i) => {
-                const visible = i >= (current - 1) * perPage && i < current * perPage;
-                tr.style.display = visible ? '' : 'none';
-                tr.querySelector('.no').textContent = i + 1;
-            });
-
-            box.innerHTML = '';
-            const start = Math.floor((current - 1) / 3) * 3 + 1;
-
-            if (start > 1) tombol('...', start - 1, false, 'Halaman sebelumnya');
-            for (let p = start; p <= start + 2; p++) tombol(p, p, p === current);
-            tombol('...', current < last ? current + 1 : current, false, 'Halaman berikutnya');
-        }
-
-        // ===== POPUP LIHAT DETAIL =====
-        document.querySelectorAll('.btn-detail').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const d = detailMap[btn.dataset.id];
-                if (!d) return;
-
-                let isiItem = '';
-                if (d.items.length === 0) {
-                    isiItem = '<tr><td colspan="4" style="text-align:center;color:#999;">Rincian item belum tersedia.</td></tr>';
-                } else {
-                    d.items.forEach((it) => {
-                        isiItem += `
-                            <tr>
-                                <td>${esc(it.nama)}</td>
-                                <td>${it.qty}</td>
-                                <td class="kanan">${rupiah(it.harga)}</td>
-                                <td class="kanan">${rupiah(it.harga * it.qty)}</td>
-                            </tr>`;
-                    });
-                }
-
-                Swal.fire({
-                    title: 'Detail Transaksi',
-                    width: 560,
-                    confirmButtonText: 'Tutup',
-                    confirmButtonColor: '#ff8a8a',
-                    html: `
-                        <div class="detail-info">
-                            <div><b>ID Transaksi:</b> ${esc(d.kode)}</div>
-                            <div><b>Waktu:</b> ${esc(d.waktu)}</div>
-                            <div><b>Metode Pembayaran:</b> ${esc(d.metode)}</div>
-                        </div>
-                        <table class="detail-table">
-                            <thead>
-                                <tr>
-                                    <th>Menu</th>
-                                    <th>Qty</th>
-                                    <th class="kanan">Harga</th>
-                                    <th class="kanan">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>${isiItem}</tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="3">Total</td>
-                                    <td class="kanan">${rupiah(d.total)}</td>
-                                </tr>
-                            </tfoot>
-                        </table>`
-                });
-            });
-        });
-
-        render();
-    </script>
 </body>
 </html>
