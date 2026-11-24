@@ -177,110 +177,95 @@ class TransaksiSeeder extends Seeder
             ]);
         }
 
-        // 5. Penjualan Restoran
-        $p1 = $produkList->where('nama_produk', 'Chuka Sushi Roll')->first() ?? $produkList[0];
-        $p2 = $produkList->where('nama_produk', 'Beef Enoki Roll')->first() ?? $produkList[1];
-        $p3 = $produkList->where('nama_produk', 'Chicken Katsu Bento')->first() ?? $produkList[2];
-        $p4 = $produkList->where('nama_produk', 'Lemon Tea Ice')->first() ?? $produkList[4];
-
-        $samplePenjualan = [
-            // Hari ini
+        // 5. Pesanan penjualan; setiap pesanan dapat memiliki beberapa produk.
+        $sampleTransaksi = [
             [
-                'tanggal' => Carbon::now()->format('Y-m-d'),
-                'id_produk' => $p1->id_produk,
-                'jumlah_terjual' => 6,
-                'harga_satuan' => $p1->harga,
-                'total' => 6 * $p1->harga,
+                'tanggal' => Carbon::today(),
                 'metode_pembayaran' => 'QRIS',
-                'keterangan' => 'Order Meja 02',
+                'keterangan' => 'Pesanan meja 02',
+                'items' => [
+                    ['nama_produk' => 'Tofu Don', 'jumlah' => 2],
+                    ['nama_produk' => 'Chicken Katsu Don', 'jumlah' => 1],
+                    ['nama_produk' => 'Tsunetai Kocha (Es Teh)', 'jumlah' => 2],
+                ],
             ],
             [
-                'tanggal' => Carbon::now()->format('Y-m-d'),
-                'id_produk' => $p3->id_produk,
-                'jumlah_terjual' => 8,
-                'harga_satuan' => $p3->harga,
-                'total' => 8 * $p3->harga,
+                'tanggal' => Carbon::today(),
                 'metode_pembayaran' => 'Tunai',
-                'keterangan' => 'Order Meja 05 & Takeaway',
+                'keterangan' => 'Pesanan meja 05',
+                'items' => [
+                    ['nama_produk' => 'Gyudon', 'jumlah' => 1],
+                    ['nama_produk' => 'Edamame', 'jumlah' => 1],
+                ],
             ],
             [
-                'tanggal' => Carbon::now()->format('Y-m-d'),
-                'id_produk' => $p4->id_produk,
-                'jumlah_terjual' => 12,
-                'harga_satuan' => $p4->harga,
-                'total' => 12 * $p4->harga,
-                'metode_pembayaran' => 'QRIS',
-                'keterangan' => 'Minuman paket makan siang',
-            ],
-            // Kemarin
-            [
-                'tanggal' => Carbon::now()->subDays(1)->format('Y-m-d'),
-                'id_produk' => $p2->id_produk,
-                'jumlah_terjual' => 10,
-                'harga_satuan' => $p2->harga,
-                'total' => 10 * $p2->harga,
-                'metode_pembayaran' => 'Tunai',
-                'keterangan' => 'Order Meja 07',
-            ],
-            [
-                'tanggal' => Carbon::now()->subDays(1)->format('Y-m-d'),
-                'id_produk' => $p4->id_produk,
-                'jumlah_terjual' => 15,
-                'harga_satuan' => $p4->harga,
-                'total' => 15 * $p4->harga,
+                'tanggal' => Carbon::today()->subDay(),
                 'metode_pembayaran' => 'Transfer',
-                'keterangan' => 'Pesanan katering kantor',
+                'keterangan' => 'Pesanan takeaway',
+                'items' => [
+                    ['nama_produk' => 'Beef Teriyaki Don', 'jumlah' => 2],
+                    ['nama_produk' => 'Wadang Jahe', 'jumlah' => 2],
+                ],
             ],
-            // 2 hari lalu
             [
-                'tanggal' => Carbon::now()->subDays(2)->format('Y-m-d'),
-                'id_produk' => $p1->id_produk,
-                'jumlah_terjual' => 12,
-                'harga_satuan' => $p1->harga,
-                'total' => 12 * $p1->harga,
+                'tanggal' => Carbon::today()->subDays(2),
                 'metode_pembayaran' => 'QRIS',
-                'keterangan' => 'Makan malam rombongan',
-            ],
-            [
-                'tanggal' => Carbon::now()->subDays(2)->format('Y-m-d'),
-                'id_produk' => $p3->id_produk,
-                'jumlah_terjual' => 14,
-                'harga_satuan' => $p3->harga,
-                'total' => 14 * $p3->harga,
-                'metode_pembayaran' => 'Kartu Debit/Kredit',
-                'keterangan' => 'Pembayaran EDC Mandiri',
+                'keterangan' => 'Pesanan makan malam',
+                'items' => [
+                    ['nama_produk' => 'Ebi Katsu Soyu Ramen', 'jumlah' => 1],
+                    ['nama_produk' => 'Mineral Water (Air Mineral Kemasan)', 'jumlah' => 2],
+                ],
             ],
         ];
 
         for ($monthsAgo = 1; $monthsAgo <= 5; $monthsAgo++) {
-            $tanggalHistoris = Carbon::now()->subMonthsNoOverflow($monthsAgo)->startOfMonth()->addDays(6);
-            $produkHistoris = [$p1, $p2];
+            $tanggalHistoris = Carbon::now()
+                ->subMonthsNoOverflow($monthsAgo)
+                ->startOfMonth()
+                ->addDays(6);
 
-            foreach ($produkHistoris as $index => $produk) {
-                $jumlah = 3 + $index;
-                $samplePenjualan[] = [
-                    'tanggal' => $tanggalHistoris->copy()->addDays($index)->format('Y-m-d'),
-                    'id_produk' => $produk->id_produk,
-                    'jumlah_terjual' => $jumlah,
-                    'harga_satuan' => $produk->harga,
-                    'total' => $jumlah * $produk->harga,
-                    'metode_pembayaran' => $index === 0 ? 'Tunai' : 'QRIS',
-                    'keterangan' => "Data dummy dashboard {$tanggalHistoris->format('Y-m')} #" . ($index + 1),
-                ];
-            }
+            $sampleTransaksi[] = [
+                'tanggal' => $tanggalHistoris,
+                'metode_pembayaran' => $monthsAgo % 2 === 0 ? 'Tunai' : 'QRIS',
+                'keterangan' => 'Pesanan contoh ' . $tanggalHistoris->format('Y-m'),
+                'items' => [
+                    ['nama_produk' => 'Chicken Katsu Don', 'jumlah' => 3],
+                    ['nama_produk' => 'Tsunetai Ocha (Es Green Tea)', 'jumlah' => 2],
+                ],
+            ];
         }
 
         $tanggalSeed = [];
-        foreach ($samplePenjualan as $penjualanData) {
-            Penjualan::firstOrCreate([
-                'tanggal' => $penjualanData['tanggal'],
-                'id_produk' => $penjualanData['id_produk'],
-                'keterangan' => $penjualanData['keterangan'],
-            ], [
-                ...$penjualanData,
-                'id_cabang' => $idCabang,
-            ]);
-            $tanggalSeed[] = $penjualanData['tanggal'];
+        foreach ($sampleTransaksi as $index => $transaksi) {
+            $tanggal = $transaksi['tanggal']->format('Y-m-d');
+            $kodeTransaksi = 'SEED' . $transaksi['tanggal']->format('Ymd') . str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT);
+
+            foreach ($transaksi['items'] as $item) {
+                $produk = $produkList->firstWhere('nama_produk', $item['nama_produk']);
+
+                if (!$produk) {
+                    throw new \RuntimeException("Produk {$item['nama_produk']} belum tersedia. Jalankan ProdukSeeder terlebih dahulu.");
+                }
+
+                $hargaSatuan = (float) $produk->harga;
+                Penjualan::updateOrCreate(
+                    [
+                        'kode_transaksi' => $kodeTransaksi,
+                        'id_produk' => $produk->id_produk,
+                        'id_cabang' => $idCabang,
+                    ],
+                    [
+                        'tanggal' => $tanggal,
+                        'jumlah_terjual' => $item['jumlah'],
+                        'harga_satuan' => $hargaSatuan,
+                        'total' => $item['jumlah'] * $hargaSatuan,
+                        'metode_pembayaran' => $transaksi['metode_pembayaran'],
+                        'keterangan' => $transaksi['keterangan'],
+                    ]
+                );
+            }
+
+            $tanggalSeed[] = $tanggal;
         }
 
         // 6. Sinkronisasi omset untuk tanggal contoh

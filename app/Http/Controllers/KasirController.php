@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Omset;
 use App\Models\Penjualan;
 use App\Models\Produk;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class KasirController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): View
     {
-        $produk = Produk::orderBy('nama_produk')
-            ->get(['id_produk', 'nama_produk', 'kategori', 'harga', 'stok']);
+        $menus = Produk::orderBy('nama_produk')
+            ->get(['id_produk', 'nama_produk', 'kategori', 'harga']);
 
-        return response()->json(['data' => $produk]);
+        return view('kasir.index', compact('menus'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -27,7 +27,8 @@ class KasirController extends Controller
             'id_produk' => ['required', 'integer', 'exists:produk,id_produk'],
             'jumlah_terjual' => ['required', 'numeric', 'min:0.01'],
             'metode_pembayaran' => ['required', 'in:Tunai,QRIS,Transfer,Kartu Debit/Kredit,Lainnya'],
-            'keterangan' => ['nullable', 'string', 'max:255'],'kode_transaksi' => ['nullable', 'string', 'max:20'],
+            'keterangan' => ['nullable', 'string', 'max:255'],
+            'kode_transaksi' => ['nullable', 'string', 'max:20'],
             'id_cabang' => ['nullable', 'integer', 'exists:cabang,id_cabang'],
         ]);
         DB::transaction(function () use ($validated) {

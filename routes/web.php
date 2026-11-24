@@ -4,7 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BahanMasukController;
 use App\Http\Controllers\DataBahanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\RiwayatTransaksiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -70,69 +72,9 @@ Route::get('/sisa-bahan', function () {
     ]);
 })->name('sisa-bahan.index');
 
-Route::get('/kasir', function () {
-    $menus = collect([
-        ['id' => 1,  'nama' => 'Gyudon',                   'kategori' => 'Makanan', 'harga' => 46000, 'foto' => null],
-        ['id' => 2,  'nama' => 'Beef Teriyaki Ramen',      'kategori' => 'Makanan', 'harga' => 46000, 'foto' => null],
-        ['id' => 3,  'nama' => 'Tofu Don',                 'kategori' => 'Makanan', 'harga' => 25000, 'foto' => null],
-        ['id' => 4,  'nama' => 'Chicken Katsu Don',        'kategori' => 'Makanan', 'harga' => 34000, 'foto' => null],
-        ['id' => 5,  'nama' => 'Oyako Don',                'kategori' => 'Makanan', 'harga' => 34000, 'foto' => null],
-        ['id' => 6,  'nama' => 'Sakana Dango Souyu Ramen', 'kategori' => 'Makanan', 'harga' => 37000, 'foto' => null],
-        ['id' => 7,  'nama' => 'Ebi Katsu Souyu Ramen',    'kategori' => 'Makanan', 'harga' => 37000, 'foto' => null],
-        ['id' => 8,  'nama' => 'Sakana Dango Miso Ramen',  'kategori' => 'Makanan', 'harga' => 37000, 'foto' => null],
-        ['id' => 9,  'nama' => 'Chikin Katsu Miso Ramen',  'kategori' => 'Makanan', 'harga' => 37000, 'foto' => null],
-        ['id' => 10, 'nama' => 'Es Teh',                   'kategori' => 'Minuman', 'harga' => 5000,  'foto' => null],
-        ['id' => 11, 'nama' => 'Air Putih',                'kategori' => 'Minuman', 'harga' => 3000,  'foto' => null],
-        ['id' => 12, 'nama' => 'Ocha',                     'kategori' => 'Minuman', 'harga' => 8000,  'foto' => null],
-        ['id' => 13, 'nama' => 'Jus Jeruk',                'kategori' => 'Minuman', 'harga' => 12000, 'foto' => null],
-    ])->map(fn ($item) => (object) $item);
-
-    return view('kasir.index', compact('menus'));
-})->name('kasir.index');
-
-// ===== RIWAYAT TRANSAKSI (data dummy sementara) =====
-Route::get('/riwayat-transaksi', function () {
-    $buat = function ($id, $kode, $cabang, $tanggal, $items) {
-        return (object) [
-            'id'      => $id,
-            'kode'    => $kode,
-            'cabang'  => $cabang,
-            'tanggal' => $tanggal,
-            'items'   => $items,
-            'total'   => collect($items)->sum(fn ($i) => $i['qty'] * $i['harga']),
-        ];
-    };
-
-    $pesananA = [
-        ['nama' => 'Tofu Don',          'qty' => 2, 'harga' => 25000],
-        ['nama' => 'Chicken Katsu Don', 'qty' => 1, 'harga' => 34000],
-        ['nama' => 'Es Teh',            'qty' => 2, 'harga' => 5000],
-        ['nama' => 'Air Putih',         'qty' => 1, 'harga' => 3000],
-    ];
-    $pesananB = [
-        ['nama' => 'Gyudon',  'qty' => 1, 'harga' => 46000],
-        ['nama' => 'Es Teh',  'qty' => 1, 'harga' => 5000],
-    ];
-
-    $transaksi = collect([
-        $buat(1,  '3JDJAPSOW',    'Cabang 1', '2026-09-01 15:12', $pesananA),
-        $buat(2,  '4JF2OWAOJDA',  'Cabang 1', '2026-09-01 15:08', $pesananA),
-        $buat(3,  '9CUAL3MFO',    'Cabang 1', '2026-09-01 15:00', $pesananA),
-        $buat(4,  'KSIF0209FJFI', 'Cabang 1', '2026-09-01 14:45', $pesananA),
-        $buat(5,  'JF99QJIR39D',  'Cabang 1', '2026-09-01 14:40', $pesananA),
-        $buat(6,  'KD02QJF9E0',   'Cabang 1', '2026-09-01 14:38', $pesananA),
-        $buat(7,  '93MKSF730',    'Cabang 1', '2026-09-01 14:35', $pesananA),
-        $buat(8,  'P0LK2MSA1',    'Cabang 1', '2026-09-01 14:20', $pesananB),
-        $buat(9,  'ZX81KQWE5',    'Cabang 2', '2026-09-01 13:10', $pesananB),
-        $buat(10, 'MN45BVCX2',    'Cabang 2', '2026-09-01 12:55', $pesananA),
-        $buat(11, 'QW12ERTY7',    'Cabang 3', '2026-09-01 11:30', $pesananB),
-    ]);
-
-    return view('riwayat_transaksi.index', [
-        'transaksi' => $transaksi,
-        'periode'   => 'September 2026',
-    ]);
-})->name('riwayat.index');
+Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index');
+Route::post('/kasir', [KasirController::class, 'store'])->name('kasir.store');
+Route::get('/riwayat-transaksi', [RiwayatTransaksiController::class, 'index'])->name('riwayat.index');
 
 // ===== OMSET HARIAN (data dummy sementara) =====
 Route::get('/omset-harian', function () {

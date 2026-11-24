@@ -724,7 +724,7 @@
         let kategoriAktif = 'semua';
         let metodeBayar = '';
         const idCabang = "{{ Auth::user()->id_cabang ?? '' }}";
-        const urlSimpan = "{{ Route::has('kasir.store') ? route('kasir.store') : '' }}";
+        const urlSimpan = "{{ route('kasir.store') }}";
 
         const ikonKurang = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14"/></svg>';
         const ikonTambah = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
@@ -893,10 +893,6 @@
         }
 
         async function simpanTransaksi() {
-            if (!urlSimpan) {
-                return true;
-            }
-
             const tanggal = new Date().toLocaleDateString('en-CA');
             const kodeTransaksi = buatKode();
 
@@ -919,18 +915,25 @@
                 });
 
                 if (!respon.ok) {
-                    return false;
+                    let pesan = `Server menolak transaksi (HTTP ${respon.status}).`;
+
+                    if ((respon.headers.get('content-type') || '').includes('application/json')) {
+                        const hasil = await respon.json();
+                        const errors = Object.values(hasil.errors || {}).flat();
+                        pesan = errors.join(' ') || hasil.message || pesan;
+                    }
+
+                    throw new Error(pesan);
                 }
             }
-
-            return true;
         }
 
         async function selesaiBayar(judul, isiPesan) {
-            const berhasil = await simpanTransaksi();
-
-            if (!berhasil) {
-                Swal.fire({ icon: 'error', title: 'Gagal menyimpan', text: 'Transaksi gagal disimpan, coba lagi.', confirmButtonColor: '#ff8a8a' });
+            try {
+                await simpanTransaksi();
+            } catch (error) {
+                const pesan = error instanceof Error ? error.message : 'Terjadi kesalahan saat menyimpan transaksi.';
+                Swal.fire({ icon: 'error', title: 'Gagal menyimpan', text: pesan, confirmButtonColor: '#ff8a8a' });
                 return;
             }
 

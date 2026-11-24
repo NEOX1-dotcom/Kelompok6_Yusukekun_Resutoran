@@ -451,11 +451,11 @@
                         <div class="trx-item">
                             <div class="trx-kiri">
                                 <div>Transaksi #{{ $trx->kode_transaksi }}</div>
-                                <div>{{ $trx->cabang->nama_cabang ?? '-' }}</div>
+                                <div>{{ $trx->nama_cabang ?? '-' }}</div>
                             </div>
                             <div class="trx-kanan">
                                 <strong>Rp.{{ number_format($trx->total, 0, ',', '.') }}</strong>
-                                <span>{{ \Carbon\Carbon::parse($trx->tanggal)->locale('id')->translatedFormat('d F Y H.i') }}</span>
+                                <span>{{ \Carbon\Carbon::parse($trx->waktu)->locale('id')->translatedFormat('d F Y H.i') }}</span>
                             </div>
                         </div>
                     @empty
@@ -496,6 +496,7 @@
     <script>
         const dataOmset = @json(array_values($omsetPerBulan ?? array_fill(0, 12, 0)));
         const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const batasOmset = Math.max(1, ...dataOmset);
 
         function rupiah(angka) {
             return 'Rp.' + Number(angka).toLocaleString('id-ID');
@@ -525,9 +526,9 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        suggestedMax: 100000000,
+                        suggestedMax: batasOmset * 1.2,
                         ticks: {
-                            stepSize: 25000000,
+                            maxTicksLimit: 5,
                             color: '#111',
                             font: { family: 'Poppins', size: 8 },
                             callback: (nilai) => nilai === 0 ? '0' : rupiah(nilai)

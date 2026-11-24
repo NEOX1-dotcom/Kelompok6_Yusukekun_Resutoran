@@ -2,56 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Penjualan;
+use App\Models\Cabang;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class RiwayatController extends Controller
+class RiwayatTransaksiController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Penjualan::with('produk');
+        $daftarCabang = Cabang::orderBy('id_cabang')->get();
+        $bulanDipilih = $request->validate([
+            'bulan' => ['nullable', 'date_format:Y-m'],
+        ])['bulan'] ?? now()->format('Y-m');
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('keterangan', 'like', "%{$search}%")
-                    ->orWhere('metode_pembayaran', 'like', "%{$search}%")
-                    ->orWhereHas('produk', function ($productQuery) use ($search) {
-                        $productQuery->where('nama_produk', 'like', "%{$search}%");
-                    });
-            });
+        $pengguna = $request->user();
+        $cabangAktif = $request->input('cabang');
+        if (!$cabangAktif && $pengguna) {
+            $cabangAktif = $pengguna->id_cabang;
+        }
+        if (!$cabangAktif) {
+            $cabangAktif = $daftarCabang->first()->id_cabang ?? null;
         }
 
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
+        $kodeTransaksi = 'COALESCE(kode_transaksi, CAST(id_riwayat AS CHAR))';
+        $riwayatQuery = DB::table('riwayat')
+            ->selectRaw("$kodeTransaksi as kode_transaksi, metode_pembayaran")
+            ->selectRaw('MIN(tanggal) as tanggal, MAX(created_at) as waktu, SUM(total) as total')
+            ->whereYear('tanggal', substr($bulanDipilih, 0, 4))
+            ->whereMonth('tanggal', substr($bulanDipilih, 5, 2));
+
+        if ($cabangAktif) {
+            $riwayatQuery->where('id_cabang', $cabangAktif);
+        } else {
+            $riwayatQuery->whereRaw('1 = 0');
         }
 
-        if ($request->filled('metode_pembayaran')) {
-            $query->where('metode_pembayaran', $request->metode_pembayaran);
-        }
-
-        $totalTransaksi = (clone $query)->count();
-        $totalPenjualan = (clone $query)->sum('total');
-        $transaksi = $query
-            ->orderByDesc('tanggal')
-            ->orderByDesc('id_riwayat')
+        $riwayat = $riwayatQuery
+            ->groupByRaw("$kodeTransaksi, metode_pembayaran")
+            ->orderByDesc('waktu')
             ->paginate(15)
             ->withQueryString();
 
-        $metodePembayaran = [
-            'Tunai',
-            'QRIS',
-            'Transfer',
-            'Kartu Debit/Kredit',
-            'Lainnya',
-        ];
-
-        return view('riwayat.index', compact(
-            'transaksi',
-            'totalTransaksi',
-            'totalPenjualan',
-            'metodePembayaran'
+        return view('riwayat_transaksi.index', compact(
+            'daftarCabang',
+            'bulanDipilih',
+            'cabangAktif',
+            'riwayat'
         ));
     }
 }

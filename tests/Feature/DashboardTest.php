@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use App\Models\Bahan;
+use App\Models\Cabang;
 use App\Models\Penjualan;
 use App\Models\Produk;
 use App\Models\SisaBahanAkhirBulan;
@@ -16,13 +17,22 @@ class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_dashboard_displays_sales_stock_and_six_month_summary(): void
+    public function test_dashboard_displays_branch_sales_and_stock(): void
     {
+        $cabang = Cabang::create([
+            'nama_cabang' => 'Cabang Test',
+            'anggota1' => 'Test',
+        ]);
+        $cabangLain = Cabang::create([
+            'nama_cabang' => 'Cabang Lain',
+            'anggota1' => 'Test Lain',
+        ]);
         $admin = Admin::create([
             'nama_admin' => 'Admin Test',
             'username' => 'admin-test',
             'email' => 'admin-test@example.com',
             'password' => Hash::make('password'),
+            'id_cabang' => $cabang->id_cabang,
         ]);
         $produk = Produk::create([
             'nama_produk' => 'Menu Dummy',
@@ -33,13 +43,16 @@ class DashboardTest extends TestCase
         $tanggalHariIni = Carbon::today();
 
         foreach ([
-            [$tanggalHariIni, 100000, 'Demo transaksi pagi'],
-            [$tanggalHariIni, 50000, 'Demo transaksi siang'],
-            [$tanggalHariIni->copy()->subDay(), 100000, 'Demo transaksi kemarin'],
-            [$tanggalHariIni->copy()->subMonthNoOverflow(), 50000, 'Demo transaksi bulan lalu'],
-        ] as [$tanggal, $total, $keterangan]) {
+            [$tanggalHariIni, 100000, 'Demo transaksi pagi', 'DASH-TODAY-01', $cabang],
+            [$tanggalHariIni, 50000, 'Demo transaksi siang', 'DASH-TODAY-01', $cabang],
+            [$tanggalHariIni->copy()->subDay(), 100000, 'Demo transaksi kemarin', 'DASH-YESTERDAY-01', $cabang],
+            [$tanggalHariIni->copy()->subMonthNoOverflow(), 50000, 'Demo transaksi bulan lalu', 'DASH-LASTMONTH-01', $cabang],
+            [$tanggalHariIni, 250000, 'Penjualan cabang lain', 'DASH-OTHER-01', $cabangLain],
+        ] as [$tanggal, $total, $keterangan, $kodeTransaksi, $cabangPenjualan]) {
             Penjualan::create([
                 'tanggal' => $tanggal->toDateString(),
+                'kode_transaksi' => $kodeTransaksi,
+                'id_cabang' => $cabangPenjualan->id_cabang,
                 'id_produk' => $produk->id_produk,
                 'jumlah_terjual' => 1,
                 'harga_satuan' => $total,
@@ -63,19 +76,32 @@ class DashboardTest extends TestCase
             'sisa_akhir' => 5,
         ]);
 
+        $omsetPerBulan = array_fill(0, 12, 0);
+        foreach ([
+            [$tanggalHariIni, 150000.0],
+            [$tanggalHariIni->copy()->subDay(), 100000.0],
+            [$tanggalHariIni->copy()->subMonthNoOverflow(), 50000.0],
+        ] as [$tanggal, $omset]) {
+            if ($tanggal->year === $tanggalHariIni->year) {
+                $omsetPerBulan[$tanggal->month - 1] += $omset;
+            }
+        }
+
         $response = $this->actingAs($admin)->get('/dashboard');
 
         $response->assertOk()
             ->assertHeader('Pragma', 'no-cache')
             ->assertSee('Rp150.000')
-            ->assertSee('Demo transaksi siang')
-            ->assertSee('disabled aria-disabled="true"', false)
-            ->assertSee('Bahan Masuk')
-            ->assertDontSee('href="'.route('bahan-masuk.index').'"', false)
+            ->assertSee('DASH-TODAY-01')
+            ->assertDontSee('DASH-OTHER-01')
             ->assertViewHas('omsetHariIni', 150000.0)
-            ->assertViewHas('totalPenjualan', 2)
+            ->assertViewHas('totalPenjualan', 1)
+            ->assertViewHas('selisihPenjualan', 0)
             ->assertViewHas('sisaBahanMenipis', 1)
-            ->assertViewHas('totalOmset6Bulan', 300000.0);
+            ->assertViewHas('omsetPerBulan', $omsetPerBulan)
+            ->assertViewHas('tahun', $tanggalHariIni->year)
+            ->assertViewMissing('omset6Bulan')
+            ->assertViewMissing('totalOmset6Bulan');
 
         $this->assertStringContainsString('no-store', $response->headers->get('Cache-Control'));
     }

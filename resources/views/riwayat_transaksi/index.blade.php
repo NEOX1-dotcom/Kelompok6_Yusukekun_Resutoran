@@ -275,23 +275,6 @@
 </head>
 <body>
 
-    @php
-        $daftarCabang = \App\Models\Cabang::orderBy('id_cabang')->get();
-        $bulanDipilih = request('bulan', now()->format('Y-m'));
-        $cabangAktif = request('cabang', Auth::user()->id_cabang ?? ($daftarCabang->first()->id_cabang ?? ''));
-
-        $riwayat = \Illuminate\Support\Facades\DB::table('riwayat')
-            ->select('kode_transaksi', 'metode_pembayaran')
-            ->selectRaw('MIN(tanggal) as tanggal, MAX(created_at) as waktu, SUM(total) as total')
-            ->where('id_cabang', $cabangAktif)
-            ->whereYear('tanggal', substr($bulanDipilih, 0, 4))
-            ->whereMonth('tanggal', substr($bulanDipilih, 5, 2))
-            ->groupBy('kode_transaksi', 'metode_pembayaran')
-            ->orderByDesc('waktu')
-            ->paginate(10)
-            ->withQueryString();
-    @endphp
-
     <div class="sidebar">
         <div class="brand">
             <img src="{{ asset('images/logo.png') }}" alt="Logo">
